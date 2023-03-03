@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class Test1 {
-	private int x;
+	private int xy;
 }
