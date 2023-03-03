@@ -15,11 +15,11 @@ public class Customer {
 	private String customerEmail;
 	private int customerPay;
 	private int customerPoint;
-	private String customerBitrh;
+	private String customerBirth;
 	private String customerGender;
 	private String createdate;
 	private String updatedate;
-	private String customerEmailMarketingAccept;
-	private String customerInfoAgree;
-	private String customerLastLoginDate;
+	private String emailMarketingAccept; // 마케팅알림동의ㅏ
+	private String infoAgree; // 개인정보이용동의
+	private String lastLoginDate; // 마지막 로그인 일자
 }

@@ -6,6 +6,6 @@ import lombok.Data;
 public class AdCustomerInfo {
 	private String adCustomerId;
 	private String adCustomerPhone;
-	private String adCustomerEamil;
+	private String adCustomerEmail;
 	private String createdate;
 }
