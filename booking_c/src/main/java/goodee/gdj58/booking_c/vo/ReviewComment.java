@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class ReviewComment {
 	private int bookingNo;
-	private String rewviewCommentMemo;
+	private String reviewCommentMemo;
 	private String createdate;
 }
