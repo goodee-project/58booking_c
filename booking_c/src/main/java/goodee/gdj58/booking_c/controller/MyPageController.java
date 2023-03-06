@@ -29,9 +29,22 @@ public class MyPageController {
 						, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage
 						, @RequestParam(value = "rowPerPage", defaultValue = "10") int rowPerPage) {
 		
+		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
+		// 디버깅
+		// log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
+		log.debug(FontColor.YELLOW + "currentPage : " + currentPage);
+		log.debug(FontColor.YELLOW + "rowPerPage : " + rowPerPage);
 		
-		return "";
+		// 테스트용
+		String customerId = "cus1";
+				
+		// 리뷰 리스트
+		List<Map<String, Object>> reviewList = myPageService.reviewList(customerId, currentPage, rowPerPage);
+		
+		model.addAttribute("reviewList", reviewList);
+		
+		return "customer/myPage/reviewList";
 	}
 	
 	// 예약에 대한 신고
@@ -53,6 +66,8 @@ public class MyPageController {
 							, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage
 							, @RequestParam(value = "rowPerPage", defaultValue = "10") int rowPerPage
 							, @RequestParam(value = "bookingState", defaultValue = "") String bookingState) {
+		
+		// 고객 로그인
 		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 디버깅
@@ -78,12 +93,13 @@ public class MyPageController {
 	// 고객 내정보 상세
 	@GetMapping("customer/myPage/customerOne")
 	public String customerOne(Model model, HttpSession session) {
-		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		// 고객 로그인
+		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 테스트용
 		String customerId = "cus1";
 		
-		Map<String, Object> customerOne = myPageService.customerOne(customer);
+		Map<String, Object> customerOne = myPageService.customerOne(customerId);
 		
 		model.addAttribute("customerOne", customerOne);
 		
@@ -93,12 +109,13 @@ public class MyPageController {
 	// 고객 마이페이지 메인
 	@GetMapping("customer/myPage/myPageMain")
 	public String myPageMain(Model model, HttpSession session) {
-		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		// 고객 로그인
+		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 테스트용
 		String customerId = "cus1";
 		
-		Map<String, Object> customerOne = myPageService.customerOne(customer);
+		Map<String, Object> customerOne = myPageService.customerOne(customerId);
 		
 		model.addAttribute("customerOne", customerOne);
 		

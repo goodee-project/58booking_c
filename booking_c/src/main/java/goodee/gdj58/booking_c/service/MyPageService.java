@@ -52,7 +52,7 @@ public class MyPageService {
 	}
 	
 	// 고객 상세 정보
-	public Map<String, Object> customerOne(Customer customer) {
+	public Map<String, Object> customerOne(String customerId) {
 		return myPageMapper.customerOne("cus1");
 	}
 }

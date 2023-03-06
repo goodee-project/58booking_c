@@ -11,6 +11,8 @@
 			, b.booking_total_price totalPrice
 			, ri.review_img_origin_name reviewImgOriginName
 			, r.review_memo reviewMemo
+			, rc.review_comment_memo commnetMemo
+			, rc.createdate commentDate
 			, r.star_rating starRating
 			, r.createdate createdate
 		FROM customer c INNER JOIN booking b
@@ -23,6 +25,8 @@
 		ON b.booking_no = r.booking_no
 		INNER JOIN review_img ri
 		ON r.booking_no = ri.booking_no
+		LEFT JOIN review_comment rc
+		ON r.booking_no = rc.booking_no
 		WHERE c.customer_id = #{customerId}
 	</select>
 
