@@ -48,12 +48,28 @@ public class CustomerController {
 	//예약업체 리스트 출력
 	@GetMapping("/customer/bookingCompanyList")
 	public String getBookingCompanyList(Model model
-										, @RequestParam(value = "searchWord", defaultValue = "") String searchWord )
+										, @RequestParam(value = "searchWord", defaultValue = "") String searchWord 
+										, @RequestParam(value = "optionWord", defaultValue = "") String optionWord 
+										, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage
+										, @RequestParam(value = "rowPerPage", defaultValue = "5") int rowPerPage
+										)
 	{
-		List<Map<String, Object>> bookingCompanyList = customerService.getBookingCompanyList(searchWord);
+		
+		int firstPage = 1;
+		int totalCount = customerService.bookingCompanyCount(searchWord);
+		int lastPage = totalCount / rowPerPage;
+		if(totalCount % rowPerPage != 0)
+		{
+			lastPage = lastPage+1;
+		}
+		List<Map<String, Object>> bookingCompanyList = customerService.getBookingCompanyList(currentPage, rowPerPage, searchWord, optionWord);
 		
 		model.addAttribute("bookingCompanyList",bookingCompanyList );
-		
+		model.addAttribute("currentPage",currentPage);
+		model.addAttribute("firstPage",firstPage);
+		model.addAttribute("lastPage",lastPage);
+		model.addAttribute("searchWord",searchWord);
+		model.addAttribute("optionWord",optionWord);
 		return "customer/bookingCompanyList";
 	}
 }

@@ -24,11 +24,21 @@ public class CustomerService {
 	public int insertCustomer(Customer customer) {
 		return customerMapper.insertCustomer(customer);
 	}
-	//예약업체 리스트 출력
-	public List<Map<String, Object>> getBookingCompanyList(String searchWord)
+	//예약업체 총 수
+	public int bookingCompanyCount(String searchWord)
 	{
+		return customerMapper.bookingCompanyCount(searchWord);
+	}
+	
+	//예약업체 리스트 출력
+	public List<Map<String, Object>> getBookingCompanyList(int currentPage, int rowPerPage, String searchWord, String optionWord)
+	{
+		int beginRow = (currentPage - 1) * rowPerPage;
 		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("beginRow", beginRow);
+		paramMap.put("rowPerPage", rowPerPage);
 		paramMap.put("searchWord", searchWord);
+		paramMap.put("optionWord", optionWord);
 		return customerMapper.getBookingCompanyList(paramMap);
 	}
 }

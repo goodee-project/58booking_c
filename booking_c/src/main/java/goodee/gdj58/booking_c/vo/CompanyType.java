@@ -3,9 +3,9 @@ package goodee.gdj58.booking_c.vo;
 import lombok.Data;
 
 @Data
-public class CompnayType {
+public class CompanyType {
 	private int companyTypeNo;
-	private String companyTypContent;
+	private String companyTypeContent;
 	private int parentNo; // 부모번호
 	private int groupNo; // 그룹번호
 	private int sequence; // 그룹 내 순서

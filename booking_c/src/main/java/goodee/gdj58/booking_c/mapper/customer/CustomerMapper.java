@@ -15,6 +15,8 @@ public interface CustomerMapper {
 	public int insertCustomerImg(CustomerImg customerImg);
 	// 고객 회원가입
 	public int insertCustomer(Customer customer);
+	//예약업체 총 수
+	int bookingCompanyCount(String searchWord);
 	//예약업체 리스트 출력
 	public ArrayList<Map<String, Object>> getBookingCompanyList(Map<String, Object> paramMap);
 }
