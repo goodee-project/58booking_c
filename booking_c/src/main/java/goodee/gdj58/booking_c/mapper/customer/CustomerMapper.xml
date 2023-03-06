@@ -3,6 +3,63 @@
 <mapper
 	namespace="goodee.gdj58.booking_c.mapper.customer.CustomerMapper">
 	
+	<!-- 고객 회원가입(사진) -->
+	<insert id="insertCustomerImg" parameterType="goodee.gdj58.booking_c.vo.CustomerImg">
+		INSERT INTO customer_img(
+			customer_id
+			, customer_img_save_name
+			, customer_img_origin_name
+			, customer_img_kind
+			, customer_img_size
+			) VALUES (
+				#{customerId}
+				, #{customerImgSaveName}
+				, #{customerImgOriginName}
+				, #{customerImgKind}
+				, #{customerImgSize})
+	</insert>
+	
+	<!-- 고객 회원가입 -->
+	<insert id="insertCustomer" parameterType="goodee.gdj58.booking_c.vo.Customer">
+		INSERT INTO customer(
+			customer_id
+			, customer_pw
+			, customer_name
+			, customer_nickname
+			, customer_postcode
+			, customer_address
+			, customer_phone
+			, customer_email
+			, customer_pay
+			, customer_point
+			, customer_birth
+			, customer_gender
+			, createdate
+			, updatedate
+			, customer_email_marketing_accept
+			, customer_info_agree
+			, customer_last_login_date
+			) VALUES (
+				#{customerId}
+				, PASSWORD(#{customerPw})
+				, #{customerName}
+				, #{customerNickname}
+				, #{customerPostcode}
+				, #{customerAddress}
+				, #{customerPhone}
+				, #{customerEmail}
+				, 0
+				, 0
+				, #{customerBirth}
+				, #{customerGender}
+				, curdate()
+				, curdate()
+				, #{emailMarketingAccept}
+				, #{infoAgree}
+				, curdate()
+			)
+	</insert>
+	
 	<!-- 예약업체 리스트 출력 -->
 	<select id="getBookingCompanyList" resultType="java.util.Map" parameterType="java.util.Map">
 		SELECT  bkc.booking_company_id bkcId
