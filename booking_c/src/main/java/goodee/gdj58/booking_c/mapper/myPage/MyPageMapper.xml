@@ -1,4 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.booking_c.mapper.myPage.MyPageMapper">
+	<!-- 리뷰 리스트 -->
+	<select id="reviewList" resultType="map" parameterType="map">
+		select
+			b.booking_no bookingNo
+			, bc.booking_company_name companyName
+			, bp.booking_product_name productName
+			, b.booking_date bookingDate
+			, b.booking_total_price totalPrice
+			, ri.review_img_origin_name reviewImgOriginName
+			, r.review_memo reviewMemo
+			, r.star_rating starRating
+			, r.createdate createdate
+		FROM customer c INNER JOIN booking b
+		ON c.customer_id = b.customer_id
+		INNER JOIN booking_company bc
+		ON b.booking_company_id = bc.booking_company_id
+		INNER JOIN booking_product bp
+		ON b.product_no = bp.booking_product_no
+		INNER JOIN review r
+		ON b.booking_no = r.booking_no
+		INNER JOIN review_img ri
+		ON r.booking_no = ri.booking_no
+		WHERE c.customer_id = #{customerId}
+	</select>
+
+	<!-- 예약에 대한 신고 -->
+	<insert id="insertReport" parameterType="goodee.gdj58.booking_c.vo.Report">
+		INSERT report(
+			report_category
+			, report_content
+			, report_memo
+		) VALUES (
+			#{reportCategory}
+			, #{reportContent}
+			, #{reportMemo}
+		)
+	</insert>
+
+	<!-- 페이징용 예약 내역 데이터 개수 -->
+	<select id="bookingCnt" resultType="int" parameterType="map">
+		SELECT 
+			COUNT(*) cnt
+		FROM customer c INNER JOIN booking b
+		ON c.customer_id = b.customer_id
+		WHERE c.customer_id = #{customerId}
+	</select>
+
+	<!-- 예약 내역 리스트 -->
+	<select id="bookingList" resultType="map" parameterType="map">
+		SELECT
+			b.booking_no bookingNo
+			, bc.booking_company_name companyName
+			, bp.booking_product_name productName
+			, b.booking_date bookingDate
+			, b.booking_total_price totalPrice
+			, b.booking_state bookingState
+			, IFNULL(r.review_memo, 'true') review
+			, b.booking_request_date requestDate
+			, IFNULL(rp.report_content, 'true') report
+		FROM customer c INNER JOIN booking b
+		ON c.customer_id = b.customer_id
+		INNER JOIN booking_company bc
+		ON b.booking_company_id = bc.booking_company_id
+		INNER JOIN booking_product bp
+		ON b.product_no = bp.booking_product_no
+		LEFT JOIN review r
+		ON b.booking_no = r.booking_no
+		LEFT JOIN report rp
+		ON rp.report_content = b.booking_no
+		WHERE c.customer_id = #{customerId}
+	</select>
+
+	<!-- 고객 상세 정보 -->
+	<select id="customerOne" resultType="map" parameterType="string">
+		SELECT
+			c.customer_id customerId
+			, c.customer_pw customerPw
+			, c.customer_name customerName
+			, c.customer_nickname customerNickname
+			, c.customer_gender customerGender
+			, c.customer_birth customerBirth
+			, c.customer_phone customerPhone
+			, c.customer_email customerEmail
+			, c.customer_address customerAddress
+			, c.customer_postcode customerPostcode
+			, c.customer_postcode customerPostCode
+			, c.customer_point customerPoint
+			, c.customer_pay customerPay
+			, c.createdate createdate
+			, ci.customer_img_save_name customerImgSaveName
+			, ci.customer_img_origin_name customerImgOriginName
+		FROM customer c INNER JOIN customer_img ci
+		ON c.customer_id = ci.customer_id
+		WHERE c.customer_id = #{customerId}
+	</select>
 </mapper>

@@ -19,7 +19,7 @@ public class Customer {
 	private String customerGender;
 	private String createdate;
 	private String updatedate;
-	private String emailMarketingAccept; // 마케팅알림동의ㅏ
+	private String emailMarketingAccept; // 마케팅알림동의
 	private String infoAgree; // 개인정보이용동의
 	private String lastLoginDate; // 마지막 로그인 일자
 }
