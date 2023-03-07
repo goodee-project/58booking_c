@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import goodee.gdj58.booking_c.service.CustomerService;
+import goodee.gdj58.booking_c.util.FontColor;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,16 @@ public class CustomerController {
 		}
 		return "/customer/testPage";
 	}
+	
+	//에약업체 세부사항 홈
+	@GetMapping("/customer/bookingCompanyDetailHome")
+	public String bookingCompanyDetailHome() 
+	{
+		String test = "로그테스트";
+		log.debug(FontColor.RED+test);
+		return "customer/booking/bookingCompanyDetailHome";
+	}
+	
 	
 	//예약업체 리스트 출력
 	@GetMapping("/customer/bookingCompanyList")

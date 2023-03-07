@@ -24,6 +24,8 @@ public class CustomerService {
 	public int insertCustomer(Customer customer) {
 		return customerMapper.insertCustomer(customer);
 	}
+	
+	
 	//예약업체 총 수
 	public int bookingCompanyCount(String searchWord)
 	{
