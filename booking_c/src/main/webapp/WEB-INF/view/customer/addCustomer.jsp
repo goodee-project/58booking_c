@@ -22,6 +22,7 @@
 </head>
 <body>
 	<h2>고객 회원가입</h2>
+	<div>${errorMsg}</div>
 	<form method="post" action="${pageContext.request.contextPath}/customer/addCustomer" enctype="multipart/form-data">
 		<input type="hidden" name="customerRank" value="">
 		<table border="1">
@@ -45,7 +46,7 @@
 				<td>프로필사진</td>
 				<td>
 					<input type="file" name="file" onchange="readURL(this);">
-					<img id="preview">
+					<img id="preview" style="width: 150px; height: 80px;">
 				</td>
 			</tr>
 			<tr>

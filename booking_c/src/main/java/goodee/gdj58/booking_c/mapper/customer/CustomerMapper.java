@@ -8,9 +8,12 @@ import org.apache.ibatis.annotations.Mapper;
 
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
+import goodee.gdj58.booking_c.vo.TotalId;
 
 @Mapper
 public interface CustomerMapper {
+	// 고객 회원가입(토탈ID)
+	public int insertTotalId(TotalId totalId);
 	// 고객 회원가입(사진)
 	public int insertCustomerImg(CustomerImg customerImg);
 	// 고객 회원가입

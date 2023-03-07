@@ -8,5 +8,5 @@ public class CustomerImg {
 	private String customerImgSaveName;
 	private String customerImgOriginName;
 	private String customerImgKind;
-	private int customerImgSize;
+	private long customerImgSize;
 }

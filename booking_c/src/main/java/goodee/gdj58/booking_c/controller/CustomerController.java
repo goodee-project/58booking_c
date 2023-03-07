@@ -1,8 +1,10 @@
 package goodee.gdj58.booking_c.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import goodee.gdj58.booking_c.service.CustomerService;
 import goodee.gdj58.booking_c.util.FontColor;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
+import goodee.gdj58.booking_c.vo.TotalId;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -29,11 +32,34 @@ public class CustomerController {
 		return "customer/addCustomer";
 	}
 	@PostMapping("/customer/addCustomer")
-	public String addCustomer(Model model, Customer customer, CustomerImg customerImg, @RequestParam("file") MultipartFile file) {	
+	public String addCustomer(Model model, Customer customer, TotalId totalId, CustomerImg customerImg, @RequestParam("file") MultipartFile file) {	
+		
 		String fileRealName = file.getOriginalFilename(); // 파일명을 얻어낼 수 있는 메서드!
 		String fileKind = file.getContentType(); // kind
 		long size = file.getSize(); // 파일 사이즈
 		
+		String fileExtension = fileRealName.substring(fileRealName.lastIndexOf("."),fileRealName.length());
+		String uploadFolder = "${pageContext.request.contextPath}/view/upload";
+		UUID uuid = UUID.randomUUID();
+		System.out.println(uuid.toString());
+		String[] uuids = uuid.toString().split("-");
+		
+		String uniqueName = uuids[0];
+		System.out.println("생성된 고유문자열" + uniqueName);
+		System.out.println("확장자명" + fileExtension);
+		
+		
+		
+		// File saveFile = new File(uploadFolder+"\\"+fileRealName); uuid 적용 전
+		
+		File saveFile = new File(uploadFolder+"\\"+uniqueName + fileExtension);  // 적용 후
+		try {
+			file.transferTo(saveFile); // 실제 파일 저장메서드(filewriter 작업을 손쉽게 한방에 처리해준다.)
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		int row = customerService.insertCustomer(customer);
 		log.debug("\u001B[36m"+row+"<--row값");
 		log.debug("\u001B[36m"+fileRealName+"<--fileRealName값");
