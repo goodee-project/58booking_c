@@ -30,7 +30,7 @@ public class MyPageController {
 	@Autowired BookingService bookingService;
 	
 	// 예약 취소 상태 변경
-	@GetMapping("/customer/booking/updateBooking")
+	@PostMapping("/customer/booking/updateBooking")
 	public String bookingCancel(HttpSession session, Booking booking, BookingCancel bookingCancel) {
 		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
@@ -42,23 +42,20 @@ public class MyPageController {
 		
 		booking.setCustomerId(customerId);
 		
-		// 디버깅용 모달로 받을 예정
-		bookingCancel.setBookingNo(booking.getBookingNo());
-		bookingCancel.setCancelMemo("단순변심");
-		bookingCancel.setCancelSubject("고객");
-		
 		PointSaveHistory pointSaveHistory = new PointSaveHistory();
 		pointSaveHistory.setPointSaveHistoryCategory("예약취소");
 		pointSaveHistory.setPointSaveHistoryContent(booking.getBookingNo());
 		pointSaveHistory.setCustomerId(customerId);
 		pointSaveHistory.setPoint(booking.getUsePoint());
 		
-		Customer customer = new Customer();
-		customer.setCustomerId(customerId);
-		customer.setCustomerPoint(booking.getUsePoint());
+		PaySaveHistory paySaveHistory = new PaySaveHistory();
+		paySaveHistory.setPaySaveHistoryCategory("예약취소");
+		paySaveHistory.setPaySaveHistoryContent(booking.getBookingNo());
+		paySaveHistory.setCustomerId(customerId);
+		paySaveHistory.setPrice(booking.getTotalPrice());
 		
 		// 예약 취소
-		int row = bookingService.bookingCancel(booking, bookingCancel, pointSaveHistory, customer);
+		int row = bookingService.bookingCancel(booking, bookingCancel, pointSaveHistory, paySaveHistory);
 		if(row == 0) {
 			log.debug(FontColor.YELLOW + "예약 취소 실패");
 		} else {

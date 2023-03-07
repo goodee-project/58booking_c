@@ -2,10 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="goodee.gdj58.booking_c.mapper.payPoint.PayPointMapper">
-	<!-- 현재 보유 포인트 + 돌려받은 포인트 -->
-	<update id="updatePoint" parameterType="goodee.gdj58.booking_c.vo.Customer">
+	<!-- 현재 보유 페이 + 돌려받은 페이 -->
+	<update id="updatePay" parameterType="goodee.gdj58.booking_c.vo.PaySaveHistory">
 		UPDATE customer
-		SET customer_point = customer_point + #{customerPoint}
+		SET customer_pay = customer_pay + ${price}
+		WHERE customer_id = #{customerId}
+	</update>
+
+	<!-- 예약 취소 후 사용 페이 되돌려받음 -->
+	<insert id="insertPay" parameterType="goodee.gdj58.booking_c.vo.PaySaveHistory">
+		INSERT pay_save_history(
+			pay_save_history_category
+			, pay_save_history_content
+			, customer_id
+			, price
+		) VALUES (
+			#{paySaveHistoryCategory}
+			, #{paySaveHistoryContent}
+			, #{customerId}
+			, #{price}
+		)
+	</insert>
+	
+	<!-- 현재 보유 포인트 + 돌려받은 포인트 -->
+	<update id="updatePoint" parameterType="goodee.gdj58.booking_c.vo.PointSaveHistory">
+		UPDATE customer
+		SET customer_point = customer_point + #{point}
 		WHERE customer_id = #{customerId}
 	</update>
 	

@@ -62,7 +62,38 @@
 					<td>
 						<c:if test="${b.bookingState eq '예약승인대기'}">
 							${ b.bookingState}<br>
-							<a href="${pageContext.request.contextPath}/customer/booking/updateBooking?bookingNo=${b.bookingNo}&usePoint=${b.usePoint}">(취소하기)</a>
+							<a class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModa2" data-bs-whatever="@getbootstrap">취소하기</a>
+							<div class="modal fade" id="exampleModa2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">취소</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<form action="${pageContext.request.contextPath}/customer/booking/updateBooking" method="post" id="cancelForm">
+											<div class="modal-body">
+												<div class="mb-3">
+													<input type="hidden" name="bookingNo" value="${b.bookingNo}">
+													<input type="hidden" name="usePoint" value="${b.usePoint}">
+													<input type="hidden" name="totalPrice" value="${b.totalPrice}">
+													<input type="hidden" name="cancelSubject" value="고객">
+													<label for="recipient-name" class="col-form-label">취소 내역</label>
+													<span>${b.productName} | ${fn:substring(bookingDate, 0, 16)}</span>
+													<input type="hidden" name="reportCategory" value="예약" readonly>
+													<input type="hidden" name="reportContent" value="${b.bookingNo}" readonly>
+												</div>
+												<div class="mb-3">
+													<label for="message-text" class="col-form-label">취소사유</label>
+													<textarea class="form-control" id="message-text" name="cancelMemo"></textarea>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-primary">취소</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
 						</c:if>
 						<c:if test="${b.bookingState ne '예약승인대기'}">
 							<a>${b.bookingState}</a>
@@ -80,32 +111,32 @@
 						<c:if test="${b.report eq 'true'}">
 							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">신고하기</button>
 							<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title" id="exampleModalLabel">신고</h5>
-										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">신고</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<form action="${pageContext.request.contextPath}/customer/myPage/insertReport" method="post">
+											<div class="modal-body">
+												<div class="mb-3">
+													<label for="recipient-name" class="col-form-label">신고 업체</label>
+													<input type="text" class="form-control" id="recipient-name" value="${b.companyName}" readonly>
+													<input type="hidden" name="reportCategory" value="예약" readonly>
+													<input type="hidden" name="reportContent" value="${b.bookingNo}" readonly>
+												</div>
+												<div class="mb-3">
+													<label for="message-text" class="col-form-label">신고사유</label>
+													<textarea class="form-control" id="message-text" name="reportMemo"></textarea>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-primary">신고하기</button>
+											</div>
+										</form>
 									</div>
-									<form action="${pageContext.request.contextPath}/customer/myPage/insertReport" method="post">
-										<div class="modal-body">
-											<div class="mb-3">
-												<label for="recipient-name" class="col-form-label">신고 업체</label>
-												<input type="text" class="form-control" id="recipient-name" value="${b.companyName}" readonly>
-												<input type="hidden" name="reportCategory" value="예약" readonly>
-												<input type="hidden" name="reportContent" value="${b.bookingNo}" readonly>
-											</div>
-											<div class="mb-3">
-												<label for="message-text" class="col-form-label">신고사유</label>
-												<textarea class="form-control" id="message-text" name="reportMemo"></textarea>
-											</div>
-										</div>
-										<div class="modal-footer">
-											<button type="submit" class="btn btn-primary">신고하기</button>
-										</div>
-									</form>
 								</div>
 							</div>
-						</div>
 						</c:if>
 						<c:if test="${b.report ne 'true'}">
 							접수완료
