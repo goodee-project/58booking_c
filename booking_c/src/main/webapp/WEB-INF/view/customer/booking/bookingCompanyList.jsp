@@ -41,20 +41,20 @@
 		<c:forEach var="bkc" items="${bookingCompanyList }">
 		
 			<tr>
-				<td rowspan="4">${bkc.bkciOrigin }</td>
-				<td colspan="2">${bkc.bkcName }</td>
-				<td rowspan="2">${bkc.bkcOpen }</td>
+				<td rowspan="4">${bkc.bkciOrigin }</td><!-- bkc=예약업체, 대표 사진 -->
+				<td colspan="2"><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailHome?bkcId=${bkc.bkcId}&bkciLevel=${bkc.bkciLevel}">${bkc.bkcName }</a></td>
+				<td rowspan="2">${bkc.bkcOpen }</td><!-- 오픈시간 -->
 			</tr>
 			<tr>
-				<td>${bkc.bkcdType }</td>
-				<td>${bkc.bkcdAddService }</td>
+				<td>${bkc.bkcdType }</td><!-- 업종 -->
+				<td>${bkc.bkcdAddService }</td><!-- 부가서비스 -->
 			</tr>
 			<tr>
-				<td colspan="2">별점 : ${bkc.rvRating }</td>
-				<td rowspan="2">${bkc.rviOrigin }</td>
+				<td colspan="2">별점 : ${bkc.rvRating }</td><!-- 별점 -->
+				<td rowspan="2">${bkc.rviOrigin }</td><!-- 리뷰사진 -->
 			</tr>
 			<tr>
-				<td colspan="2">${bkc.rvMemo }</td>
+				<td colspan="2">${bkc.rvMemo }</td><!-- 리뷰메모 -->
 			</tr>
 		</c:forEach>
 	</table>
@@ -67,8 +67,8 @@
 			<span>이전페이지</span>
 		</c:if>
 		<c:if test="${currentPage > 1}">
-			<a href="${pageContext.request.contextPath }/customer/bookingCompanyList?currentPage=1&searchWord=${searchWord}&optionWord=${optionWord}">[처음으로]</a>
-			<a href="${pageContext.request.contextPath }/customer/bookingCompanyList?currentPage=${currentPage-1}&searchWord=${searchWord}&optionWord=${optionWord}">[이전 페이지]</a>
+			<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=1&searchWord=${searchWord}&optionWord=${optionWord}">[처음으로]</a>
+			<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=${currentPage-1}&searchWord=${searchWord}&optionWord=${optionWord}">[이전 페이지]</a>
 		</c:if>
 			<span>${currentPage }</span>
 		<c:if test="${currentPage == lastPage}">

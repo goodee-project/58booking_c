@@ -72,18 +72,26 @@ public class CustomerController {
 		return "/customer/testPage";
 	}
 	
-	//에약업체 세부사항 홈
-	@GetMapping("/customer/bookingCompanyDetailHome")
-	public String bookingCompanyDetailHome() 
+	//에약업체 세부사항 공통 + 홈 내용
+	@GetMapping("/customer/booking/bookingCompanyDetailHome")
+	public String bookingCompanyDetailHome(Model model
+										, @RequestParam(value = "bkcId") String bkcId
+										, @RequestParam(value = "bkciLevel", defaultValue = "") String bkciLevel) 
 	{
-		String test = "로그테스트";
-		log.debug(FontColor.RED+test);
+		List<Map<String, Object>> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
+		List<Map<String, Object>> bookingCompanyDetailHome = customerService.getBookingCompanyDetailHome(bkcId);
+		//홈 내용 추가 예정
+		model.addAttribute("bookingCompanyDetailCommon",bookingCompanyDetailCommon);
+		model.addAttribute("bookingCompanyDetailHome",bookingCompanyDetailHome);
+		model.addAttribute("bkcId",bkcId);
+		model.addAttribute("bkciLevel",bkciLevel);
+		
 		return "customer/booking/bookingCompanyDetailHome";
 	}
 	
 	
 	//예약업체 리스트 출력
-	@GetMapping("/customer/bookingCompanyList")
+	@GetMapping("/customer/booking/bookingCompanyList")
 	public String getBookingCompanyList(Model model
 										, @RequestParam(value = "searchWord", defaultValue = "") String searchWord 
 										, @RequestParam(value = "optionWord", defaultValue = "") String optionWord 
@@ -107,6 +115,6 @@ public class CustomerController {
 		model.addAttribute("lastPage",lastPage);
 		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("optionWord",optionWord);
-		return "customer/bookingCompanyList";
+		return "customer/booking/bookingCompanyList";
 	}
 }

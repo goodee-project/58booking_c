@@ -36,6 +36,21 @@ public class CustomerService {
 		return customerMapper.insertCustomer(customer);
 	}
 	
+	//예약업체 세부정보 홈
+	public List<Map<String, Object>> getBookingCompanyDetailHome(String bkcId)
+	{
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("bkcId", bkcId);
+		return customerMapper.getBookingCompanyDetailHome(paramMap);
+	}
+	//예약업체 세부정보 공통
+	public List<Map<String, Object>> getBookingCompanyDetailCommon(String bkcId, String bkciLevel)
+	{
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("bkcId", bkcId);
+		paramMap.put("bkciLevel", bkciLevel);
+		return customerMapper.getBookingCompanyDetailCommon(paramMap);
+	}
 	
 	//예약업체 총 수
 	public int bookingCompanyCount(String searchWord)

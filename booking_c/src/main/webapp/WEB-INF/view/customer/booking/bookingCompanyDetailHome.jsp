@@ -8,6 +8,30 @@
 <title> </title>
 </head>
 <body>
-asdasdasdasdasdasd
+
+<jsp:include page="/WEB-INF/view/customer/booking/bookingCompanyDetailCommon.jsp"></jsp:include>
+
+<!-- 홈 페이지 상세정보 -->
+	<table>
+		<c:forEach var="bkc" items="${bookingCompanyDetailHome}">
+			<tr>
+				<td>주소 : </td>
+				<td>${bkc.bkcAddress }</td>
+			</tr>
+			<tr>
+				<td>운영시간 : </td>
+				<td>${bkc.bkcdOpen } ~ ${bkc.bkcdClose }</td>
+			</tr>
+			<tr>
+				<td>전화번호 : </td>
+				<td>${bkc.bkcPhone }</td>
+			</tr>
+			<tr>
+				<td>부가서비스 : </td>
+				<td>${bkc.bkcdService }</td>
+		</tr>
+		</c:forEach>		
+	</table>
+	
 </body>
 </html>
