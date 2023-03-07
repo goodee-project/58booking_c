@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import goodee.gdj58.booking_c.mapper.booking.BookingMapper;
 import goodee.gdj58.booking_c.mapper.myPage.MyPageMapper;
 import goodee.gdj58.booking_c.vo.PaySaveHistory;
 import goodee.gdj58.booking_c.vo.Report;
@@ -48,7 +49,7 @@ public class MyPageService {
 		paramMap.put("customerId", customerId);
 		paramMap.put("pointState", pointState);
 		
-		return myPageMapper.bookingCnt(paramMap);
+		return myPageMapper.pointCnt(paramMap);
 	}
 	
 	// 예약 + 이벤트 관련 포인트 리스트
@@ -94,11 +95,12 @@ public class MyPageService {
 	}
 	
 	// 예약 내역 리스트
-	public List<Map<String, Object>> bookingList(String customerId, String bookingState, int currentPage, int rowPerPage) {
+	public List<Map<String, Object>> bookingList(String customerId, String bookingState, String dateSort, int currentPage, int rowPerPage) {
 		int beginRow = (currentPage - 1) * rowPerPage;
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("customerId", customerId);
 		paramMap.put("bookingState", bookingState);
+		paramMap.put("dateSort", dateSort);
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
 		

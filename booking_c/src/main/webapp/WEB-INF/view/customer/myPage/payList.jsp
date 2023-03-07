@@ -36,5 +36,43 @@
 			<input type="text" name="price">
 			<button type="submit">충전</button>
 		</form>
+		<div>
+			<!-- 부트스탧 적용 전 -->
+			<!-- 현재 페이지에 따른 처음 버튼 활성화 -->
+			<c:if test="${currentPage == 1}">
+				처음 불가
+			</c:if>
+			<c:if test="${currentPage != 1}">
+				처음 가능
+			</c:if>
+					
+			<!-- 현재 페이지에 따른 이전 버튼 활성화 -->
+			<c:if test="${prev == false}">
+				이전 비활성화
+			</c:if>
+			<c:if test="${prev == true}">
+				이전 활성화
+			</c:if>
+					
+			<c:forEach var="e" begin="${startPage}" end="${endPage}" step="1">
+				${e}
+			</c:forEach>
+					
+			<!-- 현재 페이지에 따른 다음 버튼 활성화 -->
+			<c:if test="${next == false}">
+				다음 비활성화
+			</c:if>
+			<c:if test="${next == true}">
+				다음 활성화	
+			</c:if>
+					
+			<!-- 현재 페이지에 따른 마지막 버튼 활성화 -->
+			<c:if test="${currentPage == lastPage}">
+				마지막 비활성화
+			</c:if>
+			<c:if test="${currentPage != lastPage}">
+				마지막 활성화
+			</c:if>
+		</div>
 	</body>
 </html>

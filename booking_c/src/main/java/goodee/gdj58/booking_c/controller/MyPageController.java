@@ -12,9 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import goodee.gdj58.booking_c.service.BookingService;
 import goodee.gdj58.booking_c.service.MyPageService;
 import goodee.gdj58.booking_c.util.FontColor;
+import goodee.gdj58.booking_c.vo.Booking;
+import goodee.gdj58.booking_c.vo.BookingCancel;
+import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.PaySaveHistory;
+import goodee.gdj58.booking_c.vo.PointSaveHistory;
 import goodee.gdj58.booking_c.vo.Report;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,6 +27,47 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class MyPageController {
 	@Autowired MyPageService myPageService;
+	@Autowired BookingService bookingService;
+	
+	// 예약 취소 상태 변경
+	@GetMapping("/customer/booking/updateBooking")
+	public String bookingCancel(HttpSession session, Booking booking, BookingCancel bookingCancel) {
+		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		
+		// 디버깅
+		// log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
+		
+		// 테스트용
+		String customerId = "cus1";
+		
+		booking.setCustomerId(customerId);
+		
+		// 디버깅용 모달로 받을 예정
+		bookingCancel.setBookingNo(booking.getBookingNo());
+		bookingCancel.setCancelMemo("단순변심");
+		bookingCancel.setCancelSubject("고객");
+		
+		PointSaveHistory pointSaveHistory = new PointSaveHistory();
+		pointSaveHistory.setPointSaveHistoryCategory("예약취소");
+		pointSaveHistory.setPointSaveHistoryContent(booking.getBookingNo());
+		pointSaveHistory.setCustomerId(customerId);
+		pointSaveHistory.setPoint(booking.getUsePoint());
+		
+		Customer customer = new Customer();
+		customer.setCustomerId(customerId);
+		customer.setCustomerPoint(booking.getUsePoint());
+		
+		// 예약 취소
+		int row = bookingService.bookingCancel(booking, bookingCancel, pointSaveHistory, customer);
+		if(row == 0) {
+			log.debug(FontColor.YELLOW + "예약 취소 실패");
+		} else {
+			log.debug(FontColor.YELLOW + "예약 취소 성공");
+		}
+		
+		return "redirect:/customer/booking/bookingList";
+	}
+	
 	// 페이 충전
 	@PostMapping("/customer/pay/insertPay")
 	public String insertPay(HttpSession session, PaySaveHistory paySaveHistory) {
@@ -71,13 +117,38 @@ public class MyPageController {
 		// 데이터 개수
 		int payCnt = myPageService.payCnt(customerId, priceState);
 		
+		log.debug(FontColor.YELLOW + "payCnt : " + payCnt);
+		
 		// 현재 보유 페이
 		Map<String, Object> customerOne = myPageService.customerOne(customerId);
+		
+		// 페이징
+		int lastPage = payCnt / rowPerPage;
+		if(payCnt % rowPerPage != 0) {
+			lastPage++;
+		}
+		
+		int showPage = 5;
+		int startPage = (((currentPage - 1) / showPage) * showPage) + 1;
+		int endPage = (((currentPage - 1) / showPage) + 1) * showPage;
+		if(lastPage < endPage) {
+			endPage = lastPage;
+		}
+		
+		boolean prev = (currentPage == 1) ? false : true; 
+		boolean next = (endPage == lastPage) ? false : true; 
 		
 		// 데이터 담아서 view에서 출력
 		model.addAttribute("payList", payList);
 		model.addAttribute("customerOne", customerOne);
 		model.addAttribute("priceState", priceState);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("showPage", showPage);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("prev", prev);
+		model.addAttribute("next", next);
 		
 		return "customer/myPage/payList";
 	}
@@ -104,13 +175,39 @@ public class MyPageController {
 		// 포인트 리스트 
 		List<Map<String, Object>> pointList = myPageService.pointList(customerId, pointState, currentPage, rowPerPage);
 		
+		// 데이터 개수
+		int pointCnt = myPageService.pointCnt(customerId, pointState);
+		
 		// 사용가능 포인트
 		Map<String, Object> customerOne = myPageService.customerOne(customerId);
+		
+		// 페이징
+		int lastPage = pointCnt / rowPerPage;
+		if(pointCnt % rowPerPage != 0) {
+			lastPage++;
+		}
+		
+		int showPage = 5;
+		int startPage = (((currentPage - 1) / showPage) * showPage) + 1;
+		int endPage = (((currentPage - 1) / showPage) + 1) * showPage;
+		if(lastPage < endPage) {
+			endPage = lastPage;
+		}
+		
+		boolean prev = (currentPage == 1) ? false : true; 
+		boolean next = (endPage == lastPage) ? false : true; 
 		
 		// 데이터 담아서 view에서 출력
 		model.addAttribute("pointList", pointList);
 		model.addAttribute("customerOne", customerOne);
 		model.addAttribute("pointState", pointState);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("showPage", showPage);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("prev", prev);
+		model.addAttribute("next", next);
 		
 		return "customer/myPage/pointList";
 	}
@@ -138,8 +235,33 @@ public class MyPageController {
 		// 데이터 개수
 		int reviewCnt = myPageService.reviewCnt(customerId);
 		
+		log.debug(FontColor.YELLOW + "reviewCnt : " + reviewCnt);
+		
+		// 페이징
+		int lastPage = reviewCnt / rowPerPage;
+		if(reviewCnt % rowPerPage != 0) {
+			lastPage++;
+		}
+		
+		int showPage = 5;
+		int startPage = (((currentPage - 1) / showPage) * showPage) + 1;
+		int endPage = (((currentPage - 1) / showPage) + 1) * showPage;
+		if(lastPage < endPage) {
+			endPage = lastPage;
+		}
+		
+		boolean prev = (currentPage == 1) ? false : true; 
+		boolean next = (endPage == lastPage) ? false : true; 
+		
 		// 데이터 담아서 view에서 출력
 		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("showPage", showPage);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("prev", prev);
+		model.addAttribute("next", next);
 		
 		return "customer/myPage/reviewList";
 	}
@@ -162,7 +284,8 @@ public class MyPageController {
 							, HttpSession session
 							, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage
 							, @RequestParam(value = "rowPerPage", defaultValue = "10") int rowPerPage
-							, @RequestParam(value = "bookingState", defaultValue = "") String bookingState) {
+							, @RequestParam(value = "bookingState", defaultValue = "") String bookingState
+							, @RequestParam(value = "dateSort", defaultValue = "DESC") String dateSort) {
 		
 		// 고객 로그인
 		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
@@ -177,13 +300,40 @@ public class MyPageController {
 		String customerId = "cus1";
 		
 		// 예약 리스트
-		List<Map<String, Object>> bookingList = myPageService.bookingList(customerId, bookingState, currentPage, rowPerPage);
+		List<Map<String, Object>> bookingList = myPageService.bookingList(customerId, bookingState, dateSort, currentPage, rowPerPage);
 		
 		// 데이터 개수
-		int cnt = myPageService.bookingCnt(customerId, bookingState);
+		int bookingCnt = myPageService.bookingCnt(customerId, bookingState);
+		
+		log.debug(FontColor.YELLOW + "bookingCnt : " + bookingCnt);
+		
+		// 페이징
+		int lastPage = bookingCnt / rowPerPage;
+		if(bookingCnt % rowPerPage != 0) {
+			lastPage++;
+		}
+		
+		int showPage = 5; // < 1 2 3 4 5 > 가운데에 들어갈 숫자 개수
+		int startPage = (((currentPage - 1) / showPage) * showPage) + 1; // 시작 페이지
+		int endPage = (((currentPage - 1) / showPage) + 1) * showPage; // < 1 2 3 4 5 >에서 5에 해당
+		if(lastPage < endPage) {
+			endPage = lastPage;
+		}
+		
+		boolean prev = (currentPage == 1) ? false : true; // 이전 버튼 활성화
+		boolean next = (endPage == lastPage) ? false : true; // 다음 버튼 활성화
 		
 		// 데이터 담아서 view에서 출력
 		model.addAttribute("bookingList", bookingList);
+		model.addAttribute("bookingState", bookingState);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("showPage", showPage);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("prev", prev);
+		model.addAttribute("next", next);
+		model.addAttribute("dateSort", dateSort);
 		
 		return "customer/myPage/bookingList";
 	}

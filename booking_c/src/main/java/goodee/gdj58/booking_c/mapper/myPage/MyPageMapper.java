@@ -5,11 +5,13 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.PaySaveHistory;
 import goodee.gdj58.booking_c.vo.Report;
 
 @Mapper
 public interface MyPageMapper {
+	int removeCustomer(Customer customer); // 회원 탈퇴
 	int insertPay(PaySaveHistory paySaveHistory); // 페이 충전 + 예약 취소 
 	int payCnt(Map<String, Object> paramMap); // 페이징용 페이 리스트 데이터 개수
 	List<Map<String, Object>> payList(Map<String, Object> paramMap); // 예약 + 충전 관련 페이 리스트
