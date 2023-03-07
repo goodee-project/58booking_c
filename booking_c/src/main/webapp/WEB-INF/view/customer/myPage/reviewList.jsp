@@ -20,12 +20,18 @@
 					<td colspan="3"> ${r.starRating} </td>
 				</tr>
 				<tr>
-					<td colspan="3"> ${r.reviewMemo} </td>
+					<td colspan="3"> ${r.reviewMemo} | ${r.createdate} </td>
 				</tr>
 				<tr>
-					<td> ${r.createdate} </td>
+					<td> 
+						<c:if test="${r.commentMemo == null}">
+							답변없음
+						</c:if>
+						<c:if test="${r.commentMemo != null}">
+							${r.commnetMemo} | ${r.commentDate}
+						</c:if>
+					</td>
 				</tr>
-				
 			</c:forEach>
 		</table>
 	</body>

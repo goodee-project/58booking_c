@@ -1,6 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.booking_c.mapper.myPage.MyPageMapper">
+	<!-- 페이 충전 + 예약 취소  -->
+	<insert id="insertPay" parameterType="goodee.gdj58.booking_c.vo.PaySaveHistory">
+		INSERT pay_save_history(
+			pay_save_history_category
+			, customer_id
+			, price
+		) VALUES (
+			#{paySaveHistoryCategory}
+			, #{customerId}
+			, #{price}
+		)
+	</insert>
+	<!-- 페이징용 페이 리스트 데이터 개수 -->
+	<select id="payCnt" resultType="int" parameterType="map">
+		SELECT
+			COUNT(*) cnt
+		FROM (SELECT
+					pay_save_history_category category
+					, customer_id customerId
+					, CONCAT('+', price) price
+				FROM pay_save_history
+				UNION ALL
+				SELECT
+					pay_use_history_category category
+					, customer_id customerId
+					, CONCAT('-', price) price 
+				FROM pay_use_history) t
+		WHERE t.customerId = #{customerId} AND t.category NOT LIKE CONCAT('%', '쇼핑', '%')
+		<if test="priceState != null || priceState != ''">
+			AND t.price LIKE CONCAT('%', #{priceState}, '%')
+		</if>
+	</select>
+
+	<!-- 예약 + 충전 관련 페이 리스트 -->
+	<select id="payList" resultType="map" parameterType="map">
+		SELECT
+			*
+		FROM (SELECT
+					pay_save_history_no payNo
+					, pay_save_history_category category
+					, pay_save_history_content content
+					, customer_id customerId
+					, CONCAT('+', price) price 
+					, createdate
+				FROM pay_save_history
+				UNION ALL
+				SELECT
+					pay_use_history_no payNo
+					, pay_use_history_category category
+					, pay_use_history_content content
+					, customer_id customerId
+					, CONCAT('-', price) price  
+					, createdate
+				FROM pay_use_history) t
+		WHERE t.customerId = #{customerId} AND t.category NOT LIKE CONCAT('%', '쇼핑', '%')
+		<if test="priceState != null || priceState != ''">
+			AND t.price LIKE CONCAT('%', #{priceState}, '%')
+		</if>
+		ORDER BY t.createdate DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+
+	<!-- 페이지용 포인트 리스트 데이터 개수 -->
+	<select id="pointCnt" resultType="int" parameterType="map">
+		SELECT
+			COUNT(*) cnt
+		FROM (SELECT 
+					point_save_history_category category
+					, customer_id customerId
+					, CONCAT('+', POINT) point
+				FROM point_save_history
+				UNION ALL
+				SELECT 
+					point_use_history_category category
+					, customer_id customerId
+					, CONCAT('-', POINT) point
+				FROM point_use_history ) t
+		WHERE t.customerId = #{customerId} AND t.category NOT LIKE CONCAT('%', '쇼핑', '%')
+		<if test="pointState != null || pointState != ''">
+			AND t.point LIKE CONCAT('%', #{pointState}, '%')
+		</if>
+	</select>
+
+	<!-- 예약 + 이벤트 관련 포인트 리스트  -->
+	<select id="pointList" resultType="map" parameterType="map">
+		SELECT
+			*
+		FROM (SELECT 
+					point_save_history_no historyNo
+					, point_save_history_category category
+					, point_save_history_content content
+					, customer_id customerId
+					, CONCAT('+', POINT) point
+					, createdate 
+				FROM point_save_history
+				UNION ALL
+				SELECT 
+					point_use_history_no historyNo
+					, point_use_history_category category
+					, point_use_history_content content
+					, customer_id customerId
+					, CONCAT('-', POINT) point
+					, createdate 
+				FROM point_use_history ) t
+		WHERE t.customerId = #{customerId} AND t.category NOT LIKE CONCAT('%', '쇼핑', '%')
+		<if test="pointState != null || pointState != ''">
+			AND t.point LIKE CONCAT('%', #{pointState}, '%')
+		</if>
+		ORDER BY t.createdate DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+
+	<!-- 페이징용 리뷰 리스트 데이터 개수 -->
+	<select id="reviewCnt" resultType="int" parameterType="string">
+			SELECT
+				COUNT(*) cnt
+			FROM customer c INNER JOIN booking b
+			ON c.customer_id = b.customer_id
+			INNER JOIN review r
+			ON b.booking_no = r.booking_no
+			WHERE c.customer_id = #{customerId}
+	</select>
+
 	<!-- 리뷰 리스트 -->
 	<select id="reviewList" resultType="map" parameterType="map">
 		select
