@@ -17,6 +17,10 @@ import goodee.gdj58.booking_c.vo.TotalId;
 @Transactional
 public class CustomerService {
 	@Autowired private CustomerMapper customerMapper;
+	// 업체 로그인
+	public Customer loginCustomer(Customer customer) {
+		return customerMapper.selectCustomer(customer);
+	}
 	// 고객 회원가입(토탈ID)
 	public int insertTotalId(String id) {
 		TotalId paramTotalId = new TotalId();
@@ -26,6 +30,7 @@ public class CustomerService {
 		
 		return customerMapper.insertTotalId(paramTotalId);
 	}
+	
 	
 	// 고객 회원가입(사진)
 	public int insertCustomerImg(CustomerImg customerImg) {

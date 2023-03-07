@@ -12,6 +12,8 @@ import goodee.gdj58.booking_c.vo.TotalId;
 
 @Mapper
 public interface CustomerMapper {
+	// 고객 로그인
+	Customer selectCustomer(Customer customer);
 	// 고객 회원가입(토탈ID)
 	public int insertTotalId(TotalId totalId);
 	// 고객 회원가입(사진)

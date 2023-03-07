@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import goodee.gdj58.booking_c.service.CustomerService;
-import goodee.gdj58.booking_c.util.FontColor;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
 import goodee.gdj58.booking_c.vo.TotalId;
@@ -25,6 +26,33 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CustomerController {
 	@Autowired CustomerService customerService;
+	// 고객 로그아웃
+	@GetMapping("/customer/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/customer/loginCustomer";
+	}
+	
+	// 고객 로그인
+	@GetMapping("/customer/loginCustomer")
+	public String loginCustomer() {
+		return "customer/loginCustomer";
+	}
+	@PostMapping("/customer/loginCustomer")
+	public String loginCustomer(Customer customer, HttpSession session) {
+		Customer loginCustomer = customerService.loginCustomer(customer);
+		String loginCustomerId = customer.getCustomerId();
+		
+		if(loginCustomer == null) {
+			log.debug("\u001B[36m"+"로그인실패");
+			return "customer/loginCustomer";
+		}
+		log.debug("\u001B[36m"+"로그인 성공 ID : "+loginCustomerId);
+		
+		session.setAttribute("loginCustomer", loginCustomer);
+		
+		return "/customer/testPage";
+	}
 	
 	// 고객 회원가입
 	@GetMapping("/customer/addCustomer")
