@@ -8,10 +8,13 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<!-- 임시메뉴 -->
+	<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
+
 	<h1>예약 업체 리스트</h1>
 	<!-- 검색창 -->
 	<span>예약 업체 검색</span>
-	<form action="${pageContext.request.contextPath }/customer/bookingCompanyList" method="get">
+	<form action="${pageContext.request.contextPath }/customer/booking/bookingCompanyList" method="get">
 		<select name="optionWord">
 			<option value="">==옵션선택==</option>
 			<option value="주차가능">주차가능</option>
@@ -24,14 +27,7 @@
 		<input type="text" name="searchWord" value=${searchWord }>
 		<button type="submit"> 검색 </button><br><br>
 	</form>
-	
-	<!-- 검색 키워드 -->
-	<a href="${pageContext.request.contextPath }/customer/bookingCompanyList?currentPage=${currentPage }&searchWord=${searchWord}&optionWord=주차가능">주차가능</a>
-	<a href="">제로페이</a>
-	<a href="">포장</a>
-	<a href="">배달</a>
-	<a href="">단체석</a>
-	<br><br>
+
 	
 	<!-- 광고 -->
 	<a href="">광고</a><br><br>

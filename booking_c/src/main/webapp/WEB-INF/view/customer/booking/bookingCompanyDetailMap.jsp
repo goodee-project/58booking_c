@@ -8,8 +8,11 @@
 <title> </title>
 </head>
 <body>
+	<!-- 임시메뉴 -->
+	<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 	<!-- 업체정보 공통 -->
 	<jsp:include page="/WEB-INF/view/customer/booking/bookingCompanyDetailCommon.jsp"></jsp:include>
+	
 	<div id="map" style="width:550px;height:350px;"></div>
 
 	<c:forEach var="bkc" items="${bookingCompanyDetailMap }">

@@ -8,8 +8,10 @@
 <title> </title>
 </head>
 <body>
-
-<jsp:include page="/WEB-INF/view/customer/booking/bookingCompanyDetailCommon.jsp"></jsp:include>
+	<!-- 임시메뉴 -->
+	<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
+	<!-- 업체정보 공통 -->
+	<jsp:include page="/WEB-INF/view/customer/booking/bookingCompanyDetailCommon.jsp"></jsp:include>
 
 <!-- 홈 페이지 상세정보 -->
 	<table border="1">
