@@ -100,6 +100,52 @@ public class CustomerController {
 		return "/customer/testPage";
 	}
 	
+	
+	//예약업체 세부사항 공통 + 리뷰 내용
+	@GetMapping("/customer/booking/bookingCompanyDetailMap")
+	public String bookingCompanyDetailMap(Model model
+			, @RequestParam(value = "bkcId") String bkcId
+			, @RequestParam(value = "bkciLevel", defaultValue = "") String bkciLevel)
+	{
+		List<Map<String, Object>> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
+		List<Map<String, Object>> bookingCompanyDetailMap = customerService.getBookingCompanyDetailMap(bkcId);
+		model.addAttribute("bookingCompanyDetailCommon",bookingCompanyDetailCommon);
+		model.addAttribute("bookingCompanyDetailMap",bookingCompanyDetailMap);
+		model.addAttribute("bkcId",bkcId);
+		model.addAttribute("bkciLevel",bkciLevel);
+		return "customer/booking/bookingCompanyDetailMap";
+	}
+	
+	//예약업체 세부사항 공통 + 리뷰 내용
+	@GetMapping("/customer/booking/bookingCompanyDetailReview")
+	public String bookingCompanyDetailReview(Model model
+			, @RequestParam(value = "bkcId") String bkcId
+			, @RequestParam(value = "bkciLevel", defaultValue = "") String bkciLevel)
+	{
+		List<Map<String, Object>> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
+		List<Map<String, Object>> bookingCompanyDetailReview = customerService.getBookingCompanyDetailReview(bkcId);
+		model.addAttribute("bookingCompanyDetailCommon",bookingCompanyDetailCommon);
+		model.addAttribute("bookingCompanyDetailReview",bookingCompanyDetailReview);
+		model.addAttribute("bkcId",bkcId);
+		model.addAttribute("bkciLevel",bkciLevel);
+		return "customer/booking/bookingCompanyDetailReview";
+	}
+	
+	//예약업체 세부사항 공통 + 예약 내용
+	@GetMapping("/customer/booking/bookingCompanyDetailBooking")
+	public String bookingCompanyDetailBooking(Model model
+											, @RequestParam(value = "bkcId") String bkcId
+											, @RequestParam(value = "bkciLevel", defaultValue = "") String bkciLevel)
+	{
+		List<Map<String, Object>> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
+		List<Map<String, Object>> bookingCompanyDetailBooking = customerService.getBookingCompanyDetailBooking(bkcId);
+		model.addAttribute("bookingCompanyDetailCommon",bookingCompanyDetailCommon);
+		model.addAttribute("bookingCompanyDetailBooking",bookingCompanyDetailBooking);
+		model.addAttribute("bkcId",bkcId);
+		model.addAttribute("bkciLevel",bkciLevel);
+		return "customer/booking/bookingCompanyDetailBooking";
+	}
+	
 	//에약업체 세부사항 공통 + 홈 내용
 	@GetMapping("/customer/booking/bookingCompanyDetailHome")
 	public String bookingCompanyDetailHome(Model model

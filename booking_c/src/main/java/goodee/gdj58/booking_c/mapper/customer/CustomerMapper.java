@@ -21,8 +21,14 @@ public interface CustomerMapper {
 	// 고객 회원가입
 	public int insertCustomer(Customer customer);
 	
+	//예약업체 세부정보 지도
+	ArrayList<Map<String, Object>> getBookingCompanyDetailMap(String bkcId);
+	//예약업체 세부정보 리뷰
+	ArrayList<Map<String, Object>> getBookingCompanyDetailReview(String bkcId);
+	//예약업체 세부정보 예약
+	ArrayList<Map<String, Object>> getBookingCompanyDetailBooking(String bkcId);
 	//예약업체 세부정보 홈
-	ArrayList<Map<String, Object>> getBookingCompanyDetailHome(Map<String, Object> paramMap);
+	ArrayList<Map<String, Object>> getBookingCompanyDetailHome(String bkcId);
 	//예약업체 세부정보 공통
 	ArrayList<Map<String, Object>> getBookingCompanyDetailCommon(Map<String, Object> paramMap);
 	//예약업체 총 수

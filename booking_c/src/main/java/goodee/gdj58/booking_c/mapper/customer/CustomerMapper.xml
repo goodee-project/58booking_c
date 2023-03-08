@@ -77,27 +77,68 @@
 			)
 	</insert>
 	
+	<!-- 에약업체 세부정보 지도 -->
+	<select id="getBookingCompanyDetailMap" resultType="java.util.Map" parameterType="String">
+		SELECT bkc.booking_company_name bkcName
+				, bkc.booking_company_address bkcAddress
+		FROM booking_company bkc
+		WHERE bkc.booking_company_id = #{bkcId}
+		
+	</select>
+	
+	<!-- 예약업체 세부정보 리뷰 -->
+	<select id="getBookingCompanyDetailReview" resultType="java.util.Map" parameterType="String">
+		SELECT bk.booking_date bkDate
+				, bk.customer_id bkCustomerId
+				, ct.customer_nickname ctNick
+				, if(cti.customer_img_origin_name IS NULL, '고객사진없음', cti.customer_img_origin_name) ctiOrigin
+				, rv.review_memo rvMemo
+				, rv.star_rating rvStar
+				, rv.createdate rvCreatedate
+				, if(rvi.review_img_origin_name IS NULL, '리뷰사진없음', rvi.review_img_origin_name) rviOrigin
+				, bkp.booking_product_name bkpName
+		FROM booking bk
+			INNER JOIN booking_product bkp ON bk.product_no = bkp.booking_product_no 
+			inner JOIN review rv ON bk.booking_no = rv.booking_no
+			LEFT OUTER JOIN customer ct ON bk.customer_id = ct.customer_id
+			LEFT OUTER JOIN customer_img cti ON bk.customer_id = cti.customer_id
+			LEFT OUTER JOIN review_img rvi ON rv.booking_no = rvi.booking_no
+		WHERE bk.booking_company_id = #{bkcId}
+	</select>
+	<!-- 예약업체 세부정보 예약 -->
+	<select id="getBookingCompanyDetailBooking" resultType="java.util.Map" parameterType="String">
+		SELECT bkc.booking_company_id bkcId
+				, bkp.booking_product_name bkpName
+				, bkp.booking_product_price bkpPrice
+				, if(bkpi.booking_product_img_origin_name IS NULL,'상품사진없음',bkpi.booking_product_img_origin_name) bkpiOrigin
+		FROM booking_company bkc
+			INNER JOIN booking_product bkp ON bkc.booking_company_id = bkp.booking_company_id
+			LEFT OUTER  JOIN booking_product_img bkpi ON bkp.booking_product_no = bkpi.booking_product_no
+		WHERE bkc.booking_company_id = #{bkcId}
+	</select>
+	
 	<!-- 예약업체 세부정보 홈 -->
-	<select id="getBookingCompanyDetailHome" resultType="java.util.Map" parameterType="java.util.Map">
+	<select id="getBookingCompanyDetailHome" resultType="java.util.Map" parameterType="String">
 		SELECT bkc.booking_company_address bkcAddress
 				, bkc.booking_company_phone bkcPhone
 				, bkcd.booking_company_addition_service bkcdService
 				, bkcd.booking_company_opentime bkcdOpen
 				, bkcd.booking_company_closetime bkcdClose
-				, (case DAYOFWEEK(bkcoff.booking_company_offday_date)
-	                    when '1' then '일요일'
-	                    when '2' then '월요일'
-	                    when '3' then '화요일'
-	                    when '4' then '수요일'
-	                    when '5' then '목요일'
-	                    when '6' then '금요일'
-	                    when '7' then '토요일'
-	                end) DAY_OF_WEEK
+				, if(bkcoff.booking_company_offday_date IS NULL, '연중무휴',
+				(case DAYOFWEEK(bkcoff.booking_company_offday_date)
+		                    when '1' then '일요일'
+		                    when '2' then '월요일'
+		                    when '3' then '화요일'
+		                    when '4' then '수요일'
+		                    when '5' then '목요일'
+		                    when '6' then '금요일'
+		                    when '7' then '토요일'
+		                END)) offday
 		FROM booking_company bkc
 			INNER JOIN booking_company_detail bkcd ON bkc.booking_company_id = bkcd.booking_company_id
-			INNER JOIN booking_company_offday bkcoff ON bkc.booking_company_id = bkcoff.booking_company_id
+			LEFT OUTER JOIN booking_company_offday bkcoff ON bkc.booking_company_id = bkcoff.booking_company_id
 		WHERE bkc.booking_company_id = #{bkcId}
-		GROUP BY DAY_OF_WEEK
+		GROUP BY offday
 	</select>
 	<!-- 예약업체 세부정보 공통 -->
 	<select id="getBookingCompanyDetailCommon" resultType="java.util.Map" parameterType="java.util.Map">

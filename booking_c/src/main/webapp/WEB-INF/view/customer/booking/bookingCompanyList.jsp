@@ -76,8 +76,8 @@
 			<span>마지막으로</span>
 		</c:if>
 		<c:if test="${currentPage < lastPage}">
-			<a href="${pageContext.request.contextPath }/customer/bookingCompanyList?currentPage=${currentPage+1}&searchWord=${searchWord}&optionWord=${optionWord}">[다음 페이지]</a>
-			<a href="${pageContext.request.contextPath }/customer/bookingCompanyList?currentPage=${lastPage}&searchWord=${searchWord}&optionWord=${optionWord}">[끝으로]</a>
+			<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=${currentPage+1}&searchWord=${searchWord}&optionWord=${optionWord}">[다음 페이지]</a>
+			<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=${lastPage}&searchWord=${searchWord}&optionWord=${optionWord}">[끝으로]</a>
 		</c:if>
 	</div>
 </body>

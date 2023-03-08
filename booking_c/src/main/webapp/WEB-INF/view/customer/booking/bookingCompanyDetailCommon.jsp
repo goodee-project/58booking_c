@@ -8,41 +8,35 @@
 <title> </title>
 </head>
 <body>
-	<!-- 업체사진 -->
-	<a href="">업체사진</a><br><br>
+	<h3>업체 세부 정보</h3>
+	<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList">예약업체 목록으로 가기</a><br><br>
 	
 	<!-- 업체정보 공통 -->
-	
-	<table>
+	<table border="1">
 		<c:forEach var="bkc" items="${bookingCompanyDetailCommon }">
 			<tr>
-				<td>${bkc.bkciOrigin} 기업사진</td>
+				<td> 기업사진 : ${bkc.bkciOrigin}</td>
 			</tr>
 			<tr>
-				<td>${bkc.bkcName} 기업이름</td>
+				<td> 기업이름 : ${bkc.bkcName}</td>
 			</tr>
 			<tr>
-				<td>${bkc.bkcType} 기업분류</td>
+				<td> 기업분류 : ${bkc.bkcType}</td>
 			</tr>
 			<tr>
-				<td>${bkc.sumStar / bkc.countReview} /5 평균 별점</td>
+				<td> 평균 별점 : ${bkc.sumStar / bkc.countReview}/5</td>
 			</tr>
 			<tr>
-				<td>${bkc.countReview} 리뷰갯수</td>
+				<td> 리뷰갯수 : ${bkc.countReview}</td>
 			</tr>
 		</c:forEach>
-			
 	</table><br>
 	
-	<!-- 예약 버튼 -->
-	<a href="">예약</a><br><br>
-	
 	<!-- 페이지 이동버튼 -->
-	<a href="">홈</a>
-	<a href="">예약</a>
-	<a href="">리뷰</a>
-	<a href="">지도</a><br><br>
-	
+	<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailHome?bkcId=${bkcId}&bkciLevel=${bkciLevel}">홈</a>
+	<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailBooking?bkcId=${bkcId}&bkciLevel=${bkciLevel}">예약</a>
+	<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailReview?bkcId=${bkcId}&bkciLevel=${bkciLevel}">리뷰</a>
+	<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailMap?bkcId=${bkcId}&bkciLevel=${bkciLevel}">지도</a><br><br>
 	
 </body>
 </html>

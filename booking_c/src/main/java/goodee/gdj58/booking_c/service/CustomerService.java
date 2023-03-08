@@ -41,13 +41,31 @@ public class CustomerService {
 		return customerMapper.insertCustomer(customer);
 	}
 	
+	//예약업체 세부정보 지도
+	public List<Map<String, Object>> getBookingCompanyDetailMap(String bkcId)
+	{
+		return customerMapper.getBookingCompanyDetailMap(bkcId);
+	}
+	//예약업체 세부정보 리뷰
+	public List<Map<String, Object>> getBookingCompanyDetailReview(String bkcId)
+	{
+		return customerMapper.getBookingCompanyDetailReview(bkcId);
+	}
+	
+	//예약업체 세부정보 예약
+	public List<Map<String, Object>> getBookingCompanyDetailBooking(String bkcId)
+	{
+		
+		return customerMapper.getBookingCompanyDetailBooking(bkcId);
+	}
+	
 	//예약업체 세부정보 홈
 	public List<Map<String, Object>> getBookingCompanyDetailHome(String bkcId)
 	{
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("bkcId", bkcId);
-		return customerMapper.getBookingCompanyDetailHome(paramMap);
+		
+		return customerMapper.getBookingCompanyDetailHome(bkcId);
 	}
+	
 	//예약업체 세부정보 공통
 	public List<Map<String, Object>> getBookingCompanyDetailCommon(String bkcId, String bkciLevel)
 	{

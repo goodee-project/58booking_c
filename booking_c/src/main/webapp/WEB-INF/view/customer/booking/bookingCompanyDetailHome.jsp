@@ -12,11 +12,15 @@
 <jsp:include page="/WEB-INF/view/customer/booking/bookingCompanyDetailCommon.jsp"></jsp:include>
 
 <!-- 홈 페이지 상세정보 -->
-	<table>
+	<table border="1">
 		<c:forEach var="bkc" items="${bookingCompanyDetailHome}">
 			<tr>
 				<td>주소 : </td>
 				<td>${bkc.bkcAddress }</td>
+			</tr>
+			<tr>
+				<td>휴무일 : </td>
+				<td>${bkc.offday}</td>
 			</tr>
 			<tr>
 				<td>운영시간 : </td>
