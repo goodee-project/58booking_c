@@ -3,7 +3,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+   <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Panagea - Premium site template for travel agencies, hotels and restaurant listing.">
+    <meta name="author" content="Ansonika">
+
+    <!-- Favicons-->
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/img/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="${pageContext.request.contextPath}/resources/img/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="${pageContext.request.contextPath}/resources/img/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="${pageContext.request.contextPath}/resources/img/apple-touch-icon-144x144-precomposed.png">
+
+    <!-- GOOGLE WEB FONT -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- BASE CSS -->
+    <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/vendors.css" rel="stylesheet">
+
+    <!-- YOUR CUSTOM CSS -->
+    <link href="${pageContext.request.contextPath}/resources/css/custom.css" rel="stylesheet">
 <title>고객 회원가입</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
@@ -21,97 +43,115 @@
 </script>
 </head>
 <body>
-	<h2>고객 회원가입</h2>
-	<div>${errorMsg}</div>
-	<form method="post" action="${pageContext.request.contextPath}/customer/addCustomer" enctype="multipart/form-data" id="addForm">
-		<input type="hidden" name="customerRank" value="">
-		<table border="1">
-			<tr>
-				<th>ID중복검사</th>
-				<td>
-					<input type="text" id="checkId" placeholder="사용할ID를 입력해주세요.">
-					<button type="button" id="ckBtn">중복검사</button>
-				</td>
-			</tr>
-			<tr>
-				<th>아이디</th>
-				<td><input type="text" name="customerId" id="id" disabled></td>
-			</tr>
-			<tr>
-				<th>비밀번호</th>
-				<td><input type="password" name="customerPw" id="pw"></td>
-			</tr>
-			<tr>
-				<th>이름</th>
-				<td><input type="text" name="customerName" id="name"></td>
-			</tr>
-			<tr>
-				<th>닉네임</th>
-				<td><input type="text" name="customerNickname"></td>
-			</tr>
-			<tr>
-				<th>프로필사진</th>
-				<td>
+		<nav id="menu" class="fake_menu"></nav>
+	
+	<div id="preloader">
+		<div data-loader="circle-side"></div>
+	</div>
+	<!-- End Preload -->
+	
+	<div id="login">
+		<aside style="width:700px;">
+			<figure>
+				<a href="index.html"><img src="${pageContext.request.contextPath}/resources/img/logo_sticky.svg" width="155" height="36" alt="" class="logo_sticky"></a>
+			</figure>
+			<form autocomplete="off" method="post" action="${pageContext.request.contextPath}/log/addCustomer" enctype="multipart/form-data" id="addForm">
+				<div class="form-group">
+					<label>ID중복검사</label>
+					<input class="form-control" type="text" id="checkId" placeholder="사용할ID를 입력해주세요.">
+					<button type="button" id="ckBtn" class="btn_1 outline">중복검사</button>
+					<i class="ti-user"></i>
+				</div>
+				<div class="form-group">
+					<label>아이디</label>
+					<input class="form-control" type="text" name="customerId" id="id" readonly="readonly">
+					<i class="ti-user"></i>
+				</div>
+				<div class="form-group">
+					<label>비밀번호</label>
+					<input class="form-control" type="password" name="customerPw" id="pw">
+					<i class="icon_lock_alt"></i>
+				</div>
+				<div class="form-group">
+					<label>이름</label>
+					<input class="form-control" type="text" name="customerName" id="name">
+					<i class="ti-user"></i>
+				</div>
+				<div class="form-group">
+					<label>닉네임</label>
+					<input class="form-control" type="text" name="customerNickname">
+					<i class="ti-user"></i>
+				</div>
+				<div class="form-group">
+					<label>프로필사진</label>
 					<input type="file" name="file" onchange="readURL(this);">
 					<img id="preview" style="width: 150px; height: 80px;">
-				</td>
-			</tr>
-			<tr>
-				<th>우편번호</th>
-				<td><input type="text" name="customerPostcode"></td>
-			</tr>
-			<tr>
-				<th>주소</th>
-				<td><input type="text" name="customerAddress"></td>
-			</tr>
-			<tr>
-				<th>휴대폰번호</th>
-				<td><input type="text" name="customerPhone"></td>
-			</tr>
-			<tr>
-				<th>이메일주소</th>
-				<td>
-					<input type="text" name="customerEmail" id="email">
-					<button type="button" id="emailCkBtn">인증번호 발송</button>
+				</div>
+				<div class="form-group">
+					<label>우편번호</label>
+					<input class="form-control" type="text" name="customerPostcode">
+					<i class="ti-user"></i>
+				</div>
+				<div class="form-group">
+					<label>주소</label>
+					<input class="form-control" type="text" name="customerAddress">
+					<i class="ti-user"></i>
+				</div>
+				<div class="form-group">
+					<label>휴대폰번호</label>
+					<input class="form-control" type="text" name="customerPhone">
+					<i class="ti-user"></i>
+				</div>
+				<div class="form-group">
+					<label>이메일주소</label>
+					<input class="form-control" type="text" name="customerEmail" id="email">
+					<button type="button" id="emailCkBtn" class="btn_1 outline">인증번호 발송</button>
 					<div id="emailSendMsg"></div>
-				</td>
-			</tr>
-			<tr>
-				<th>인증번호</th>
-				<td>
-					<input type="text" id="codeCk" name="" placeholder="인증번호를 입력해주세요." disabled>
+					<i class="ti-user"></i>
+				</div>
+				<div class="form-group">
+					<label>인증번호</label>
+					<input class="form-control" type="text" id="codeCk" name="" placeholder="인증번호를 입력해주세요." disabled>
 					<button type="button" id="codeCkBtn" disabled>인증번호 확인</button>
 					<div id="emailResultMsg"></div>
-				</td>
-			</tr>
-			<tr>
-				<th>생년월일</th>
-				<td><input type="date" name="customerBirth"></td>
-			</tr>
-			<tr>
-				<th>성별</th>
-				<td>
+					<i class="icon_lock_alt"></i>
+				</div>
+				<div class="form-group">
+					<label>생년월일</label>
+					<input class="form-control" type="date" name="customerBirth">
+					<i class="ti-user"></i>
+				</div>
+				<div class="form-group">
+					<label>성별</label><br>
 					<input type="radio" name="customerGender" value="남">남
 					<input type="radio" name="customerGender" value="여">여
-				</td>
-			</tr>
-			<tr>
-				<th>마케팅 수신 동의 여부</th>
-				<td>
+				</div>
+				<div class="form-group">
+					<label>마케팅 수신 동의 여부</label><br>
 					<input type="checkbox" name="emailMarketingAccept" value="동의">동의
 					<input type="checkbox" name="emailMarketingAccept" value="미동의">미동의
-				</td>
-			</tr>
-			<tr>
-				<th>개인정보 보관 동의 여부</th>
-				<td>
+				</div>
+				<div class="form-group">
+					<label>개인정보 보관 동의 여부</label><br>
 					<input type="checkbox" name="infoAgree" value="동의">동의
 					<input type="checkbox" name="infoAgree" value="미동의">미동의
-				</td>
-			</tr>
-		</table>
-		<button type="button" id="addBtn">회원가입</button>
-	</form>
+				</div>
+				<div id="pass-info" class="clearfix"></div>
+				<button type="button" class="btn_1 rounded full-width add_top_30" id="addBtn">회원가입</button>
+				<div class="text-center add_top_10">이미 회원이신가요? <strong><a href="${pageContext.request.contextPath}/log/loginCustomer">로그인</a></strong></div>
+			</form>
+			<div class="copy">© Panagea</div>
+		</aside>
+	</div>
+	<!-- /login -->
+	
+	<!-- COMMON SCRIPTS -->
+    <script src="${pageContext.request.contextPath}/resources/js/common_scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/phpmailer/validate.js"></script>
+	
+	<!-- SPECIFIC SCRIPTS -->
+	<script src="${pageContext.request.contextPath}/resources/js/pw_strenght.js"></script>
 	<script>
 	// ID 중복검사
 	$('#ckBtn').click(function(){
@@ -120,6 +160,7 @@
 				, type:'get'
 				, data : {checkId:$('#checkId').val()}
 				, success:function(model){ // model : 'yes' / 'no'
+					console.log('model값:'+model);
 					if(model=='yes') {
 						// 사용가능한 아이디
 						$('#id').val($('#checkId').val());
@@ -165,7 +206,7 @@
 			, data:{customerEmail:$('#email').val()}
 			, success:function(model) {
 				code = model;
-				//console.log(code);
+				// console.log(code);
 			}			
 		});
 	});

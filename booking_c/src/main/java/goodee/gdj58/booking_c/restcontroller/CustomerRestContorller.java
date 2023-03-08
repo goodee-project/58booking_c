@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerRestContorller {
 	@Autowired IdService idService;
 	
-	@GetMapping("/customer/idck")
+	@GetMapping("/log/idck")
 	public String idck(@RequestParam(value="checkId") String checkId) {
 		log.debug("\u001B[36m"+checkId+"<--checkId값");
 		return idService.getIdCheck(checkId);

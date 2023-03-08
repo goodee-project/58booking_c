@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MailSendRestController {
 	@Autowired MailSendService mailSendService;
 	
-	@GetMapping("/customer/emailCk")
+	@GetMapping("/log/emailCk")
 	public String emailCk(@RequestParam(value="customerEmail") String customerEmail) {
 		log.debug("\u001B[36m"+"이메일요청 : "+customerEmail);
 		return mailSendService.makeEmail(customerEmail);

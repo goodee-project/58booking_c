@@ -12,6 +12,10 @@ import goodee.gdj58.booking_c.vo.TotalId;
 
 @Mapper
 public interface CustomerMapper {
+	// 고객 비밀번호 찾기
+	int selectCustomerPw(Customer customer);
+	// 고객 아이디 찾기
+	String selectCustomerId(Customer customer);
 	// 고객 로그인
 	Customer selectCustomer(Customer customer);
 	// 고객 회원가입(토탈ID)

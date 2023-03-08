@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="goodee.gdj58.booking_c.mapper.customer.CustomerMapper">
+	<!-- 아이디 찾기 -->
+	<select id="selectCustomerId" parameterType="goodee.gdj58.booking_c.vo.Customer" resultType="java.lang.String">
+		SELECT customer_id customerId
+		FROM customer
+		WHERE customer_email=#{customerEmail} AND customer_name=#{customerName};
+	</select>
+	
 	<!-- 고객 로그인 -->
 	<select id="selectCustomer" parameterType="goodee.gdj58.booking_c.vo.Customer" resultType="goodee.gdj58.booking_c.vo.Customer">
 		SELECT
@@ -9,7 +16,7 @@
 			, customer_name customerName
 			, customer_nickname customerNickName
 		FROM customer
-		WHERE customer_id = #{customerId} AND customer_pw = PASSWORD(#{customerPw})
+		WHERE customer_id=#{customerId} AND customer_pw=PASSWORD(#{customerPw})
 	</select>
 	
 	<!-- 고객 회원가입(토탈ID) -->

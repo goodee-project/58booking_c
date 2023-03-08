@@ -1,5 +1,6 @@
 package goodee.gdj58.booking_c.controller;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -19,13 +20,24 @@ import org.springframework.web.multipart.MultipartFile;
 import goodee.gdj58.booking_c.service.CustomerService;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
-import goodee.gdj58.booking_c.vo.TotalId;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
 public class CustomerController {
 	@Autowired CustomerService customerService;
+	// 고객 비밀번호 찾기
+	@GetMapping("/customer/findPw")
+	public String findCustomerPw() {
+		return "customer/findPw";
+	}
+	
+	// 고객 아이디 찾기
+	@GetMapping("/customer/findId")
+	public String findCustomerId() {
+		return "customer/findId";
+	}
+	
 	// 고객 로그아웃
 	@GetMapping("/customer/logout")
 	public String logout(HttpSession session) {
@@ -34,7 +46,7 @@ public class CustomerController {
 	}
 	
 	// 고객 로그인
-	@GetMapping("/customer/loginCustomer")
+	@GetMapping("/log/loginCustomer")
 	public String loginCustomer() {
 		return "customer/loginCustomer";
 	}
@@ -51,36 +63,44 @@ public class CustomerController {
 		
 		session.setAttribute("loginCustomer", loginCustomer);
 		
-		return "/customer/testPage";
+		return "redirect:/customer/booking/bookingCompanyList";
 	}
 	
 	// 고객 회원가입
-	@GetMapping("/customer/addCustomer")
+	@GetMapping("/log/addCustomer")
 	public String addCustomer() {
 		return "customer/addCustomer";
 	}
-	@PostMapping("/customer/addCustomer")
-	public String addCustomer(Model model, Customer customer, TotalId totalId, CustomerImg customerImg, @RequestParam("file") MultipartFile file) {	
+	@PostMapping("/log/addCustomer")
+	public String addCustomer(Model model, Customer customer, @RequestParam("file") MultipartFile file) {	
+		log.debug("\u001B[36m"+"custoer"+customer.toString());
 		
-		String fileRealName = file.getOriginalFilename(); // 파일명을 얻어낼 수 있는 메서드!
+		// 파일명을 얻어낼 수 있는 메서드!
+		String fileRealName = file.getOriginalFilename();
 		String fileKind = file.getContentType(); // kind
 		long size = file.getSize(); // 파일 사이즈
 		
+		log.debug("\u001B[36m"+fileRealName+"<--fileRealName값");
+		log.debug("\u001B[36m"+fileKind+"<--fileKind값");
+		log.debug("\u001B[36m"+size+"<--size값");
+		
+		// 이미지 저장경로, 확장자
 		String fileExtension = fileRealName.substring(fileRealName.lastIndexOf("."),fileRealName.length());
-		String uploadFolder = "${pageContext.request.contextPath}/view/upload";
+		// 경로 - 외부저장은 가능한데 내부저장이 안됨.. 해결해야함
+		String uploadFolder = "D:\\work-sts\\58booking_c\\booking_c\\src\\main\\webapp\\upload";
+		log.debug("\u001B[36m"+"확장자명" + fileExtension);
+		log.debug("\u001B[36m"+"업로드 경로" + uploadFolder);
+	
+		// 랜덤문자열 생성
 		UUID uuid = UUID.randomUUID();
-		System.out.println(uuid.toString());
+		log.debug(uuid.toString());
+		
 		String[] uuids = uuid.toString().split("-");
-		
 		String uniqueName = uuids[0];
-		System.out.println("생성된 고유문자열" + uniqueName);
-		System.out.println("확장자명" + fileExtension);
+		log.debug("\u001B[36m"+"생성된 고유문자열" + uniqueName);
 		
-		
-		
-		// File saveFile = new File(uploadFolder+"\\"+fileRealName); uuid 적용 전
-		
-		File saveFile = new File(uploadFolder+"\\"+uniqueName + fileExtension);  // 적용 후
+		// 파일 경로에 저장
+		File saveFile = new File(uploadFolder+"\\"+uniqueName + fileExtension); 
 		try {
 			file.transferTo(saveFile); // 실제 파일 저장메서드(filewriter 작업을 손쉽게 한방에 처리해준다.)
 		} catch (IllegalStateException e) {
@@ -88,16 +108,44 @@ public class CustomerController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		int row = customerService.insertCustomer(customer);
-		log.debug("\u001B[36m"+row+"<--row값");
-		log.debug("\u001B[36m"+fileRealName+"<--fileRealName값");
-		log.debug("\u001B[36m"+fileKind+"<--fileKind값");
-		log.debug("\u001B[36m"+size+"<--size값");
-		if(row == 0) {
-			model.addAttribute("errorMsg", "시스템 에러로 등록 실패");
-			return "customer/addCustomer";
+		
+		
+		// 업로드 파일을 customerImg 타입에 저장
+		String saveName = uniqueName + fileRealName;
+		log.debug("saveName : "+saveName);
+				
+		CustomerImg cImg = new CustomerImg();
+		cImg.setCustomerImgOriginName(fileRealName);
+		cImg.setCustomerImgSaveName(saveName);
+		cImg.setCustomerImgKind(fileKind);
+		cImg.setCustomerImgSize(size);
+		cImg.setCustomerId(customer.getCustomerId());
+		
+		// 1. totalId DB 저장
+		int totalRow = customerService.insertTotalId(customer.getCustomerId());
+		if(totalRow == 0) {
+			log.debug("\u001B[36m"+"시스템 에러로 totalId 등록 실패");
+			return "costomer/addCustomer";
 		}
-		return "/customer/testPage";
+		log.debug("\u001B[36m"+totalRow+"<--totalRow값");
+		
+		// 2. customer DB 저장
+		int cusRow = customerService.insertCustomer(customer);
+		if(cusRow == 0) {
+			log.debug("\u001B[36m"+"시스템 에러로 customer 등록 실패");
+			return "costomer/addCustomer";
+		}
+		log.debug("\u001B[36m"+cusRow+"<--cusRow값");
+		
+		// 3. customerImg DB 저장
+		int imgRow = customerService.insertCustomerImg(cImg);
+		if(imgRow == 0) {
+			log.debug("\u001B[36m"+"시스템 에러로 img 등록 실패");
+			return "costomer/addCustomer";
+		}
+		log.debug("\u001B[36m"+imgRow+"<--imgRow값");
+		
+		return "/customer/loginCustomer";
 	}
 	
 	

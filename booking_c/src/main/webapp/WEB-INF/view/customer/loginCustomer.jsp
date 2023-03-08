@@ -48,7 +48,7 @@
 		<button type="button" id="loginBtn">로그인</button>
 	</form>
 	<div>
-		<button type="button" onclick="location.href='${pageContext.request.contextPath}/customer/addCustomer'">회원가입</button>
+		<button type="button" onclick="location.href='${pageContext.request.contextPath}/log/addCustomer'">회원가입</button>
 	</div>
 </body>
 </html>

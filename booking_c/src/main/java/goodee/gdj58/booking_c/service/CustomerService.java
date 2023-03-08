@@ -17,7 +17,16 @@ import goodee.gdj58.booking_c.vo.TotalId;
 @Transactional
 public class CustomerService {
 	@Autowired private CustomerMapper customerMapper;
-	// 업체 로그인
+	// 고객 아이디 찾기
+	public String getCustomerId(String customerEmail, String customerName) {
+		Customer customer = new Customer();
+		customer.setCustomerEmail(customerEmail);
+		customer.setCustomerName(customerName);
+		
+		return customerMapper.selectCustomerId(customer);
+	}
+	
+	// 고객 로그인
 	public Customer loginCustomer(Customer customer) {
 		return customerMapper.selectCustomer(customer);
 	}
@@ -29,8 +38,7 @@ public class CustomerService {
 		paramTotalId.setTotalIdActive("활성화");
 		
 		return customerMapper.insertTotalId(paramTotalId);
-	}
-	
+	}	
 	
 	// 고객 회원가입(사진)
 	public int insertCustomerImg(CustomerImg customerImg) {
