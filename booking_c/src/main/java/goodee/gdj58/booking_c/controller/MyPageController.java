@@ -119,7 +119,7 @@ public class MyPageController {
 		if(row == 0) {
 			log.debug(FontColor.YELLOW + "페이 충전 실패");
 			redirectAttr.addFlashAttribute("msg", "페이 충전에 실패했습니다");
-			return "redirect:/customer/myPage/deactiveCustomer";
+			return "redirect:/customer/pay/payList";
 		}
 		
 		log.debug(FontColor.YELLOW + "페이 충전 성공");
@@ -133,7 +133,7 @@ public class MyPageController {
 						, HttpSession session
 						, @RequestParam(value = "priceState", defaultValue = "") String priceState
 						, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage
-						, @RequestParam(value = "rowPerPage", defaultValue = "10") int rowPerPage) {
+						, @RequestParam(value = "rowPerPage", defaultValue = "15") int rowPerPage) {
 		
 		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
@@ -194,7 +194,7 @@ public class MyPageController {
 						, HttpSession session
 						, @RequestParam(value = "pointState", defaultValue = "") String pointState
 						, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage
-						, @RequestParam(value = "rowPerPage", defaultValue = "10") int rowPerPage) {
+						, @RequestParam(value = "rowPerPage", defaultValue = "15") int rowPerPage) {
 		
 		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		

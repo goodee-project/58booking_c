@@ -28,7 +28,7 @@ public class MyPageService {
 		paramMap.put("customerId", customerId);
 		paramMap.put("priceState", priceState);
 		
-		return myPageMapper.pointCnt(paramMap);
+		return myPageMapper.payCnt(paramMap);
 	}
 	
 	// 예약 + 충전 관련 페이 리스트
