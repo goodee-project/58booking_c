@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import goodee.gdj58.booking_c.mapper.booking.BookingMapper;
 import goodee.gdj58.booking_c.mapper.myPage.MyPageMapper;
+import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.PaySaveHistory;
 import goodee.gdj58.booking_c.vo.Report;
 
@@ -17,11 +17,11 @@ import goodee.gdj58.booking_c.vo.Report;
 @Transactional
 public class MyPageService {
 	@Autowired private MyPageMapper myPageMapper;
-	// 페이 충전 + 예약 취소
-	public int insertPay(PaySaveHistory paySaveHistory) {
-		return myPageMapper.insertPay(paySaveHistory);
-	}
 	
+	// 회원 탈퇴
+	public int deactiveCustomer(Customer customer) {
+		return myPageMapper.deactiveCustomer(customer);	}
+
 	// 페이징용 페이 리스트 데이터 개수
 	public int payCnt(String customerId, String priceState) {
 		Map<String, Object> paramMap = new HashMap<String, Object>();

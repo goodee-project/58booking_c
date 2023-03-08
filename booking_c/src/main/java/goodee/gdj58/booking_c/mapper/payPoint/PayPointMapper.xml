@@ -9,7 +9,7 @@
 		WHERE customer_id = #{customerId}
 	</update>
 
-	<!-- 예약 취소 후 사용 페이 되돌려받음 -->
+	<!-- 페이 적립 내역에 추가 -->
 	<insert id="insertPay" parameterType="goodee.gdj58.booking_c.vo.PaySaveHistory">
 		INSERT pay_save_history(
 			pay_save_history_category

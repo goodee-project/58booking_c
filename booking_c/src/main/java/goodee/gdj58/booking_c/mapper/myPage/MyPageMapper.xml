@@ -2,19 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.booking_c.mapper.myPage.MyPageMapper">
 	<!-- 회원 탈퇴 -->
+	<update id="deactiveCustomer" parameterType="goodee.gdj58.booking_c.vo.Customer">
+		UPDATE total_id ti INNER JOIN customer c
+		ON ti.id = c.customer_id
+		SET ti.total_id_active = '비활성화', ti.total_id_deactive_memo = '회원탈퇴', ti.total_id_deactive_date = CURDATE()
+		WHERE id = #{customerId} AND c.customer_pw = PASSWORD(#{customerPw})
+	</update>
 
-	<!-- 페이 충전 + 예약 취소  -->
-	<insert id="insertPay" parameterType="goodee.gdj58.booking_c.vo.PaySaveHistory">
-		INSERT pay_save_history(
-			pay_save_history_category
-			, customer_id
-			, price
-		) VALUES (
-			#{paySaveHistoryCategory}
-			, #{customerId}
-			, #{price}
-		)
-	</insert>
 	<!-- 페이징용 페이 리스트 데이터 개수 -->
 	<select id="payCnt" resultType="int" parameterType="map">
 		SELECT

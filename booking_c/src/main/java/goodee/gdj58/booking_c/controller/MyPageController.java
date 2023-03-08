@@ -11,9 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import goodee.gdj58.booking_c.service.BookingService;
 import goodee.gdj58.booking_c.service.MyPageService;
+import goodee.gdj58.booking_c.service.PayPointService;
 import goodee.gdj58.booking_c.util.FontColor;
 import goodee.gdj58.booking_c.vo.Booking;
 import goodee.gdj58.booking_c.vo.BookingCancel;
@@ -28,6 +30,40 @@ import lombok.extern.slf4j.Slf4j;
 public class MyPageController {
 	@Autowired MyPageService myPageService;
 	@Autowired BookingService bookingService;
+	@Autowired PayPointService payPointService;
+	
+	// 회원 탈퇴
+	@GetMapping("/customer/myPage/deactiveCustomer")
+	public String deactiveCustomer(HttpSession session, Model model) {
+		
+		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		
+		// 디버깅
+		// log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
+		
+		// 테스트용
+		String customerId = "cus1";
+		
+		Map<String, Object> customerOne = myPageService.customerOne(customerId);
+		
+		// 데이터 담아서 view에서 출력
+		model.addAttribute("customerOne", customerOne);
+		
+		return "customer/myPage/deactiveCustomer";
+	}
+	
+	@PostMapping("/customer/myPage/deactiveCustomer")
+	public String deactiveCustomer(RedirectAttributes redirectAttr, Customer customer) {
+
+		int row = myPageService.deactiveCustomer(customer);
+		if(row == 0) {
+			log.debug(FontColor.YELLOW + "회원 탈퇴 실패");
+			redirectAttr.addFlashAttribute("msg", "탈퇴에 실패했습니다");
+			return "redirect:/customer/myPage/deactiveCustomer";
+		}
+		
+		return "redirect:/customer/loginCustomer"; // 메인화면으로 이동
+	}
 	
 	// 예약 취소 상태 변경
 	@PostMapping("/customer/booking/updateBooking")
@@ -67,7 +103,7 @@ public class MyPageController {
 	
 	// 페이 충전
 	@PostMapping("/customer/pay/insertPay")
-	public String insertPay(HttpSession session, PaySaveHistory paySaveHistory) {
+	public String insertPay(HttpSession session, RedirectAttributes redirectAttr, PaySaveHistory paySaveHistory) {
 		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 디버깅
@@ -79,9 +115,11 @@ public class MyPageController {
 		paySaveHistory.setPaySaveHistoryCategory("충전");
 		paySaveHistory.setCustomerId(customerId);
 		
-		int row = myPageService.insertPay(paySaveHistory);
+		int row = payPointService.insertPay(paySaveHistory);
 		if(row == 0) {
 			log.debug(FontColor.YELLOW + "페이 충전 실패");
+			redirectAttr.addFlashAttribute("msg", "페이 충전에 실패했습니다");
+			return "redirect:/customer/myPage/deactiveCustomer";
 		}
 		
 		log.debug(FontColor.YELLOW + "페이 충전 성공");
