@@ -7,6 +7,8 @@
 <title></title>
 </head>
 <body>
+	<!-- 임시메뉴 -->
+    <jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 	<h2>TEST</h2>
 </body>
 </html>
