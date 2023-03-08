@@ -8,6 +8,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 <body>
+	<!-- 임시메뉴 -->
+    <jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 	<h2>아이디 찾기</h2>
 	<table border="1">
 		<tr>
