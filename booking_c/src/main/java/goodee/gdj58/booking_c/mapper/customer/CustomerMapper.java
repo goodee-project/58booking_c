@@ -16,6 +16,8 @@ public interface CustomerMapper {
 	int selectCustomerPw(Customer customer);
 	// 고객 아이디 찾기
 	String selectCustomerId(Customer customer);
+	// 고객 아이디/비밀번호 찾기시 이메일 조회
+	int selectCustomerEmail(Customer customer);
 	// 고객 로그인
 	Customer selectCustomer(Customer customer);
 	// 고객 회원가입(토탈ID)

@@ -103,6 +103,7 @@
 				<a href="index.html"><img src="${pageContext.request.contextPath}/resources/img/logo_sticky.svg" width="155" height="36" alt="" class="logo_sticky"></a>
 			</figure>
 			<form autocomplete="off" method="post" action="${pageContext.request.contextPath}/log/addCustomer" enctype="multipart/form-data" id="addForm">
+				<input type="hidden" id="email" name="customerEmail">	
 				<div class="form-group">
 					<label>ID중복검사</label>
 					<input class="form-control" type="text" id="checkId" placeholder="사용할ID를 입력해주세요.">
@@ -152,7 +153,16 @@
 				</div>
 				<div class="form-group">
 					<label>이메일주소</label>
-					<input class="form-control" type="text" name="customerEmail" id="email">
+					<input class="form-control" type="text" name="customerEmail" id="email1">
+					<span>@</span>
+					<select id="email2" name="customerEmail2">
+						<option value="gmail.com">gmail.com</option>
+						<option value="naver.com">naver.com</option>
+						<option value="daum.net">daum.net</option>
+						<option value="hanmail.net">hanmail.net</option>
+						<option value="nate.com">nate.com</option>
+						<option value="test.com">test.com</option>
+					</select>
 					<button type="button" id="emailCkBtn" class="btn_1 outline">인증번호 발송</button>
 					<div id="emailSendMsg"></div>
 					<i class="ti-user"></i>
@@ -241,34 +251,45 @@
 	// 이메일 인증
 	var code = ''; // 인증번호를 담을 변수
 	$('#emailCkBtn').click(function() {
-		$('#emailSendMsg').text('인증번호가 전송되었습니다.');
-		$('#codeCk').attr('disabled',false); // 인증번호 입력 활성화
-		$('#codeCkBtn').attr('disabled',false); // 인증확인 버튼 활성화
-		$('#email').attr('disabled',true); // 중복 전송 방지위한 비활성화 + 인증완료 시 수정 방지
-		$('#emailCkBtn').attr('disabled',true); // 중복 전송 방지위한 비활성화
-		
-		$.ajax({
-			// console.log('ajax');
-			url:'emailCk'
-			, type:'get'
-			, data:{customerEmail:$('#email').val()}
-			, success:function(model) {
-				code = model;
-				// console.log(code);
-			}			
-		});
+		if($('#email1').val() == ''){ // 이메일 유효성 확인
+			alert('이메일을 입력해주세요.');
+		} else {
+			$('#emailCkBtn').attr('disabled',true); // 중복 전송 방지위한 비활성화
+			
+			$.ajax({
+				url:'emailCk'
+				, type:'get'
+				, data:{customerEmail1:$('#email1').val(), customerEmail2:$('#email2').val()}
+				, success:function(model) {
+					code = model;
+					console.log(code);
+					
+					if(code == 'fail'){
+						alert('인증번호 전송에 실패하였습니다. 입력한 이메일을 확인해주세요.');
+						$('#email').attr('disabled',false); // 입력 재활성화
+						$('#emailCkBtn').attr('disabled',false); // 버튼 재활성화
+					} else {
+						alert('인증번호가 전송되었습니다. 전송된 인증번호를 입력해주세요.');
+						$('#codeCk').attr('disabled',false); // 인증번호 입력 활성화
+						$('#codeCkBtn').attr('disabled',false); // 인증확인 버튼 활성화
+						$('#email').attr('value', $('#email1').val()+'@'+$('#email2').val());
+					}
+				}			
+			});
+		}
 	});
 	
 	// 인증번호 비교
 	var ckResult = false; // 이메일 인증 성공 여부를 담을 변수 (false : 인증실패, true : 인증성공)
 	$('#codeCkBtn').click(function() {
 		if($('#codeCk').val() == code){ // 인증번호 일치 시
-			$('#email').attr('disabled',true); // 중복 전송 방지위한 비활성화 + 인증완료 시 수정 방지
+			$('#email1').attr('readonly',true);
+			$('#email2').attr('readonly',true);
 			$('#emailCkBtn').attr('disabled',true); // 중복 전송 방지위한 비활성화
-			$('#codeCk').attr('disabled',true); // 인증번호 입력 활성화
 			$('#codeCkBtn').attr('disabled',true); // 중복 인증 방지위한 버튼 비활성화
 			alert('이메일 인증에 성공하였습니다.');
 			ckResult = true;
+			console.log(ckResult);
 		} else { // 인증번호 실패 시
 			alert('이메일 인증에 실패하였습니다.\n인증번호를 확인해주세요.');
 		}

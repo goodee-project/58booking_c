@@ -26,6 +26,11 @@ public class CustomerService {
 		return customerMapper.selectCustomerId(customer);
 	}
 	
+	// 아이디/패스워드 찾기 시 이메일 조회
+	public int getCustomerEmail(Customer customer) {
+		return customerMapper.selectCustomerEmail(customer);
+	}
+	
 	// 고객 로그인
 	public Customer loginCustomer(Customer customer) {
 		return customerMapper.selectCustomer(customer);

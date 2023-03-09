@@ -27,10 +27,11 @@
 					<option value="daum.net">daum.net</option>
 					<option value="hanmail.net">hanmail.net</option>
 					<option value="nate.com">nate.com</option>
+					<option value="test.com">test.com</option>
 				</select>
 				<button type="button" id="emailCkBtn">인증번호 발송</button>
-				<div id="emailMsg" style="color: red;"></div>
-				<div id="emailSendMsg" style="color: blue;"></div>
+				<div id="emailMsg"></div>
+				<div id="emailSendMsg"></div>
 			</td>
 		</tr>
 		<tr>
@@ -72,7 +73,7 @@
 					$.ajax({
 						url:'emailCk'
 						, type:'get'
-						, data:{companyEmail1:$('#email1').val(), companyEmail2:$('#email2').val(), companyCeo:$('#name').val()}
+						, data:{customerEmail1:$('#email1').val(), customerEmail2:$('#email2').val(), customnerName:$('#name').val()}
 						, success:function(model) {
 							code = model;
 							console.log(code);
@@ -118,7 +119,7 @@
 						
 						// 이메일 인증 성공 시 이메일과 이름으로 아이디 조회
 						$.ajax({
-							url:'findCompanyId'
+							url:'findCustomerId'
 							, type:'post'
 							, data:{companyEmail:email1+'@'+email2, companyCeo:name}
 							, success:function(model) {

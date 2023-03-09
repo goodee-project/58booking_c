@@ -6,7 +6,22 @@
 	<select id="selectCustomerId" parameterType="goodee.gdj58.booking_c.vo.Customer" resultType="java.lang.String">
 		SELECT customer_id customerId
 		FROM customer
-		WHERE customer_email=#{customerEmail} AND customer_name=#{customerName};
+		WHERE customer_email=#{customerEmail} AND customer_name=#{customerName}
+	</select>
+	
+	<!-- 이메일 조회 -->
+	<select id="selectCustomerEmail" parameterType="goodee.gdj58.booking_c.vo.Customer" resultType="int">
+		SELECT COUNT(customer_email) cnt
+		FROM customer
+		WHERE customer_email=#{customerEmail}
+		<choose>
+			<when test="customerId != null and customerName == null">
+				AND customer_id=#{customerId}
+			</when> 
+			<when test="customerName != null and customerId = null">
+				AND customer_name=#{customerName}
+			</when>
+		</choose>
 	</select>
 	
 	<!-- 고객 로그인 -->
