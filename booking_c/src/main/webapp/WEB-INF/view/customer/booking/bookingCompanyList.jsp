@@ -18,7 +18,9 @@
 				<a href="index.html">
 					<img src="${pageContext.request.contextPath}/resources/img/logo.svg" width="150" height="36" alt="" class="logo_normal">
 					<img src="${pageContext.request.contextPath}/resources/img/logo_sticky.svg" width="150" height="36" alt="" class="logo_sticky">
-				</a>
+				</a><br>
+				<!-- 임시메뉴 -->
+				<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 			</div>
 			<ul id="top_menu">
 				<li><a href="cart-1.html" class="cart-menu-btn" title="Cart"><strong>4</strong></a></li>
@@ -91,6 +93,7 @@
 			</div>
 			<!-- End Map -->
 	
+			<!-- 예약업체 검색 -->
 			<div class="container margin_60_35">
 				<div class="col-lg-12">
 					<div class="row g-0 custom-search-input-2 inner">
@@ -120,6 +123,7 @@
 					<!-- /row -->
 				</div>
 				
+				<!-- 예약업체 리스트 -->
 				<c:forEach var="bkc" items="${bookingCompanyList }">
 					<!-- /custom-search-input-2 -->
 					<div class="isotope-wrapper">
@@ -134,19 +138,19 @@
 								<div class="col-lg-7">
 									<div class="wrapper">
 										<a href="#0" class="wish_bt"></a>
-										<h3><a href="restaurant-detail.html">${bkc.bkcName }</a></h3>
+										<h3><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailHome?bkcId=${bkc.bkcId}&bkciLevel=${bkc.bkciLevel}">${bkc.bkcName }</a></h3>
 										<p>
 											Business Status : ${bkc.bkcRunning}<br>
 											Open Time : ${bkc.bkcOpen }<br>
 											Close Time : ${bkc.bkcClose}<br>
 											Category : ${bkc.bkcdType }<br>
-											Addtional Service : ${bkc.bkcdAddService }<br>
+											Additional Service : ${bkc.bkcdAddService }<br>
 											<span class="price">Star Rating : <strong> ${bkc.rvRating }</strong> /5</span><br>
 										</p>
 										<table style="text-align:center">
 											<tr>
-												<td>Review Picture</td>
-												<td>Review Comment</td>
+												<th>Review Picture</th>
+												<th style="width:500px">Review Comment</th>
 											</tr>
 											<tr>
 												<td><img src="${pageContext.request.contextPath}/resources/img/testPic.png" class="img-fluid"  width="100" height="100"></td>
@@ -160,6 +164,27 @@
 						</div>
 					</div>
 				</c:forEach>
+							
+				<!-- 페이징 -->
+				<div style="text-align:center">
+					<c:if test="${currentPage == 1}">
+						<span>[처음으로]</span>
+						<span>[이전페이지]</span>
+					</c:if>
+					<c:if test="${currentPage > 1}">
+						<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=1&searchWord=${searchWord}&optionWord=${optionWord}">[처음으로]</a>
+						<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=${currentPage-1}&searchWord=${searchWord}&optionWord=${optionWord}">[이전 페이지]</a>
+					</c:if>
+						<span>[ ${currentPage } ]</span>
+					<c:if test="${currentPage == lastPage}">
+						<span>[다음페이지]</span>
+						<span>[마지막으로]</span>
+					</c:if>
+					<c:if test="${currentPage < lastPage}">
+						<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=${currentPage+1}&searchWord=${searchWord}&optionWord=${optionWord}">[다음 페이지]</a>
+						<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=${lastPage}&searchWord=${searchWord}&optionWord=${optionWord}">[끝으로]</a>
+					</c:if>
+				</div>
 			</div>
 			
 			
@@ -304,96 +329,5 @@
 	<jsp:include page="/WEB-INF/view/customer/booking/inc/footerCore.jsp"></jsp:include>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<!-- 임시메뉴 -->
-	<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
-
-	<h1>예약 업체 리스트</h1>
-	<!-- 검색창 -->
-	<span>예약 업체 검색</span>
-	<form action="${pageContext.request.contextPath }/customer/booking/bookingCompanyList" method="get">
-		<select name="optionWord">
-			<option value="">==옵션선택==</option>
-			<option value="주차가능">주차가능</option>
-			<option value="제로페이">제로페이</option>
-			<option value="포장">포장</option>
-			<option value="배달">배달</option>
-			<option value="단체석">단체석</option>
-		</select>
-		
-		<input type="text" name="searchWord" value=${searchWord }>
-		<button type="submit"> 검색 </button><br><br>
-	</form>
-
-	
-	<!-- 광고 -->
-	<a href="">광고</a><br><br>
-	
-	<!-- 예약업체 리스트 -->
-	<table border=1>
-		<c:forEach var="bkc" items="${bookingCompanyList }">
-		
-			<tr>
-				<td rowspan="4">${bkc.bkciOrigin }</td><!-- bkc=예약업체, 대표 사진 -->
-				<td colspan="2"><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailHome?bkcId=${bkc.bkcId}&bkciLevel=${bkc.bkciLevel}">${bkc.bkcName }</a></td>
-				<td rowspan="2">${bkc.bkcOpen }</td><!-- 오픈시간 -->
-			</tr>
-			<tr>
-				<td>${bkc.bkcdType }</td><!-- 업종 -->
-				<td>${bkc.bkcdAddService }</td><!-- 부가서비스 -->
-			</tr>
-			<tr>
-				<td colspan="2">별점 : ${bkc.rvRating }</td><!-- 별점 -->
-				<td rowspan="2">${bkc.rviOrigin }</td><!-- 리뷰사진 -->
-			</tr>
-			<tr>
-				<td colspan="2">${bkc.rvMemo }</td><!-- 리뷰메모 -->
-			</tr>
-		</c:forEach>
-	</table>
-	
-	
-	<!-- 페이징 -->
-	<div>
-		<c:if test="${currentPage == 1}">
-			<span>처음으로</span>
-			<span>이전페이지</span>
-		</c:if>
-		<c:if test="${currentPage > 1}">
-			<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=1&searchWord=${searchWord}&optionWord=${optionWord}">[처음으로]</a>
-			<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=${currentPage-1}&searchWord=${searchWord}&optionWord=${optionWord}">[이전 페이지]</a>
-		</c:if>
-			<span>${currentPage }</span>
-		<c:if test="${currentPage == lastPage}">
-			<span>다음페이지</span>
-			<span>마지막으로</span>
-		</c:if>
-		<c:if test="${currentPage < lastPage}">
-			<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=${currentPage+1}&searchWord=${searchWord}&optionWord=${optionWord}">[다음 페이지]</a>
-			<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList?currentPage=${lastPage}&searchWord=${searchWord}&optionWord=${optionWord}">[끝으로]</a>
-		</c:if>
-	</div>
 </body>
 </html>
