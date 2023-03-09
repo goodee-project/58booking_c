@@ -8,6 +8,8 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 		<script>
 			$(document).ready(function() {
+				alert('css중입니다');
+				
 				var msg = "<c:out value='${msg}'/>";
 				if(msg != '') {
 					alert(msg);
@@ -47,7 +49,7 @@
 						<th colspan="2">페이 환불</th>
 					</tr>
 					<tr>
-						<td colspan="2">보유 페이 : ${customerOne.customerPay}</td>
+						<td colspan="2"><input type="text" id="price" name="price" value="${customerOne.customerPay}"></td>
 					</tr>
 					<tr>
 						<th>은행</th>

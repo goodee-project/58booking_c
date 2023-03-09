@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.booking_c.mapper.myPage.MyPageMapper;
+import goodee.gdj58.booking_c.mapper.payPoint.PayPointMapper;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.PaySaveHistory;
 import goodee.gdj58.booking_c.vo.Report;
@@ -17,10 +18,22 @@ import goodee.gdj58.booking_c.vo.Report;
 @Transactional
 public class MyPageService {
 	@Autowired private MyPageMapper myPageMapper;
+	@Autowired private PayPointMapper payPointMapper;
 	
 	// 회원 탈퇴
-	public int deactiveCustomer(Customer customer) {
-		return myPageMapper.deactiveCustomer(customer);	}
+	public int deactiveCustomer(Customer customer, PaySaveHistory paySaveHistory) {
+		int row = 0;
+		int row2 = 0;
+		int row3 = 0;
+		row = payPointMapper.usePay(paySaveHistory);
+		if (row == 1) {
+			row2 = myPageMapper.updatePay(paySaveHistory);
+			if(row2 == 1) {
+				row3 = myPageMapper.deactiveCustomer(customer);
+			}
+		}
+		return row3;	
+	}
 
 	// 페이징용 페이 리스트 데이터 개수
 	public int payCnt(String customerId, String priceState) {

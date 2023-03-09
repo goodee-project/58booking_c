@@ -36,15 +36,12 @@ public class MyPageController {
 	@GetMapping("/customer/myPage/deactiveCustomer")
 	public String deactiveCustomer(HttpSession session, Model model) {
 		
-		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 디버깅
-		// log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
+		log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
 		
-		// 테스트용
-		String customerId = "cus1";
-		
-		Map<String, Object> customerOne = myPageService.customerOne(customerId);
+		Map<String, Object> customerOne = myPageService.customerOne(customer.getCustomerId());
 		
 		// 데이터 담아서 view에서 출력
 		model.addAttribute("customerOne", customerOne);
@@ -53,41 +50,38 @@ public class MyPageController {
 	}
 	
 	@PostMapping("/customer/myPage/deactiveCustomer")
-	public String deactiveCustomer(RedirectAttributes redirectAttr, Customer customer) {
+	public String deactiveCustomer(RedirectAttributes redirectAttr, Customer customer, PaySaveHistory paySaveHistory) {
 
-		int row = myPageService.deactiveCustomer(customer);
+		int row = myPageService.deactiveCustomer(customer, paySaveHistory);
 		if(row == 0) {
 			log.debug(FontColor.YELLOW + "회원 탈퇴 실패");
 			redirectAttr.addFlashAttribute("msg", "탈퇴에 실패했습니다");
 			return "redirect:/customer/myPage/deactiveCustomer";
 		}
 		
-		return "redirect:/customer/loginCustomer"; // 메인화면으로 이동
+		return "redirect:/log/loginCustomer"; // 메인화면으로 이동
 	}
 	
 	// 예약 취소 상태 변경
 	@PostMapping("/customer/booking/updateBooking")
 	public String bookingCancel(HttpSession session, Booking booking, BookingCancel bookingCancel) {
-		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 디버깅
-		// log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
+		log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
 		
-		// 테스트용
-		String customerId = "cus1";
-		
-		booking.setCustomerId(customerId);
+		booking.setCustomerId(customer.getCustomerId());
 		
 		PointSaveHistory pointSaveHistory = new PointSaveHistory();
 		pointSaveHistory.setPointSaveHistoryCategory("예약취소");
 		pointSaveHistory.setPointSaveHistoryContent(booking.getBookingNo());
-		pointSaveHistory.setCustomerId(customerId);
+		pointSaveHistory.setCustomerId(customer.getCustomerId());
 		pointSaveHistory.setPoint(booking.getUsePoint());
 		
 		PaySaveHistory paySaveHistory = new PaySaveHistory();
 		paySaveHistory.setPaySaveHistoryCategory("예약취소");
 		paySaveHistory.setPaySaveHistoryContent(booking.getBookingNo());
-		paySaveHistory.setCustomerId(customerId);
+		paySaveHistory.setCustomerId(customer.getCustomerId());
 		paySaveHistory.setPrice(booking.getTotalPrice());
 		
 		// 예약 취소
@@ -104,16 +98,14 @@ public class MyPageController {
 	// 페이 충전
 	@PostMapping("/customer/pay/insertPay")
 	public String insertPay(HttpSession session, RedirectAttributes redirectAttr, PaySaveHistory paySaveHistory) {
-		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 디버깅
-		// log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
+		log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
 		log.debug(FontColor.YELLOW + "content : " + paySaveHistory.getPaySaveHistoryContent());
-		// 테스트용
-		String customerId = "cus1";
-		
+
 		paySaveHistory.setPaySaveHistoryCategory("충전");
-		paySaveHistory.setCustomerId(customerId);
+		paySaveHistory.setCustomerId(customer.getCustomerId());
 		
 		int row = payPointService.insertPay(paySaveHistory);
 		if(row == 0) {
@@ -135,27 +127,24 @@ public class MyPageController {
 						, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage
 						, @RequestParam(value = "rowPerPage", defaultValue = "15") int rowPerPage) {
 		
-		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 디버깅
-		// log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
+		log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
 		log.debug(FontColor.YELLOW + "priceState : " + priceState);
 		log.debug(FontColor.YELLOW + "currentPage : " + currentPage);
 		log.debug(FontColor.YELLOW + "rowPerPage : " + rowPerPage);
 		
-		// 테스트용
-		String customerId = "cus1";
-		
 		// 페이 리스트
-		List<Map<String, Object>> payList = myPageService.payList(customerId, priceState, currentPage, rowPerPage);
+		List<Map<String, Object>> payList = myPageService.payList(customer.getCustomerId(), priceState, currentPage, rowPerPage);
 		
 		// 데이터 개수
-		int payCnt = myPageService.payCnt(customerId, priceState);
+		int payCnt = myPageService.payCnt(customer.getCustomerId(), priceState);
 		
 		log.debug(FontColor.YELLOW + "payCnt : " + payCnt);
 		
 		// 현재 보유 페이
-		Map<String, Object> customerOne = myPageService.customerOne(customerId);
+		Map<String, Object> customerOne = myPageService.customerOne(customer.getCustomerId());
 		
 		// 페이징
 		int lastPage = payCnt / rowPerPage;
@@ -196,25 +185,22 @@ public class MyPageController {
 						, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage
 						, @RequestParam(value = "rowPerPage", defaultValue = "15") int rowPerPage) {
 		
-		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 디버깅
-		// log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
+		log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
 		log.debug(FontColor.YELLOW + "pointState : " + pointState);
 		log.debug(FontColor.YELLOW + "currentPage : " + currentPage);
 		log.debug(FontColor.YELLOW + "rowPerPage : " + rowPerPage);
-		
-		// 테스트용
-		String customerId = "cus1";
-		
+
 		// 포인트 리스트 
-		List<Map<String, Object>> pointList = myPageService.pointList(customerId, pointState, currentPage, rowPerPage);
+		List<Map<String, Object>> pointList = myPageService.pointList(customer.getCustomerId(), pointState, currentPage, rowPerPage);
 		
 		// 데이터 개수
-		int pointCnt = myPageService.pointCnt(customerId, pointState);
+		int pointCnt = myPageService.pointCnt(customer.getCustomerId(), pointState);
 		
 		// 사용가능 포인트
-		Map<String, Object> customerOne = myPageService.customerOne(customerId);
+		Map<String, Object> customerOne = myPageService.customerOne(customer.getCustomerId());
 		
 		// 페이징
 		int lastPage = pointCnt / rowPerPage;
@@ -254,21 +240,18 @@ public class MyPageController {
 						, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage
 						, @RequestParam(value = "rowPerPage", defaultValue = "10") int rowPerPage) {
 		
-		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 디버깅
-		// log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
+		log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
 		log.debug(FontColor.YELLOW + "currentPage : " + currentPage);
 		log.debug(FontColor.YELLOW + "rowPerPage : " + rowPerPage);
-		
-		// 테스트용
-		String customerId = "cus1";
 				
 		// 리뷰 리스트
-		List<Map<String, Object>> reviewList = myPageService.reviewList(customerId, currentPage, rowPerPage);
+		List<Map<String, Object>> reviewList = myPageService.reviewList(customer.getCustomerId(), currentPage, rowPerPage);
 		
 		// 데이터 개수
-		int reviewCnt = myPageService.reviewCnt(customerId);
+		int reviewCnt = myPageService.reviewCnt(customer.getCustomerId());
 		
 		log.debug(FontColor.YELLOW + "reviewCnt : " + reviewCnt);
 		
@@ -323,22 +306,19 @@ public class MyPageController {
 							, @RequestParam(value = "dateSort", defaultValue = "DESC") String dateSort) {
 		
 		// 고객 로그인
-		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 디버깅
-		// log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
+		log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
 		log.debug(FontColor.YELLOW + "currentPage : " + currentPage);
 		log.debug(FontColor.YELLOW + "rowPerPage : " + rowPerPage);
 		log.debug(FontColor.YELLOW + "state : " + bookingState);
 		
-		// 테스트용
-		String customerId = "cus1";
-		
 		// 예약 리스트
-		List<Map<String, Object>> bookingList = myPageService.bookingList(customerId, bookingState, dateSort, currentPage, rowPerPage);
+		List<Map<String, Object>> bookingList = myPageService.bookingList(customer.getCustomerId(), bookingState, dateSort, currentPage, rowPerPage);
 		
 		// 데이터 개수
-		int bookingCnt = myPageService.bookingCnt(customerId, bookingState);
+		int bookingCnt = myPageService.bookingCnt(customer.getCustomerId(), bookingState);
 		
 		log.debug(FontColor.YELLOW + "bookingCnt : " + bookingCnt);
 		
@@ -377,12 +357,12 @@ public class MyPageController {
 	@GetMapping("/customer/myPage/customerOne")
 	public String customerOne(Model model, HttpSession session) {
 		// 고객 로그인
-		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
-		// 테스트용
-		String customerId = "cus1";
+		// 디버깅
+		log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
 		
-		Map<String, Object> customerOne = myPageService.customerOne(customerId);
+		Map<String, Object> customerOne = myPageService.customerOne(customer.getCustomerId());
 		
 		// 데이터 담아서 view에서 출력
 		model.addAttribute("customerOne", customerOne);
@@ -394,12 +374,12 @@ public class MyPageController {
 	@GetMapping("/customer/myPage/myPageMain")
 	public String myPageMain(Model model, HttpSession session) {
 		// 고객 로그인
-		// Customer customer = (Customer)(session.getAttribute("loginCustomer"));
+		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
-		// 테스트용
-		String customerId = "cus1";
+		// 디버깅
+		log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
 		
-		Map<String, Object> customerOne = myPageService.customerOne(customerId);
+		Map<String, Object> customerOne = myPageService.customerOne(customer.getCustomerId());
 		
 		// 데이터 담아서 view에서 출력
 		model.addAttribute("customerOne", customerOne);

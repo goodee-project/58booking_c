@@ -37,48 +37,28 @@
 				$('input[name="priceBtn"]').click(function() {
 					$('#price').val($('input[name="priceBtn"]:checked').val());
 				});
+				
+				$('#payBtn').click(function() {
+					if($('#price').val() == ''
+						|| $('#cardN1').val() == ''
+						|| $('#cardN2').val() == ''
+						|| $('#cardN3').val() == ''
+						|| $('#cardN4').val() == ''
+						|| $('#MM').val() == ''
+						|| $('#YY').val() == '') {
+						alert('모든 정보를 입력해주세요.');
+						return;
+					};
+					
+					
+				});
 			});
 		</script>
 	</head>
 	<body>
 		<div class="container margin_60_35">
 			<div class="row">
-				<aside class="col-lg-3" id="sidebar">
-					<div id="filters_col">
-						<a data-bs-toggle="collapse" href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filters_col_bt">Filters </a>
-						<div class="collapse show" id="collapseFilters">
-							<div class="filter_type">
-								<h6>District</h6>
-								<ul>
-									<li>
-										<label class="container_check">All <small>(945)</small>
-								            <input type="checkbox">
-								            <span class="checkmark"></span>
-								        </label>
-									</li>
-									<li>
-										<label class="container_check">La Defanse <small>(45)</small>
-								            <input type="checkbox">
-								            <span class="checkmark"></span>
-								        </label>
-									</li>
-									<li>
-										<label class="container_check">Paris Center <small>(30)</small>
-								            <input type="checkbox">
-								            <span class="checkmark"></span>
-								        </label>
-									</li>
-									<li>
-										<label class="container_check">Latin Quartes<small>(25)</small>
-								            <input type="checkbox">
-								            <span class="checkmark"></span>
-								        </label>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</aside>
+				<jsp:include page="/WEB-INF/view/customer/myPage/inc/sidebar.jsp"></jsp:include>
 				<div class="col-lg-9" id="list_sidebar">
 					<div class="isotope-wrapper">
 						<div class="box_list isotope-item latest">
@@ -86,7 +66,8 @@
 								<div class="wrapper">
 									<div style="float: left;">
 										<h3 style="font-weight: bold;">페이 내역</h3>
-										<br>
+									</div>
+									<div style="float: right;">
 										<form action="${pageContext.request.contextPath}/customer/pay/payList" method="get" id="priceForm">
 											<input type="radio" name="priceState" class="form-check-input" value="" <c:out value="${priceState == '' ? 'checked':'' }"/>><span style="font-weight: bold;">&nbsp;&nbsp;All</span>
 											<input type="radio" name="priceState" class="form-check-input" value="+" <c:out value="${priceState == '+' ? 'checked':'' }"/>><span style="font-weight: bold;">&nbsp;&nbsp;+ Pay</span>
@@ -94,105 +75,25 @@
 										</form>
 										<br>
 									</div>
-									<div class="row" style="float: right; width: 320px;">
-										<div class="col-md-6">
-											<span style="font-weight: bold;">보유 페이 : ${customerOne.customerPay}원</span>
-										</div>
-										<div class="col-md-6">
-											<p><a href="#0" class="btn_1" data-bs-toggle="modal" data-bs-target="#exampleModal">충전하기</a></p>
-											<div class="menu_fixed modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-												<div class="modal-dialog modal-dialog-centered" role="document">
-													<div class="modal-content">
-														<div class="modal-header">
-															<h4 class="modal-title" id="exampleModalLabel" style="font-weight: bold;">pay 충전</h4>
-															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-														</div>
-														<div class="modal-body">
-															<form action="${pageContext.request.contextPath}/customer/pay/insertPay" method="post">
-																<div class="row">
-																	<div class="form-group col-md-6">
-																		<label>ID</label>
-																		<input type="text" name="customerId" value="${customerOne.customerId}" class="form-control" readonly>
-																	</div>
-																	<div class="form-group col-md-10">
-																		<label>Pay</label>
-																		<input type="text" name="price" id="price" class="form-control">
-																	</div>
-																	<div>
-																		<!-- 자주 쓰는 금액 -->
-																		<input type="radio" name="priceBtn" class="form-check-input" value="10000"><span style="font-weight: bold;">&nbsp;&nbsp;1만원</span>
-																		<input type="radio" name="priceBtn" class="form-check-input" value="20000"><span style="font-weight: bold;">&nbsp;&nbsp;2만원</span>
-																		<input type="radio" name="priceBtn" class="form-check-input" value="50000"><span style="font-weight: bold;">&nbsp;&nbsp;5만원</span>
-																		<input type="radio" name="priceBtn" class="form-check-input" value="100000"><span style="font-weight: bold;">&nbsp;&nbsp;10만원</span>
-																	</div>
-																	<br>
-																	<br>
-																	<hr>
-																	<div class="form-group col-md-12">
-																		<h5 style="font-weight: bold;">카드 정보</h5>
-																	</div>
-																	<div class="form-group col-md-5">
-																		<label style="font-weight: bold;">은행</label>
-																		<select class="form-control">
-																			<option>BC</option>
-																			<option>신한</option>
-																			<option>현대</option>
-																			<option>삼성</option>
-																			<option>롯데</option>
-																			<option>NH</option>
-																			<option>우리</option>
-																		</select>
-																	</div>
-																	<div class="form-group col-md-7"></div>
-																	<div class="form-group col-md-3">
-																		<label style="font-weight: bold;">카드번호</label>
-																		<input type="text" class="form-control" id="cardN1">
-																	</div>
-																	<div class="form-group col-md-3">
-																		<label style="font-weight: bold;">&nbsp;</label>
-																		<input type="text" class="form-control" id="cardN2">
-																	</div>
-																	<div class="form-group col-md-3">
-																		<label style="font-weight: bold;">&nbsp;</label>
-																		<input type="text" class="form-control" id="cardN3">
-																	</div>
-																	<div class="form-group col-md-3">
-																		<label style="font-weight: bold;">&nbsp;</label>
-																		<input type="password" class="form-control" id="cardN4">
-																	</div>
-																	<div class="form-group col-md-3">
-																		<label style="font-weight: bold;">유효 기간</label>
-																		<input type="text" class="form-control" placeholder="MM" id="MM">
-																	</div>
-																	<div class="form-group col-md-3">
-																		<label style="font-weight: bold;">&nbsp;</label>
-																		<input type="text" class="form-control" placeholder="YY" id="YY">
-																	</div>
-																	<div class="form-group col-md-5">
-																		<label>CVC</label>
-																		<input type="text" class="form-control" id="CVC">
-																	</div>
-																	<div class="form-group col-md-5">
-																		<label style="font-weight: bold;">비밀번호 앞 2자리</label>
-																		<input type="text" class="form-control" id="pw">
-																	</div>
-																	<div class="form-group col-md-12 add_top_20" align="right">
-																		<button type="submit" class="btn_1 outline">충전하기</button>
-																	</div>
-																</div>
-															</form>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<br>
 									<table class="table text-center">
 										<c:forEach var="p" items="${payList}">
 											<tr style="height: 55px; vertical-align: middle;">
-												<td>${p.category}</td>
-												<td>${p.price}</td>
+												<td style="width: 300px;">
+													<c:if test="${p.category eq '예약취소' || p.category eq '충전'}">
+														<span style="color: blue;">${p.category}</span>
+													</c:if>
+													<c:if test="${p.category eq '예약구매' || p.category eq '탈퇴'}">
+														<span style="color: red;">${p.category}</span>
+													</c:if>
+												</td>
+												<td style="width: 300px;">
+													<c:if test="${p.category eq '예약취소' || p.category eq '충전'}">
+														<span style="color: blue;">${p.price}</span>
+													</c:if>
+													<c:if test="${p.category eq '예약구매' || p.category eq '탈퇴'}">
+														<span style="color: red;">${p.price}</span>
+													</c:if>
+												</td>
 												<td>
 													<c:set var="createdate" value="${p.createdate}"/>
 													${fn:substring(createdate, 0, 16)}
@@ -239,6 +140,102 @@
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+				<aside class="col-lg-3" id="sidebar">
+					<div id="filters_col">
+						<div style="text-align: right;">
+							<p><a href="#0" class="btn_1" data-bs-toggle="modal" data-bs-target="#exampleModal">충전하기</a></p>
+						</div>
+						<h6 style="font-weight: bold;">보유 페이</h6>
+						<div style="text-align: right;">
+							<h5 style="font-weight: bold;">${customerOne.customerPay}원</h5>
+						</div>
+					</div>
+				</aside>
+			</div>
+		</div>
+		<div class="menu_fixed modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="exampleModalLabel" style="font-weight: bold;">pay 충전</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form action="${pageContext.request.contextPath}/customer/pay/insertPay" method="post" id="payForm">
+							<div class="row">
+								<div class="form-group col-md-6">
+									<label>ID</label>
+									<input type="text" name="customerId" value="${customerOne.customerId}" class="form-control" readonly>
+								</div>
+								<div class="form-group col-md-10">
+									<label>Pay</label>
+									<input type="text" name="price" id="price" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+								</div>
+								<div>
+									<!-- 자주 쓰는 금액 -->
+									<input type="radio" name="priceBtn" class="form-check-input" value="10000"><span style="font-weight: bold;">&nbsp;&nbsp;1만원</span>
+									<input type="radio" name="priceBtn" class="form-check-input" value="20000"><span style="font-weight: bold;">&nbsp;&nbsp;2만원</span>
+									<input type="radio" name="priceBtn" class="form-check-input" value="50000"><span style="font-weight: bold;">&nbsp;&nbsp;5만원</span>
+									<input type="radio" name="priceBtn" class="form-check-input" value="100000"><span style="font-weight: bold;">&nbsp;&nbsp;10만원</span>
+								</div>
+								<br>
+								<br>
+								<hr>
+								<div class="form-group col-md-12">
+									<h5 style="font-weight: bold;">카드 정보</h5>
+								</div>
+								<div class="form-group col-md-5">
+									<label style="font-weight: bold;">은행</label>
+									<select class="form-control">
+										<option>BC</option>
+										<option>신한</option>
+										<option>현대</option>
+										<option>삼성</option>
+										<option>롯데</option>
+										<option>NH</option>
+										<option>우리</option>
+									</select>
+								</div>
+								<div class="form-group col-md-7"></div>
+								<div class="form-group col-md-3">
+									<label style="font-weight: bold;">카드 번호</label>
+									<input type="text" class="form-control" id="cardN1" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+								</div>
+								<div class="form-group col-md-3">
+									<label style="font-weight: bold;">&nbsp;</label>
+									<input type="text" class="form-control" id="cardN2" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+								</div>
+								<div class="form-group col-md-3">
+									<label style="font-weight: bold;">&nbsp;</label>
+									<input type="text" class="form-control" id="cardN3" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+								</div>
+								<div class="form-group col-md-3">
+									<label style="font-weight: bold;">&nbsp;</label>
+									<input type="password" class="form-control" id="cardN4" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+								</div>
+								<div class="form-group col-md-3">
+									<label style="font-weight: bold;">유효 기간</label>
+									<input type="text" class="form-control" placeholder="MM" id="MM" maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+								</div>
+								<div class="form-group col-md-3">
+									<label style="font-weight: bold;">&nbsp;</label>
+									<input type="text" class="form-control" placeholder="YY" id="YY" maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+								</div>
+								<div class="form-group col-md-5">
+									<label>CVC</label>
+									<input type="text" class="form-control" id="CVC" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+								</div>
+								<div class="form-group col-md-5">
+									<label style="font-weight: bold;">비밀번호 앞 2자리</label>
+									<input type="password" class="form-control" id="pw" maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+								</div>
+								<div class="form-group col-md-12 add_top_20" align="right">
+									<button type="button" class="btn_1 outline" id="payBtn">충전하기</button>
+								</div>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>

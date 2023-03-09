@@ -11,6 +11,7 @@ import goodee.gdj58.booking_c.vo.Report;
 
 @Mapper
 public interface MyPageMapper {
+	int updatePay(PaySaveHistory paySaveHistory); // 회원 탈퇴 시 보유 페이 0
 	int deactiveCustomer(Customer customer); // 회원 탈퇴
 	int payCnt(Map<String, Object> paramMap); // 페이징용 페이 리스트 데이터 개수
 	List<Map<String, Object>> payList(Map<String, Object> paramMap); // 예약 + 충전 관련 페이 리스트

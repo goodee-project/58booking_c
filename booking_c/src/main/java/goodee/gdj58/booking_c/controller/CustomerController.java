@@ -63,7 +63,8 @@ public class CustomerController {
 		
 		session.setAttribute("loginCustomer", loginCustomer);
 		
-		return "redirect:/customer/booking/bookingCompanyList";
+		// return "redirect:/customer/booking/bookingCompanyList";
+		return "/customer/index";
 	}
 	
 	// 고객 회원가입

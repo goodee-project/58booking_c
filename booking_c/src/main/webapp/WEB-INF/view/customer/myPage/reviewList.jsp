@@ -4,7 +4,22 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Panagea - Premium site template for travel agencies, hotels and restaurant listing.">
+		<meta name="author" content="Ansonika">
+		<title>마이페이지 | 리뷰 내역</title>
+		<link rel="shortcut icon" href="../../resources/img/favicon.ico" type="image/x-icon">
+	    <link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
+	    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
+	    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
+	    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
+	    <link rel="preconnect" href="https://fonts.gstatic.com">
+	    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	    <link href="../../resources/css/bootstrap.min.css" rel="stylesheet">
+	    <link href="../../resources/css/style.css" rel="stylesheet">
+		<link href="../../resources/css/vendors.css" rel="stylesheet">
+	    <link href="../../resources/css/blog.css" rel="stylesheet">
+	    <link href="../../resources/css/custom.css" rel="stylesheet">
 	</head>
 	<body>
 		<table border="1">
@@ -34,43 +49,44 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<div>
-			<!-- 부트스탧 적용 전 -->
-			<!-- 현재 페이지에 따른 처음 버튼 활성화 -->
-			<c:if test="${currentPage == 1}">
-				처음 불가
-			</c:if>
-			<c:if test="${currentPage != 1}">
-				처음 가능
-			</c:if>
-					
-			<!-- 현재 페이지에 따른 이전 버튼 활성화 -->
-			<c:if test="${prev == false}">
-				이전 비활성화
-			</c:if>
-			<c:if test="${prev == true}">
-				이전 활성화
-			</c:if>
-					
-			<c:forEach var="e" begin="${startPage}" end="${endPage}" step="1">
-				${e}
-			</c:forEach>
-					
-			<!-- 현재 페이지에 따른 다음 버튼 활성화 -->
-			<c:if test="${next == false}">
-				다음 비활성화
-			</c:if>
-			<c:if test="${next == true}">
-				다음 활성화	
-			</c:if>
-					
-			<!-- 현재 페이지에 따른 마지막 버튼 활성화 -->
-			<c:if test="${currentPage == lastPage}">
-				마지막 비활성화
-			</c:if>
-			<c:if test="${currentPage != lastPage}">
-				마지막 활성화
-			</c:if>
+		<div class="container margin_60_35">
+			<div class="row">
+				<div class="col-lg-8">
+					<section id="description">
+						<c:forEach var="r" items="${reviewList}">
+							<div class="room_type gray">
+								<div class="row">
+									<div class="col-md-4">
+										<img src="${pageContext.request.contextPath}/upload/${r.reviewImgOriginName}" class="img-fluid" alt="">
+									</div>
+									<div class="col-md-8">
+										<h4>${r.companyName}&nbsp;&nbsp;|&nbsp;&nbsp;${r.productName}</h4>
+										<div class="rating">
+											<i class="icon_star voted"></i>
+											<i class="icon_star voted"></i>
+											<i class="icon_star voted"></i>
+											<i class="icon_star voted"></i>
+											<i class="icon_star"></i>
+										</div>
+										<div class="rev-info">
+											${r.customerId}&nbsp;&nbsp;|&nbsp;&nbsp;${r.createdate}
+										</div>
+										<br>
+										<p>${r.reviewMemo}</p>
+										<ul class="hotel_facilities">
+											<li><img src="img/hotel_facilites_icon_3.svg" alt="">Double Bed</li>
+											<li><img src="img/hotel_facilites_icon_4.svg" alt="">Free Wifi</li>
+											<li><img src="img/hotel_facilites_icon_6.svg" alt="">Bathtub</li>
+											<li><img src="img/hotel_facilites_icon_7.svg" alt="">Air Condition</li>
+											<li><img src="img/hotel_facilites_icon_8.svg" alt="">Hairdryer</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</section>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

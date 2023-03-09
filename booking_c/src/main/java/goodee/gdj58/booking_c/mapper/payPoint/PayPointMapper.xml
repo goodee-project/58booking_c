@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="goodee.gdj58.booking_c.mapper.payPoint.PayPointMapper">
+	<!-- 탈퇴 시 페이 사용 내역에 추가 -->
+	<insert id="usePay" parameterType="goodee.gdj58.booking_c.vo.PaySaveHistory">
+		INSERT pay_use_history(
+			pay_use_history_category
+			, customer_id
+			, price
+		) VALUES (
+			'탈퇴'
+			, #{customerId}
+			, #{price}
+		)
+	</insert>
+	
 	<!-- 현재 보유 페이 + 돌려받은 페이 -->
 	<update id="updatePay" parameterType="goodee.gdj58.booking_c.vo.PaySaveHistory">
 		UPDATE customer
