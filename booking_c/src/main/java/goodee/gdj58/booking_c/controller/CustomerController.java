@@ -148,8 +148,14 @@ public class CustomerController {
 		return "/customer/loginCustomer";
 	}
 	
+	//예약기간 선택 페이지
+	@GetMapping("/customer/booking/selectBookingTime")
+	public String selectBookingTime()
+	{
+		return "customer/booking/templatTest";
+	}
 	
-	//예약업체 세부사항 공통 + 리뷰 내용
+	//예약업체 세부사항 공통 + 지도 내용
 	@GetMapping("/customer/booking/bookingCompanyDetailMap")
 	public String bookingCompanyDetailMap(Model model
 			, @RequestParam(value = "bkcId") String bkcId

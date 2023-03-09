@@ -19,7 +19,7 @@
 			<tr>
 				<td rowspan="2">예약상품사진 : ${bkc.bkpiOrigin}</td>
 				<td>상품명 : ${bkc.bkpName}</td>
-				<td rowspan="2"><a href="">예약</a></td>
+				<td rowspan="2"><a href="${pageContext.request.contextPath }/customer/booking/selectBookingTime">예약</a></td>
 			</tr>
 			<tr>
 				<td>가격 : ${bkc.bkpPrice}</td>
