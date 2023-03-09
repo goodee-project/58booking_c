@@ -2,10 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.booking_c.mapper.customer.IdMapper">
 	<select id="selectIdCheck" parameterType="java.lang.String" resultType="java.lang.String">
-		SELECT t.id
-		FROM	(SELECT customer_id id FROM customer
-				UNION ALL 
-				SELECT id FROM total_id) t
-		WHERE t.id = #{id};
+		SELECT id
+		FROM total_id
+		WHERE id = #{id}
 	</select>
 </mapper>

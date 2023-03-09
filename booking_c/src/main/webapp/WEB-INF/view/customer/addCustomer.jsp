@@ -94,7 +94,7 @@
 				</div>
 				<div class="form-group">
 					<label>이메일주소</label>
-					<input class="form-control" type="text" name="customerEmail" id="email1">
+					<input type="text" name="customerEmail" id="email1">
 					<span>@</span>
 					<select id="email2" name="customerEmail2">
 						<option value="gmail.com">gmail.com</option>
@@ -104,14 +104,13 @@
 						<option value="nate.com">nate.com</option>
 						<option value="test.com">test.com</option>
 					</select>
-					<button type="button" id="emailCkBtn" class="btn_1 outline">인증번호 발송</button>
+					<button type="button" id="emailCkBtn" class="btn btn-primary btn-sm">인증번호 발송</button>
 					<div id="emailSendMsg"></div>
-					<i class="ti-user"></i>
 				</div>
 				<div class="form-group">
 					<label>인증번호</label>
 					<input class="form-control" type="text" id="codeCk" name="" placeholder="인증번호를 입력해주세요." disabled>
-					<button type="button" id="codeCkBtn" disabled>인증번호 확인</button>
+					<button type="button" id="codeCkBtn" class="btn btn-primary btn-sm" disabled>인증번호 확인</button>
 					<div id="emailResultMsg"></div>
 					<i class="icon_lock_alt"></i>
 				</div>
