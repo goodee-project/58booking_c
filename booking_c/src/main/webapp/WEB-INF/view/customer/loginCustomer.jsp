@@ -81,7 +81,7 @@
 					</div>
 					<div class="float-end mt-1"><a id="forgot" href="javascript:void(0);">패스워드찾기</a></div>
 				</div>
-				<button type="button" class="btn_1 rounded full-width">로그인</button>
+				<button type="button" class="btn_1 rounded full-width" id="loginBtn">로그인</button>
 				<div class="text-center add_top_10">처음이신가요? <strong><a href="${pageContext.request.contextPath}/log/addCustomer">회원가입</a></strong></div>
 			</form>
 			<div class="copy">© Panagea</div>
@@ -95,29 +95,4 @@
 	<script src="${pageContext.request.contextPath}/resources/phpmailer/validate.js"></script>	
   
 </body>
-	<!-- 임시메뉴 -->
-    <jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
-	<h2>고객 로그인</h2>
-	<form action="${pageContext.request.contextPath}/customer/loginCustomer" method="post" id="loginForm">
-		<table border="1">
-			<tr>
-				<th>ID</th>
-				<td>
-					<input type="text" name="customerId" id="id">
-					<button type="button" onclick="location.href='${pageContext.request.contextPath}/customer/findId'">ID찾기</button>
-				</td>
-			</tr>
-			<tr>
-				<th>PASSWORD</th>
-				<td>
-					<input type="password" name="customerPw" id="pw">
-					<button type="button" onclick="location.href='${pageContext.request.contextPath}/customer/'">PW찾기</button>
-				</td>
-			</tr>
-		</table>
-		<button type="button" id="loginBtn">로그인</button>
-	</form>
-	<div>
-		<button type="button" onclick="location.href='${pageContext.request.contextPath}/log/addCustomer'">회원가입</button>
-	</div>
 </html>
