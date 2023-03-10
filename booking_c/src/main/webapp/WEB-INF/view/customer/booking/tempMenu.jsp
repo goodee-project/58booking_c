@@ -13,5 +13,6 @@
 	<a href="${pageContext.request.contextPath }/log/addCustomer">회원가입</a>
 	<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList">예약업체 검색페이지</a>
 	<a href="${pageContext.request.contextPath }/customer/myPage/myPageMain">마이페이지</a>
+	<a href="${pageContext.request.contextPath}/customer/logout">로그아웃</a>
 </body>
 </html>

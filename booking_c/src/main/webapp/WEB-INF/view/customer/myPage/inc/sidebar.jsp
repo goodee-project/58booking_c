@@ -63,6 +63,12 @@
 							    <label><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList">예약업체 검색페이지</a></label>
 							</li>
 						</ul>
+						<h6>로그아웃</h6>
+						<ul>
+							<li>
+							    <label><a href="${pageContext.request.contextPath}/customer/logout">로그아웃</a></label>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>

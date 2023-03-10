@@ -61,6 +61,12 @@
 									    <label><a href="${pageContext.request.contextPath}/customer/myPage/deactiveCustomer">회원 탈퇴</a></label>
 									</li>
 								</ul>
+								<h6>로그아웃</h6>
+								<ul>
+									<li>
+									    <label><a href="${pageContext.request.contextPath}/customer/logout">로그아웃</a></label>
+									</li>
+								</ul>
 							</div>
 						</div>
 					</div>

@@ -42,7 +42,7 @@ public class CustomerController {
 	@GetMapping("/customer/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/customer/loginCustomer";
+		return "redirect:http:/13.124.224.9/58platform/integrationPage";
 	}
 	
 	// 고객 로그인
