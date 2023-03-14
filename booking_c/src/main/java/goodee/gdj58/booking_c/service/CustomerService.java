@@ -54,6 +54,19 @@ public class CustomerService {
 		return customerMapper.insertCustomer(customer);
 	}
 	
+	
+	//상품 예약 옵션 리스트
+	public List<Map<String, Object>> getBookingProductOptionList(String bkpName)
+	{
+		return customerMapper.getBookingProductOptionList(bkpName);
+	}
+	
+	//상품 예약 시간 선택 페이지
+	public List<Map<String, Object>> getBookingProductSelectTime(String bkcId)
+	{
+		return customerMapper.getBookingProductSelectTime(bkcId);
+	}
+	
 	//예약업체 세부정보 지도
 	public List<Map<String, Object>> getBookingCompanyDetailMap(String bkcId)
 	{

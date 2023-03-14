@@ -42,7 +42,7 @@ public class CustomerController {
 	@GetMapping("/customer/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:http:/13.124.224.9/58platform/integrationPage";
+		return "redirect:http://54.180.220.114/58platform/integrationPage";
 	}
 	
 	// 고객 로그인
@@ -149,11 +149,31 @@ public class CustomerController {
 		return "/customer/loginCustomer";
 	}
 	
-	//예약기간 선택 페이지
-	@GetMapping("/customer/booking/selectBookingTime")
-	public String selectBookingTime()
+	
+	
+	//예약기간+옵션 선택 페이지
+	@GetMapping("/customer/booking/bookingProductSelectTime")
+	public String bookingProductSelectTime(Model model
+			, @RequestParam(value = "bkcId") String bkcId
+			, @RequestParam(value = "bkcName") String bkcName
+			, @RequestParam(value = "bkctNo") int bkctNo
+			, @RequestParam(value = "bkpName") String bkpName
+			)
 	{
-		return "customer/booking/templatTest";
+		//예약상품 옵션 리스트
+		List<Map<String, Object>> bookingProductOptionList= customerService.getBookingProductOptionList(bkpName);
+		
+		//예약업체별 시간or날짜 선택 
+		List<Map<String, Object>> bookingProductSelectTime = customerService.getBookingProductSelectTime(bkcId);
+		
+		model.addAttribute("bookingProductOptionList",bookingProductOptionList);
+		model.addAttribute("bookingProductSelectTime",bookingProductSelectTime);
+		model.addAttribute("bkcId",bkcId);
+		model.addAttribute("bkcName",bkcName);
+		model.addAttribute("bkctNo",bkctNo);
+		model.addAttribute("bkpName",bkpName);
+		
+		return "customer/booking/bookingProductSelectTime";
 	}
 	
 	//예약업체 세부사항 공통 + 지도 내용
@@ -175,7 +195,9 @@ public class CustomerController {
 	@GetMapping("/customer/booking/bookingCompanyDetailReview")
 	public String bookingCompanyDetailReview(Model model
 			, @RequestParam(value = "bkcId") String bkcId
-			, @RequestParam(value = "bkciLevel", defaultValue = "") String bkciLevel)
+			, @RequestParam(value = "bkciLevel", defaultValue = "") String bkciLevel
+
+			)
 	{
 		List<Map<String, Object>> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
 		List<Map<String, Object>> bookingCompanyDetailReview = customerService.getBookingCompanyDetailReview(bkcId);

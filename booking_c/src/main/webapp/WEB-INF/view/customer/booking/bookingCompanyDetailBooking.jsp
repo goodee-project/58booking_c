@@ -16,10 +16,12 @@
 	<!-- 예약상품 리스트 -->
 	<table border="1">
 		<c:forEach var="bkc" items="${bookingCompanyDetailBooking}">
+			<input type="hidden" name="bkcName" value="${bkcName }">
+			<input type="hidden" name="bkctNo" value="${bkctNo}">
 			<tr>
 				<td rowspan="2">예약상품사진 : ${bkc.bkpiOrigin}</td>
 				<td>상품명 : ${bkc.bkpName}</td>
-				<td rowspan="2"><a href="${pageContext.request.contextPath }/customer/booking/selectBookingTime">예약</a></td>
+				<td rowspan="2"><a href="${pageContext.request.contextPath }/customer/booking/bookingProductSelectTime?bkcId=${bkc.bkcId}&bkcName=${bkc.bkcName}&bkctNo=${bkc.bkctNo}&bkpName=${bkc.bkpName}">예약</a></td>
 			</tr>
 			<tr>
 				<td>가격 : ${bkc.bkpPrice}</td>

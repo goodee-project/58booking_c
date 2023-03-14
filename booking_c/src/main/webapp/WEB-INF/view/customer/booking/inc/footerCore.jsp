@@ -11,4 +11,8 @@
 	<script src="${pageContext.request.contextPath}/resources/js/markerclusterer.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/map_restaurants.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/infobox.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/map_single_hotel.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/infobox.js"></script>
 	
+	<!-- INPUT QUANTITY  -->
+	<script src="${pageContext.request.contextPath}/resources/js/input_qty.js"></script>

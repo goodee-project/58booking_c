@@ -96,7 +96,7 @@
 									<span> - 고객 : 내 정보 관리, 업체 검색, 상품 예약(예약 취소, 신고), 리뷰(작성) + 포인트 + 페이 + 예약 리스트, 페이 충전, 업체와 플랫폼과 1 : 1 채팅</span><br>
 									<hr>
 									<h5 style="font-weight: bold;">팀원 담당 기능 세부</h5>
-									<span <a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList">예약업체 검색페이지</a>>&nbsp;&nbsp;이득규</span><br>
+									<span style="font-weight: bold;">&nbsp;&nbsp;이득규</span><br>
 									<span>&nbsp;&nbsp;&nbsp;&nbsp;1) 예약 업체 리스트 및 검색</span><br>
 									<span>&nbsp;&nbsp;&nbsp;&nbsp;2) 예약 업체 상세 페이지</span><br>
 									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-  해당 예약업체 메인 페이지</span><br>
