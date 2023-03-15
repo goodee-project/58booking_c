@@ -1,15 +1,13 @@
 package goodee.gdj58.booking_c.controller;
 
 
-import java.awt.Font;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -31,14 +29,38 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CustomerController {
 	@Autowired CustomerService customerService;
+	// 고객 비밀번호 수정
+	@GetMapping("/log/modifyPw")
+	public String findCustomerPw(Model model
+									, @RequestParam(value="email") String email
+									, @RequestParam(value="id") String id) {
+		log.debug(FontColor.CYAN+"requestEmail :"+email);
+		log.debug(FontColor.CYAN+"requestId :"+id);
+		
+		model.addAttribute("email", email);
+		model.addAttribute("id", id);
+		
+		return "customer/modifyPw";
+	}
+	@PostMapping("/log/modifyPw")
+	public String updateCustomerPw(Customer customer) {
+		int updateRow = customerService.updateCustomerPw(customer.getCustomerEmail(), customer.getCustomerId(), customer.getCustomerPw());
+		if(updateRow == 0) {
+			log.debug(FontColor.CYAN+"패스워드 변경 실패");
+			return "redirect:/customer/findPw";
+		}
+		log.debug(FontColor.CYAN+"패스워드 변경 성공");
+		return "redirect:/log/loginCustomer";
+	}
+	
 	// 고객 비밀번호 찾기
-	@GetMapping("/customer/findPw")
+	@GetMapping("/log/findPw")
 	public String findCustomerPw() {
 		return "customer/findPw";
 	}
 	
 	// 고객 아이디 찾기
-	@GetMapping("/customer/findId")
+	@GetMapping("/log/findId")
 	public String findCustomerId() {
 		return "customer/findId";
 	}
@@ -55,16 +77,16 @@ public class CustomerController {
 	public String loginCustomer() {
 		return "customer/loginCustomer";
 	}
-	@PostMapping("/customer/loginCustomer")
+	@PostMapping("/log/loginCustomer")
 	public String loginCustomer(Customer customer, HttpSession session) {
 		Customer loginCustomer = customerService.loginCustomer(customer);
 		String loginCustomerId = customer.getCustomerId();
 		
 		if(loginCustomer == null) {
-			log.debug("\u001B[36m"+"로그인실패");
+			log.debug(FontColor.CYAN+"로그인실패");
 			return "customer/loginCustomer";
 		}
-		log.debug("\u001B[36m"+"로그인 성공 ID : "+loginCustomerId);
+		log.debug(FontColor.CYAN+"로그인 성공 ID : "+loginCustomerId);
 		
 		session.setAttribute("loginCustomer", loginCustomer);
 		
@@ -78,24 +100,28 @@ public class CustomerController {
 		return "customer/addCustomer";
 	}
 	@PostMapping("/log/addCustomer")
-	public String addCustomer(Model model, Customer customer, @RequestParam("file") MultipartFile file) {	
-		log.debug("\u001B[36m"+"custoer"+customer.toString());
+	public String addCustomer(Model model
+								, Customer customer
+								, HttpServletRequest request
+								, @RequestParam("file") MultipartFile file) {	
+		log.debug(FontColor.CYAN+"custoer"+customer.toString());
 		
+		// 서비스에서 트랜잭션 처리하도록 코드 수정해야함
 		// 파일명을 얻어낼 수 있는 메서드!
 		String fileRealName = file.getOriginalFilename();
 		String fileKind = file.getContentType(); // kind
 		long size = file.getSize(); // 파일 사이즈
 		
-		log.debug("\u001B[36m"+fileRealName+"<--fileRealName값");
-		log.debug("\u001B[36m"+fileKind+"<--fileKind값");
-		log.debug("\u001B[36m"+size+"<--size값");
+		log.debug(FontColor.CYAN+fileRealName+"<--fileRealName값");
+		log.debug(FontColor.CYAN+fileKind+"<--fileKind값");
+		log.debug(FontColor.CYAN+size+"<--size값");
 		
 		// 이미지 저장경로, 확장자
 		String fileExtension = fileRealName.substring(fileRealName.lastIndexOf("."),fileRealName.length());
-		// 경로 - 외부저장은 가능한데 내부저장이 안됨.. 해결해야함
-		String uploadFolder = "D:\\work-sts\\58booking_c\\booking_c\\src\\main\\webapp\\upload";
-		log.debug("\u001B[36m"+"확장자명" + fileExtension);
-		log.debug("\u001B[36m"+"업로드 경로" + uploadFolder);
+		// 경로
+		String path = request.getServletContext().getRealPath("/upload/");
+		log.debug(FontColor.CYAN+"확장자명" + fileExtension);
+		log.debug(FontColor.CYAN+"업로드 경로" + path);
 	
 		// 랜덤문자열 생성
 		UUID uuid = UUID.randomUUID();
@@ -103,10 +129,10 @@ public class CustomerController {
 		
 		String[] uuids = uuid.toString().split("-");
 		String uniqueName = uuids[0];
-		log.debug("\u001B[36m"+"생성된 고유문자열" + uniqueName);
+		log.debug(FontColor.CYAN+"생성된 고유문자열" + uniqueName);
 		
 		// 파일 경로에 저장
-		File saveFile = new File(uploadFolder+"\\"+uniqueName + fileExtension); 
+		File saveFile = new File(path+"\\"+uniqueName + fileExtension); 
 		try {
 			file.transferTo(saveFile); // 실제 파일 저장메서드(filewriter 작업을 손쉽게 한방에 처리해준다.)
 		} catch (IllegalStateException e) {
@@ -130,30 +156,29 @@ public class CustomerController {
 		// 1. totalId DB 저장
 		int totalRow = customerService.insertTotalId(customer.getCustomerId());
 		if(totalRow == 0) {
-			log.debug("\u001B[36m"+"시스템 에러로 totalId 등록 실패");
+			log.debug(FontColor.CYAN+"시스템 에러로 totalId 등록 실패");
 			return "costomer/addCustomer";
 		}
-		log.debug("\u001B[36m"+totalRow+"<--totalRow값");
+		log.debug(FontColor.CYAN+totalRow+"<--totalRow값");
 		
 		// 2. customer DB 저장
 		int cusRow = customerService.insertCustomer(customer);
 		if(cusRow == 0) {
-			log.debug("\u001B[36m"+"시스템 에러로 customer 등록 실패");
+			log.debug(FontColor.CYAN+"시스템 에러로 customer 등록 실패");
 			return "costomer/addCustomer";
 		}
-		log.debug("\u001B[36m"+cusRow+"<--cusRow값");
+		log.debug(FontColor.CYAN+cusRow+"<--cusRow값");
 		
 		// 3. customerImg DB 저장
 		int imgRow = customerService.insertCustomerImg(cImg);
 		if(imgRow == 0) {
-			log.debug("\u001B[36m"+"시스템 에러로 img 등록 실패");
+			log.debug(FontColor.CYAN+"시스템 에러로 img 등록 실패");
 			return "costomer/addCustomer";
 		}
-		log.debug("\u001B[36m"+imgRow+"<--imgRow값");
+		log.debug(FontColor.CYAN+imgRow+"<--imgRow값");
 		
 		return "/customer/loginCustomer";
 	}
-	
 	
 	//결제페이지
 	@PostMapping("/customer/booking/bookingProductPayment")

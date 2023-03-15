@@ -17,11 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 public class MailSendRestController {
 	@Autowired MailSendService mailSendService;
 	@Autowired CustomerService customerService;
-	// 이메일 인중 후 아이디 조회
+	
+	// 이메일 인증 후 아이디 조회
 	@PostMapping("/log/findCustomerId")
-	public String findCompanyId(
-				@RequestParam(value="customerEmail") String customerEmail,
-				@RequestParam(value="customerName") String customerName) {
+	public String findCompanyId(@RequestParam(value="customerEmail") String customerEmail
+								,@RequestParam(value="customerName") String customerName) {
 		
 		log.debug(FontColor.CYAN+"customerEmail : "+customerEmail);
 		log.debug(FontColor.CYAN+"customerName : "+customerName);
@@ -30,12 +30,11 @@ public class MailSendRestController {
 		
 		return id;
 	}
-	@GetMapping("/beforeLogin/emailCk")
-	public String emailCk(
-				@RequestParam(value="customerEmail1") String customerEmail1,
-				@RequestParam(value="customerEmail2") String customerEmail2,
-				@RequestParam(value="customerName", required=false) String customerName,
-				@RequestParam(value="customerId", required=false) String customerId) {
+	@GetMapping("/log/emailCk")
+	public String emailCk(@RequestParam(value="customerEmail1") String customerEmail1
+							, @RequestParam(value="customerEmail2") String customerEmail2
+							, @RequestParam(value="customerName", required=false) String customerName
+							, @RequestParam(value="customerId", required=false) String customerId) {
 		
 		log.debug(FontColor.CYAN+"customerEmail1 : "+customerEmail1);
 		log.debug(FontColor.CYAN+"customerEmail2 : "+customerEmail2);
@@ -50,12 +49,11 @@ public class MailSendRestController {
 		customer.setCustomerEmail(customerEmail);
 		customer.setCustomerName(customerName);
 		customer.setCustomerId(customerId);
-		
-		// 분기(회원가입 : companyCeo&&companyId==null, 아이디/비번찾기 : 둘 중 하나만 null)
+		// 분기(회원가입 : customerName&&customerId==null, 아이디/비번찾기 : 둘 중 하나만 null)
 		
 		// 1. 등록 이메일 존재 여부 확인
 		if(customerName == null && customerId == null) {
-			log.debug(FontColor.CYAN+"업체가입 진행중, 이메일 조회 안함");
+			log.debug(FontColor.CYAN+"고객가입 진행중, 이메일 조회 안함");
 		} else {
 			int emailResult = customerService.getCustomerEmail(customer);
 			if(emailResult == 0) {

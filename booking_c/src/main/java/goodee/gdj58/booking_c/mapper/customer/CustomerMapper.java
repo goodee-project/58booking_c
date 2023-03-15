@@ -13,7 +13,7 @@ import goodee.gdj58.booking_c.vo.TotalId;
 @Mapper
 public interface CustomerMapper {
 	// 고객 비밀번호 찾기
-	int selectCustomerPw(Customer customer);
+	int updateCustomerPw(Customer customer);
 	// 고객 아이디 찾기
 	String selectCustomerId(Customer customer);
 	// 고객 아이디/비밀번호 찾기시 이메일 조회
@@ -26,6 +26,7 @@ public interface CustomerMapper {
 	public int insertCustomerImg(CustomerImg customerImg);
 	// 고객 회원가입
 	public int insertCustomer(Customer customer);
+	
 	
 	
 	//예약시 상품 시간 리스트

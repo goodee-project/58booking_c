@@ -14,7 +14,10 @@
 	<table border="1">
 		<tr>
 			<th>이름</th>
-			<td><input type="text" name="customderName"></td>
+			<td>
+				<input type="text" name="customderName" id="name" placeholder="이름을 입력해주세요.">
+				<div id="nameMsg"></div>
+			</td>
 		</tr>
 		<tr>
 			<th>이메일주소</th>
@@ -37,7 +40,7 @@
 		<tr>
 			<th>인증번호</th>
 			<td>
-				<input type="text" id="codeCk" name="" placeholder="인증번호를 입력해주세요." disabled>
+				<input type="text" id="codeCk" placeholder="인증번호를 입력해주세요." disabled>
 				<button type="button" id="codeCkBtn" disabled>인증번호 확인</button>
 				<div id="emailResultMsg"></div>
 			</td>
@@ -121,7 +124,7 @@
 						$.ajax({
 							url:'findCustomerId'
 							, type:'post'
-							, data:{companyEmail:email1+'@'+email2, companyCeo:name}
+							, data:{customerEmail:email1+'@'+email2, customerName:name}
 							, success:function(model) {
 								if(model == '' || null){
 									var html = "<div id='resultId'>" + 

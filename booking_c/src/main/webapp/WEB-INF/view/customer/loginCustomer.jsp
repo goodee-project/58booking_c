@@ -29,6 +29,7 @@
     <link href="${pageContext.request.contextPath}/resources/css/custom.css" rel="stylesheet">
 <title></title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
 	$(document).ready(function(){
 		$('#loginBtn').click(function(){
@@ -64,7 +65,7 @@
 			<figure>
 				<a href="index.html"><img src="${pageContext.request.contextPath}/resources/img/logo_sticky.svg" width="155" height="36" alt="" class="logo_sticky"></a>
 			</figure>
-			  <form action="${pageContext.request.contextPath}/customer/loginCustomer" method="post" id="loginForm">
+			  <form action="${pageContext.request.contextPath}/log/loginCustomer" method="post" id="loginForm">
 				<div class="form-group">
 					<label>ID</label>
 					<input type="email" class="form-control"  name="customerId" id="id">
@@ -77,9 +78,9 @@
 				</div>
 				<div class="clearfix add_bottom_30">
 					<div class="checkboxes float-start">
-						<div class="float-end mt-1"><a id="forgot" href="${pageContext.request.contextPath}/customer/findId">아이디찾기</a></div>
+						<div class="float-end mt-1"><a id="forgot" href="${pageContext.request.contextPath}/log/findId">아이디찾기</a></div>
 					</div>
-					<div class="float-end mt-1"><a id="forgot" href="javascript:void(0);">패스워드찾기</a></div>
+					<div class="float-end mt-1"><a id="forgot" href="${pageContext.request.contextPath}/log/findPw">패스워드찾기</a></div>
 				</div>
 				<button type="button" class="btn_1 rounded full-width" id="loginBtn">로그인</button>
 				<div class="text-center add_top_10">처음이신가요? <strong><a href="${pageContext.request.contextPath}/log/addCustomer">회원가입</a></strong></div>

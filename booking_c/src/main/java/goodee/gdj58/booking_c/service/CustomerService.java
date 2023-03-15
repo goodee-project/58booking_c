@@ -8,20 +8,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import goodee.gdj58.booking_c.controller.CustomerController;
 import goodee.gdj58.booking_c.mapper.customer.CustomerMapper;
+import goodee.gdj58.booking_c.util.FontColor;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
 import goodee.gdj58.booking_c.vo.TotalId;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 @Transactional
 public class CustomerService {
 	@Autowired private CustomerMapper customerMapper;
-	// 고객 아이디 찾기
-	public String getCustomerId(String customerEmail, String customerName) {
+	// 고객 비밀번호 찾기(수정)
+	public int updateCustomerPw(String customerEmail, String customerId, String customerPw) {
 		Customer customer = new Customer();
 		customer.setCustomerEmail(customerEmail);
-		customer.setCustomerName(customerName);
+		customer.setCustomerId(customerId);
+		customer.setCustomerPw(customerPw);
+		log.debug(FontColor.CYAN+customerEmail+"<-이메일");
+		log.debug(FontColor.CYAN+customerId+"<-아이디");
+		log.debug(FontColor.CYAN+customerPw+"<-패스워드");
+		return customerMapper.updateCustomerPw(customer);
+	}
+	
+	// 고객 아이디 찾기
+	public String getCustomerId(String customerName, String customerEmail) {
+		Customer customer = new Customer();
+		customer.setCustomerEmail(customerName);
+		customer.setCustomerName(customerEmail);
 		
 		return customerMapper.selectCustomerId(customer);
 	}
