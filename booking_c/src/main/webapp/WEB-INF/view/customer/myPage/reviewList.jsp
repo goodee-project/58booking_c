@@ -22,35 +22,9 @@
 	    <link href="../../resources/css/custom.css" rel="stylesheet">
 	</head>
 	<body>
-		<table border="1">
-			<c:forEach var="r" items="${reviewList}">
-				<tr>
-					<td rowspan="4"> ${r.companyName} </td>
-					<td rowspan="4"> <img src="${pageContext.request.contextPath}/upload/${r.reviewImgOriginName}" width="200" height="200"> </td>
-					<td> ${r.productName} </td>
-					<td> ${r.totalPrice} </td>
-					<td> ${r.bookingDate} </td>
-				</tr>
-				<tr>
-					<td colspan="3"> ${r.starRating} </td>
-				</tr>
-				<tr>
-					<td colspan="3"> ${r.reviewMemo} | ${r.createdate} </td>
-				</tr>
-				<tr>
-					<td> 
-						<c:if test="${r.commentMemo == null}">
-							답변없음
-						</c:if>
-						<c:if test="${r.commentMemo != null}">
-							${r.commnetMemo} | ${r.commentDate}
-						</c:if>
-					</td>
-				</tr>
-			</c:forEach>
-		</table>
 		<div class="container margin_60_35">
 			<div class="row">
+				<jsp:include page="/WEB-INF/view/customer/myPage/inc/sidebar.jsp"></jsp:include>
 				<div class="col-lg-8">
 					<section id="description">
 						<c:forEach var="r" items="${reviewList}">
@@ -60,26 +34,29 @@
 										<img src="${pageContext.request.contextPath}/upload/${r.reviewImgOriginName}" class="img-fluid" alt="">
 									</div>
 									<div class="col-md-8">
-										<h4>${r.companyName}&nbsp;&nbsp;|&nbsp;&nbsp;${r.productName}</h4>
+										<h4>${r.companyName}</h4>
+										<h6>&nbsp;&nbsp;-&nbsp;&nbsp;${r.productName}</h6>
 										<div class="rating">
-											<i class="icon_star voted"></i>
-											<i class="icon_star voted"></i>
-											<i class="icon_star voted"></i>
-											<i class="icon_star voted"></i>
-											<i class="icon_star"></i>
+											<c:forEach var="s" begin="1" end="${r.starRating}" step="1">
+												<i class="icon_star voted"></i>
+											</c:forEach>
+											<c:forEach var="s" begin="1" end="${5 - r.starRating}" step="1">
+												<i class="icon_star"></i>
+											</c:forEach>
 										</div>
 										<div class="rev-info">
 											${r.customerId}&nbsp;&nbsp;|&nbsp;&nbsp;${r.createdate}
 										</div>
 										<br>
 										<p>${r.reviewMemo}</p>
-										<ul class="hotel_facilities">
-											<li><img src="img/hotel_facilites_icon_3.svg" alt="">Double Bed</li>
-											<li><img src="img/hotel_facilites_icon_4.svg" alt="">Free Wifi</li>
-											<li><img src="img/hotel_facilites_icon_6.svg" alt="">Bathtub</li>
-											<li><img src="img/hotel_facilites_icon_7.svg" alt="">Air Condition</li>
-											<li><img src="img/hotel_facilites_icon_8.svg" alt="">Hairdryer</li>
-										</ul>
+										<div>
+											<c:if test="${r.commentMemo == null}">
+												답변없음
+											</c:if>
+											<c:if test="${r.commentMemo != null}">
+												${r.commnetMemo} | ${r.commentDate}
+											</c:if>
+										</div>
 									</div>
 								</div>
 							</div>

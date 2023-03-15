@@ -36,6 +36,15 @@
 			<div class="row">
 				<jsp:include page="/WEB-INF/view/customer/myPage/inc/sidebar.jsp"></jsp:include>
 				<div class="col-lg-9" id="list_sidebar">
+					<div class="row">
+						<aside class="col-lg-7" id="sidebar"></aside>
+						<aside class="col-lg-5" id="sidebar">
+							<div id="filters_col">
+								<div style="text-align: left;"><h6 style="font-weight: bold;">보유 포인트</h6></div>
+								<div style="text-align: right;"><h5 style="font-weight: bold;">${customerOne.customerPoint}P</h5></div>
+							</div>
+						</aside>
+					</div>
 					<div class="isotope-wrapper">
 						<div class="box_list isotope-item latest">
 							<div class="row g-0">
@@ -118,12 +127,6 @@
 						</div>
 					</div>
 				</div>
-				<aside class="col-lg-3" id="sidebar">
-					<div id="filters_col">
-						<div style="text-align: left;"><h6 style="font-weight: bold;">보유 포인트</h6></div>
-						<div style="text-align: right;"><h5 style="font-weight: bold;">${customerOne.customerPoint}P</h5></div>
-					</div>
-				</aside>
 			</div>
 		</div>
 		<script src="../../resources/js/common_scripts.js"></script>

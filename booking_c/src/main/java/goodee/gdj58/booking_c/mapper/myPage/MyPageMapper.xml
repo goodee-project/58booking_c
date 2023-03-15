@@ -218,6 +218,7 @@
 			, c.customer_name customerName
 			, c.customer_nickname customerNickname
 			, c.customer_gender customerGender
+			, (SELECT ROUND((TO_DAYS(NOW()) - (TO_DAYS(SUBSTR(customer_birth, 3)))) / 365) AS age FROM customer WHERE customer_id = #{customerId}) AS customerAge
 			, c.customer_birth customerBirth
 			, c.customer_phone customerPhone
 			, c.customer_email customerEmail

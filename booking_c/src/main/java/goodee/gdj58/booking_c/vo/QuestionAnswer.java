@@ -6,5 +6,6 @@ import lombok.Data;
 public class QuestionAnswer {
 	private int questionNo;
 	private String questionComment;
+	private String updatedate;
 	private String createdate;
 }

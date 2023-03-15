@@ -16,24 +16,24 @@
 		</script>
 	</head>
 	<body>
-		<aside class="col-lg-3" id="sidebar">
+		<aside class="col-lg-3" id="sidebar" style="padding-top: 0px;">
 			<div id="filters_col">
-				<a data-bs-toggle="collapse" href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filters_col_bt">마이페이지</a>
-				<div class="collapse show" id="collapseFilters">
+				<h5><a href="${pageContext.request.contextPath}/customer/myPage/myPageMain" style="color: black; font-weight: bold;">마이페이지</a></h5>
+				<div class="collapse show">
 					<div class="filter_type">
 						<h6></h6>
 						<ul>
 							<li>
-							    <label><a class="ing">내 정보</a></label>
+							    <label><a href="${pageContext.request.contextPath}/customer/myPage/customerOne">내 정보</a></label>
 							</li>
 							<li>
 							    <label><a href="${pageContext.request.contextPath}/customer/booking/bookingList">예약 내역</a></label>
 							</li>
 							<li>
-							    <label><a class="ing">리뷰</a></label>
+							    <label><a href="${pageContext.request.contextPath}/customer/review/reviewList">리뷰</a></label>
 							</li>
 							<li>
-							    <label><a href="${pageContext.request.contextPath}/customer/pay/payList">페이 관리</a></label>
+							    <label><a href="${pageContext.request.contextPath}/customer/pay/payList">페이 내역</a></label>
 							</li>
 							<li>
 							    <label><a href="${pageContext.request.contextPath}/customer/point/pointList">포인트 내역</a></label>

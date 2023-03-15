@@ -60,6 +60,22 @@
 			<div class="row">
 				<jsp:include page="/WEB-INF/view/customer/myPage/inc/sidebar.jsp"></jsp:include>
 				<div class="col-lg-9" id="list_sidebar">
+					<div class="row">
+						<aside class="col-lg-7" id="sidebar"></aside>
+						<aside class="col-lg-5" id="sidebar">
+							<div id="filters_col">
+								<div class="row">
+									<div class="col-lg-6">
+										<h6 style="font-weight: bold;">보유 페이</h6>
+									<h5 style="font-weight: bold;">${customerOne.customerPay}원</h5>
+									</div>
+									<div class="col-lg-6" align="right">
+										<a href="#0" class="btn_1" data-bs-toggle="modal" data-bs-target="#exampleModal">충전하기</a>
+									</div>
+								</div>
+							</div>
+						</aside>
+					</div>
 					<div class="isotope-wrapper">
 						<div class="box_list isotope-item latest">
 							<div class="row g-0">
@@ -142,17 +158,6 @@
 						</div>
 					</div>
 				</div>
-				<aside class="col-lg-3" id="sidebar">
-					<div id="filters_col">
-						<div style="text-align: right;">
-							<p><a href="#0" class="btn_1" data-bs-toggle="modal" data-bs-target="#exampleModal">충전하기</a></p>
-						</div>
-						<h6 style="font-weight: bold;">보유 페이</h6>
-						<div style="text-align: right;">
-							<h5 style="font-weight: bold;">${customerOne.customerPay}원</h5>
-						</div>
-					</div>
-				</aside>
 			</div>
 		</div>
 		<div class="menu_fixed modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
