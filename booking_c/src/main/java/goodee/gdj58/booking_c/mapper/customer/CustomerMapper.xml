@@ -84,10 +84,37 @@
 			)
 	</insert>
 	
+	<!-- 예약시 예약시간 리스트-->
+	<select id="getBookingProductTimeList" resultType="java.util.Map" parameterType="String">
+		WITH RECURSIVE CTE  AS (
+        SELECT (SELECT bkcd.booking_company_opentime bkcdOpen FROM booking_company_detail bkcd WHERE bkcd.booking_company_id = #{bkcId}) AS DT
+        FROM DUAL
+        UNION ALL
+        SELECT DATE_ADD(DT, INTERVAL 1 HOUR)
+        FROM CTE
+        WHERE DT &#60; (SELECT date_add(bkcd.booking_company_closetime, INTERVAL -1 hour) bkcdClose FROM booking_company_detail bkcd WHERE bkcd.booking_company_id = #{bkcId})
+		)
+		SELECT 
+				DT bkpTime
+		FROM CTE
+	</select>
+	
+	<!-- 에약시 상품정보 확인 -->
+	<select id="getBookingProductInfo" resultType="java.util.Map" parameterType="String">
+		SELECT bkp.booking_product_name bkpName
+				, bkp.booking_product_max_people bkpMax
+				, bkp.booking_product_min_people bkpMin
+				, bkp.booking_product_price bkpPrice
+		FROM booking_product bkp
+		WHERE bkp.booking_product_name = #{bkpName}
+	
+	</select>	
 	<!-- 상품 예약 옵션 리스트 -->
 	<select id="getBookingProductOptionList" resultType="java.util.Map" parameterType="String">
 		SELECT bkp.booking_product_no 
 				, bkp.booking_product_name bkpName
+				, bkp.booking_product_max_people bkpMax
+				, bkp.booking_product_min_people bkpMin
 				, bkpo.booking_product_option_name bkpoName
 				, bkpo.booking_product_option_memo bkpoMemo
 				, bkpo.booking_product_option_price bkpoPrice 

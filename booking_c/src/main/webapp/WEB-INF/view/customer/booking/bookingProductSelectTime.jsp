@@ -6,7 +6,7 @@
 <head>
 	<!-- css headCore -->
 	<jsp:include page="/WEB-INF/view/customer/booking/inc/headCore.jsp"></jsp:include>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 	<script>
 		$(document).mouseup(function (e) {
 		     var container = $("#dropDownOptions");
@@ -16,10 +16,26 @@
 		     }
 		});
 	</script>
+	<script>
+		function changePeople(value){
+				console.log(value);
+			}
+		
+		$(document).ready(function() {
+			 if($('#msg').val() != '')
+				{
+					alert('최대인원 이상 예약 불가');
+					return;
+				} 
+		});
+	</script>
 
 	<title>Booking Product Select Time </title>
 </head>
 <body class="datepicker_mobile_full">
+	<input type="hidden" id=msg value=${msg }>
+	
+
 	<!-- 날짜형 기업 예약 -->
 	<c:if test="${bkctNo == 1 }">
 		<div id="page" class="theia-exception">
@@ -115,10 +131,16 @@
 											</td>
 										</tr>
 										<tr>
-												<td>업체명 : ${bkcName}</td>
+											<td>상품명 : ${bkpName}</td>
 										</tr>
 										<tr>
-												<td>상품명 : ${bkpName}</td>
+											<td>최대인원 : ${bookingProductInfo.bkpMax}</td>
+										</tr>
+										<tr>
+											<td>최소인원 : ${bookingProductInfo.bkpMin}</td>
+										</tr>
+										<tr>
+											<td>상품가격 : ${bookingProductInfo.bkpPrice}원</td>
 										</tr>
 									
 										<tr>
@@ -136,8 +158,8 @@
 								<!-- /section -->
 							</div>
 							<!-- /col -->
-							
 							<aside class="col-lg-4" id="sidebar">
+							<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post">
 								<div class="box_detail booking">
 									<div class="price">
 										<span>날짜형 예약</span>
@@ -149,41 +171,38 @@
 									</div>
 		
 									<div class="panel-dropdown">
-										<a href="#">인원 <span class="qtyTotal">1</span></a>
+										<a href="#">인원 <span class="qtyTotal"  id="dayQtyTotal">1</span></a>
 										<div class="panel-dropdown-content right">
 											<div class="qtyButtons">
-												<label>성인</label>
+												<label>설정</label>
 												<input type="text" name="qtyInput" value="1">
 											</div>
-											<div class="qtyButtons">
-												<label>소아</label>
-												<input type="text" name="qtyInput" value="0">
-											</div>
+											
 										</div>
 									</div>
 		
 									<div class="form-group clearfix">
 										<div class="custom-select-form">
-											<select class="wide">
-												<option>Room Type</option>	
-												<option>Single Room</option>
-												<option>Double Room</option>
-												<option>Suite Room</option>
+											<select class="wide" name="productTime">
+												<c:forEach var="bkp" items="${bookingProductTimeList }" varStatus="status" >
+													<option value="${bkp.bkpTime }">${bkp.bkpTime }</option>
+												</c:forEach>
 											</select>
 										</div>
 									</div>
 									<div class="form-group clearfix">
 										<div class="custom-select-form">
 											<c:forEach var="bkpo" items="${bookingProductOptionList }">
-												<input type="checkbox" name="option" value="${bkpo.bkpoName }">${bkpo.bkpoName }<br>
+												<input type="checkbox" name="option" value="${bkpo.bkpoPrice }">${bkpo.bkpoName }<br>
 											</c:forEach>
 										</div>
 									</div>
-									
-									<a href="cart-1.html" class=" add_top_30 btn_1 full-width purchase">예약</a>
+									<input type="hidden" name="bkpMax" value="${bookingProductInfo.bkpMax}">
+									<button type="submit" class=" add_top_30 btn_1 full-width purchase">예약</button>
 									
 								</div>
 								
+							</form>
 							</aside>
 						</div>
 						<!-- /row -->
@@ -410,6 +429,18 @@
 										<tr>
 											<td>상품명 : ${bkpName}</td>
 										</tr>
+										<tr>
+											<td>최대인원 : ${bookingProductInfo.bkpMax}</td>
+										</tr>
+										<tr>
+											<td>최소인원 : ${bookingProductInfo.bkpMin}</td>
+										</tr>
+										<tr>
+											<td>상품가격 : ${bookingProductInfo.bkpPrice}원</td>
+										</tr>
+										<tr>
+											<td> 선택 가능한 옵션 </td>
+										</tr>
 										<c:forEach var="bkpo" items="${bookingProductOptionList}" varStatus="status">
 											<tr>
 												<td>
@@ -424,50 +455,47 @@
 							<!-- /col -->
 							
 							<aside class="col-lg-4" id="sidebar">
-								<div class="box_detail booking">
-									<div class="price">
-										<span>시간형 예약</span>
-									</div>
-									
-									<div class="form-group input-dates scroll-fix">
-										<input class="form-control" type="text" name="dates" placeholder="When..">
-										<i class="icon_calendar"></i>
-									</div>
-									
-									<div class="panel-dropdown">
-										<a href="#">인원 <span class="qtyTotal">1</span></a>
-										<div class="panel-dropdown-content right">
-											<div class="qtyButtons">
-												<label>성인</label>
-												<input type="text" name="qtyInput" value="1">
-											</div>
-											<div class="qtyButtons">
-												<label>소아</label>
-												<input type="text" name="qtyInput" value="0">
+								<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post">
+									<div class="box_detail booking">
+										<div class="price">
+											<span>시간형 예약</span>
+										</div>
+										
+										<div class="form-group input-dates scroll-fix">
+											<input class="form-control" type="text" name="dates" placeholder="When..">
+											<i class="icon_calendar"></i>
+										</div>
+										
+										<div class="panel-dropdown">
+											<a href="#">인원 <span class="qtyTotal">1</span></a>
+											<div class="panel-dropdown-content right">
+												<div class="qtyButtons">
+													<label>설정</label>
+													<input type="text" name="qtyInput" value="1">
+												</div>
 											</div>
 										</div>
-									</div>
-									
-									<div class="form-group clearfix">
-										<div class="custom-select-form">
-										<select class="wide" >
-											<option>Time</option>	
-											<option>Lunch</option>
-											<option>Dinner</option>
-										</select>
+										
+										<div class="form-group clearfix">
+											<div class="custom-select-form">
+											<select class="wide" name="productTime">
+												<c:forEach var="bkp" items="${bookingProductTimeList }" varStatus="status" >
+													<option value="${bkp.bkpTime }">${bkp.bkpTime }</option>
+												</c:forEach>
+											</select>
+											</div>
 										</div>
-									</div>
-									<div class="form-group clearfix">
-										<div class="custom-select-form">
-											<c:forEach var="bkpo" items="${bookingProductOptionList }">
-												<input type="checkbox" name="option" value="${bkpo.bkpoName }">${bkpo.bkpoName }<br>
-											</c:forEach>
+										<div class="form-group clearfix">
+											<div class="custom-select-form">
+												<c:forEach var="bkpo" items="${bookingProductOptionList }">
+													<input type="checkbox" name="option" value="${bkpo.bkpoPrice }">${bkpo.bkpoName }<br>
+												</c:forEach>
+											</div>
 										</div>
+										
+										<button type="submit" class=" add_top_30 btn_1 full-width purchase">예약</button>
 									</div>
-									
-									<a href="cart-1.html" class=" add_top_30 btn_1 full-width purchase">Book now</a>
-								</div>
-						
+								</form>
 							</aside>
 						</div>
 						<!-- /row -->

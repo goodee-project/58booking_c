@@ -1,12 +1,16 @@
 package goodee.gdj58.booking_c.controller;
 
 
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import goodee.gdj58.booking_c.service.CustomerService;
+import goodee.gdj58.booking_c.util.FontColor;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
 import lombok.extern.slf4j.Slf4j;
@@ -150,28 +155,80 @@ public class CustomerController {
 	}
 	
 	
+	//결제페이지
+	@PostMapping("/customer/booking/bookingProductPayment")
+	public String bookingProductProductPayment(Model model
+			, HttpSession session
+			, HttpServletRequest request
+			, @RequestParam (value = "qtyInput") int qtyInput
+			, @RequestParam (value = "dates") String dates
+			, @RequestParam (value = "productTime") String productTime
+			, @RequestParam (value = "option", defaultValue = "0") ArrayList<Integer> option
+			, @RequestParam (value = "bkpMax") int bkpMax
+			)
+	{
+		String referer = request.getHeader("Referer");
+		String msg = null;
+		if(qtyInput>bkpMax)
+		{
+			msg="fail";
+			return "redirect:" + referer+"&msg="+msg;
+		}
+		
+		int optionPrice = option.stream().mapToInt(Integer::intValue).sum();
+		model.addAttribute("qtyInput",qtyInput);
+		model.addAttribute("dates",dates);
+		model.addAttribute("productTime",productTime);
+		model.addAttribute("optionPrice",optionPrice);
+		return "customer/booking/bookingProductPayment";
+	}
 	
 	//예약기간+옵션 선택 페이지
 	@GetMapping("/customer/booking/bookingProductSelectTime")
 	public String bookingProductSelectTime(Model model
+			, HttpSession session
 			, @RequestParam(value = "bkcId") String bkcId
 			, @RequestParam(value = "bkcName") String bkcName
 			, @RequestParam(value = "bkctNo") int bkctNo
 			, @RequestParam(value = "bkpName") String bkpName
+			, @RequestParam(value = "msg", defaultValue = "") String msg
 			)
 	{
+		//로그인 세션
+		/*
+		if((Customer)session.getAttribute("loginCustomer") == null)
+		{
+			return "redirect:/log/loginCustomer";
+		}
+		Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
+		log.debug(FontColor.RED + loginCustomer.getCustomerId()  + "고객 ID");
+		 */
+		
+		log.debug(FontColor.RED +msg + "msg값");
+		
+		//예약시 상품 시간 리스트
+		List<Map<String, Object>> bookingProductTimeList= customerService.getBookingProductTimeList(bkcId);
+		
+		//예약 상품 정보
+		Map<String,Object> bookingProductInfo = customerService.bookingProductInfo(bkpName);
+		
 		//예약상품 옵션 리스트
 		List<Map<String, Object>> bookingProductOptionList= customerService.getBookingProductOptionList(bkpName);
 		
 		//예약업체별 시간or날짜 선택 
 		List<Map<String, Object>> bookingProductSelectTime = customerService.getBookingProductSelectTime(bkcId);
 		
+		log.debug(FontColor.RED + bookingProductSelectTime  + "값확인");
+		
+		model.addAttribute("bookingProductTimeList",bookingProductTimeList);
+		model.addAttribute("bookingProductInfo",bookingProductInfo);
 		model.addAttribute("bookingProductOptionList",bookingProductOptionList);
 		model.addAttribute("bookingProductSelectTime",bookingProductSelectTime);
 		model.addAttribute("bkcId",bkcId);
 		model.addAttribute("bkcName",bkcName);
 		model.addAttribute("bkctNo",bkctNo);
 		model.addAttribute("bkpName",bkpName);
+		model.addAttribute("msg",msg);
 		
 		return "customer/booking/bookingProductSelectTime";
 	}
