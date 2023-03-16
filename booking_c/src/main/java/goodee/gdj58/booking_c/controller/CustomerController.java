@@ -211,12 +211,39 @@ public class CustomerController {
 		
 		//고객 세션정보
 		Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
+		log.debug(FontColor.RED+loginCustomer.getCustomerRank()+"<---고객 랭크");
+		
+		String rank = loginCustomer.getCustomerRank();
+		int rankDiscount = 0; 
+		
+		if(rank.equals("브론즈"))
+		{
+			log.debug(FontColor.RED+"<--- 브론즈 if문 들어옴");
+			rankDiscount = (int)(Integer.parseInt(bkpPrice) * 0.99);
+			log.debug(FontColor.RED+rankDiscount+"<--- if함수 안 랭크 할인 가격");
+		}
+		else if(rank.equals("실버"))
+		{
+			log.debug(FontColor.RED+"<--- 실버 if문 들어옴");
+			rankDiscount = (int)(Integer.parseInt(bkpPrice) * 0.98);
+			log.debug(FontColor.RED+rankDiscount+"<--- if함수 안 랭크 할인 가격");
+		}
+		else if(rank.equals("골드"))
+		{
+			log.debug(FontColor.RED+"<--- 골드 if문 들어옴");
+			rankDiscount = (int)(Integer.parseInt(bkpPrice) * 0.97);
+			log.debug(FontColor.RED+rankDiscount+"<--- if함수 안 랭크 할인 가격");
+		}
+		log.debug(FontColor.RED+bkpPrice+"<---상품 가격");
+		log.debug(FontColor.RED+rankDiscount+"<---랭크 할인 가격");
+		
 		//기업 정보
 		Map<String,Object> bookingPaymentCompany = customerService.bookingPaymentCompany(bkcId);
 		
 		int optionPrice = option.stream().mapToInt(Integer::intValue).sum();
 		model.addAttribute("loginCustomer",loginCustomer);
 		model.addAttribute("bookingPaymentCompany",bookingPaymentCompany);
+		model.addAttribute("rankDiscount",rankDiscount);
 		model.addAttribute("bkpPrice",bkpPrice);
 		model.addAttribute("bkcId",bkcId);
 		model.addAttribute("bkpoName",bkpoName);

@@ -3,6 +3,8 @@ package goodee.gdj58.booking_c.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +99,7 @@ public class MyPageController {
 	
 	// 페이 충전
 	@PostMapping("/customer/pay/insertPay")
-	public String insertPay(HttpSession session, RedirectAttributes redirectAttr, PaySaveHistory paySaveHistory) {
+	public String insertPay(HttpSession session, RedirectAttributes redirectAttr, PaySaveHistory paySaveHistory, @RequestParam(value = "state") String state, HttpServletRequest request) {
 		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 디버깅
@@ -115,8 +117,9 @@ public class MyPageController {
 		}
 		
 		log.debug(FontColor.YELLOW + "페이 충전 성공");
-		
+
 		return "redirect:/customer/pay/payList";
+		
 	}
 	
 	// 예약 + 충전 관련 페이 리스트
