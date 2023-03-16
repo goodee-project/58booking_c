@@ -50,7 +50,7 @@
 						return;
 					};
 					
-					
+					$('#payForm').submit();
 				});
 			});
 		</script>

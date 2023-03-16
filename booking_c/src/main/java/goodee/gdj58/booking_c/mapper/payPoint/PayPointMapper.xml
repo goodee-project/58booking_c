@@ -15,7 +15,7 @@
 		)
 	</insert>
 	
-	<!-- 현재 보유 페이 + 돌려받은 페이 -->
+	<!-- 페이 충전 + 페이 환불시 보유 페이 업데이트 -->
 	<update id="updatePay" parameterType="goodee.gdj58.booking_c.vo.PaySaveHistory">
 		UPDATE customer
 		SET customer_pay = customer_pay + ${price}
@@ -37,7 +37,7 @@
 		)
 	</insert>
 	
-	<!-- 현재 보유 포인트 + 돌려받은 포인트 -->
+	<!-- 이벤트 포인트 + 포인트 환불시 보유 포인트 업데이트 -->
 	<update id="updatePoint" parameterType="goodee.gdj58.booking_c.vo.PointSaveHistory">
 		UPDATE customer
 		SET customer_point = customer_point + #{point}

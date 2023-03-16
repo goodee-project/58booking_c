@@ -14,6 +14,11 @@ public class PayPointService {
 	
 	// 페이 적립 내역에 추가
 	public int insertPay(PaySaveHistory paySaveHistory) {
-		return payPointMapper.insertPay(paySaveHistory);
+		int row = payPointMapper.insertPay(paySaveHistory);
+		if(row == 1) {
+			payPointMapper.updatePay(paySaveHistory);
+		}
+		
+		return row;
 	}
 }
