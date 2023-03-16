@@ -69,7 +69,7 @@ public class CustomerController {
 	@GetMapping("/customer/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:http://54.180.220.114/58platform/integrationPage";
+		return "redirect:/log/loginCustomer";
 	}
 	
 	// 고객 로그인
@@ -91,7 +91,7 @@ public class CustomerController {
 		session.setAttribute("loginCustomer", loginCustomer);
 		
 		// return "redirect:/customer/booking/bookingCompanyList";
-		return "/customer/index";
+		return "redirect:/customer/booking/bookingCompanyList";
 	}
 	
 	// 고객 회원가입
