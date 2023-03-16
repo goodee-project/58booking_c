@@ -27,14 +27,15 @@ public interface CustomerMapper {
 	// 고객 회원가입
 	public int insertCustomer(Customer customer);
 	
-	
+	//결제페이지 - 사업자 정보
+	Map<String, Object> getBookingPaymentCompany(String bkcId);
 	
 	//예약시 상품 시간 리스트
 	ArrayList<Map<String, Object>> getBookingProductTimeList(String bkcId);
 	//에약시 상품정보 확인
-	Map<String,Object> getBookingProductInfo(String bkpName);
+	Map<String,Object> getBookingProductInfo(String bkpName, String bkcId);
 	//상품예약 옵션 리스트
-	ArrayList<Map<String, Object>> getBookingProductOptionList(String bkpName);
+	ArrayList<Map<String, Object>> getBookingProductOptionList(Map<String, Object> paramMap);
 	//상품예약 시간 선택 페이지 
 	ArrayList<Map<String, Object>> getBookingProductSelectTime(String bkcId);
 	//예약업체 세부정보 지도

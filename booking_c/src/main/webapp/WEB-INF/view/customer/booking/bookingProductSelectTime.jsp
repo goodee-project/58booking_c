@@ -102,6 +102,8 @@
 					<div class="wrapper">
 						<div class="container">
 							<h1 class="fadeInUp"><span></span>날짜형 업체 상품 예약</h1>
+							<!-- 임시메뉴 -->
+							<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 						</div>
 						
 					</div>
@@ -160,6 +162,10 @@
 							<!-- /col -->
 							<aside class="col-lg-4" id="sidebar">
 							<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post">
+								<input type="hidden" name="bkcId" value="${bkcId }"> 
+								<input type="hidden" name="bkpMax" value="${bookingProductInfo.bkpMax}">
+								<input type="hidden" name="bkpPrice" value="${bookingProductInfo.bkpPrice}">
+								<input type="hidden" name="bkpName" value="${bkpName}">
 								<div class="box_detail booking">
 									<div class="price">
 										<span>날짜형 예약</span>
@@ -180,24 +186,16 @@
 											
 										</div>
 									</div>
-		
-									<div class="form-group clearfix">
-										<div class="custom-select-form">
-											<select class="wide" name="productTime">
-												<c:forEach var="bkp" items="${bookingProductTimeList }" varStatus="status" >
-													<option value="${bkp.bkpTime }">${bkp.bkpTime }</option>
-												</c:forEach>
-											</select>
-										</div>
-									</div>
+
 									<div class="form-group clearfix">
 										<div class="custom-select-form">
 											<c:forEach var="bkpo" items="${bookingProductOptionList }">
 												<input type="checkbox" name="option" value="${bkpo.bkpoPrice }">${bkpo.bkpoName }<br>
+												<input type="hidden" name="bkpoName" value="${bkpo.bkpoName }">
 											</c:forEach>
 										</div>
 									</div>
-									<input type="hidden" name="bkpMax" value="${bookingProductInfo.bkpMax}">
+									
 									<button type="submit" class=" add_top_30 btn_1 full-width purchase">예약</button>
 									
 								</div>
@@ -312,11 +310,11 @@
 				  minDate:new Date(),
 				  opens: 'left',
 				  locale: {
-					  cancelLabel: 'Clear'
+				        format: 'YYYY-MM-DD'
 				  }
 			  });
 			  $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
-				  $(this).val(picker.startDate.format('YY-MM-DD') + ' > ' + picker.endDate.format('YY-MM-DD'));
+				  $(this).val(picker.startDate.format('YYYY-MM-DD') + ' > ' + picker.endDate.format('YYYY-MM-DD'));
 			  });
 			  $('input[name="dates"]').on('cancel.daterangepicker', function(ev, picker) {
 				  $(this).val('');
@@ -396,6 +394,8 @@
 					<div class="wrapper">
 						<div class="container">
 							<h1 class="fadeInUp"><span></span>시간형 업체 상품 예약</h1>
+							<!-- 임시메뉴 -->
+							<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 						</div>
 						
 					</div>
@@ -456,6 +456,9 @@
 							
 							<aside class="col-lg-4" id="sidebar">
 								<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post">
+									<input type="hidden" name="bkcId" value="${bkcId }"> 
+									<input type="hidden" name="bkpMax" value="${bookingProductInfo.bkpMax}">
+									<input type="hidden" name="bkpName" value="${bkpName}">
 									<div class="box_detail booking">
 										<div class="price">
 											<span>시간형 예약</span>

@@ -9,7 +9,7 @@
 </head>
 <body>
 	<!-- 임시메뉴 -->
-	<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include><br>
 	<!-- 업체정보 공통 -->
 	<jsp:include page="/WEB-INF/view/customer/booking/bookingCompanyDetailCommon.jsp"></jsp:include>
 	
@@ -24,7 +24,7 @@
 				<td rowspan="2"><a href="${pageContext.request.contextPath }/customer/booking/bookingProductSelectTime?bkcId=${bkc.bkcId}&bkcName=${bkc.bkcName}&bkctNo=${bkc.bkctNo}&bkpName=${bkc.bkpName}">예약</a></td>
 			</tr>
 			<tr>
-				<td>가격 : ${bkc.bkpPrice}</td>
+				<td>가격 : ${bkc.bkpPrice}원</td>
 			</tr>
 		</c:forEach>
 	</table>

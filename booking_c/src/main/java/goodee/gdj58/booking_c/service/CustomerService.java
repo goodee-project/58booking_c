@@ -69,21 +69,36 @@ public class CustomerService {
 		return customerMapper.insertCustomer(customer);
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	//결제페이지 - 사업자 정보
+	public Map<String, Object> bookingPaymentCompany(String bkcId)
+	{
+		return customerMapper.getBookingPaymentCompany(bkcId);
+	}
 	//예약시 상품 시간 리스트
 	public List<Map<String, Object>> getBookingProductTimeList(String bkcId)
 	{
 		return customerMapper.getBookingProductTimeList(bkcId);
 	}
 	//에약시 상품정보 확인
-	public Map<String, Object> bookingProductInfo(String bkpName)
+	public Map<String, Object> bookingProductInfo(String bkpName, String bkcId)
 	{
-		return customerMapper.getBookingProductInfo(bkpName);
+		return customerMapper.getBookingProductInfo(bkpName, bkcId);
 	}
 	
 	//상품 예약 옵션 리스트
-	public List<Map<String, Object>> getBookingProductOptionList(String bkpName)
+	public List<Map<String, Object>> getBookingProductOptionList(String bkpName, String bkcId)
 	{
-		return customerMapper.getBookingProductOptionList(bkpName);
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("bkpName", bkpName);
+		paramMap.put("bkcId", bkcId);
+		return customerMapper.getBookingProductOptionList(paramMap);
 	}
 	
 	//상품 예약 시간 선택 페이지

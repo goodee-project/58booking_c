@@ -180,18 +180,27 @@ public class CustomerController {
 		return "/customer/loginCustomer";
 	}
 	
+	
+	
+	
+	
 	//결제페이지
 	@PostMapping("/customer/booking/bookingProductPayment")
 	public String bookingProductProductPayment(Model model
 			, HttpSession session
 			, HttpServletRequest request
+			, @RequestParam (value = "bkpPrice") String bkpPrice
+			, @RequestParam (value = "bkcId") String bkcId
+			, @RequestParam (value = "bkpoName") String bkpoName
+			, @RequestParam (value = "bkpName") String bkpName
 			, @RequestParam (value = "qtyInput") int qtyInput
 			, @RequestParam (value = "dates") String dates
-			, @RequestParam (value = "productTime") String productTime
+			, @RequestParam (value = "productTime", defaultValue = "") String productTime
 			, @RequestParam (value = "option", defaultValue = "0") ArrayList<Integer> option
 			, @RequestParam (value = "bkpMax") int bkpMax
 			)
 	{
+		//에약인원 초과시 이전페이지로 redirect
 		String referer = request.getHeader("Referer");
 		String msg = null;
 		if(qtyInput>bkpMax)
@@ -200,7 +209,18 @@ public class CustomerController {
 			return "redirect:" + referer+"&msg="+msg;
 		}
 		
+		//고객 세션정보
+		Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
+		//기업 정보
+		Map<String,Object> bookingPaymentCompany = customerService.bookingPaymentCompany(bkcId);
+		
 		int optionPrice = option.stream().mapToInt(Integer::intValue).sum();
+		model.addAttribute("loginCustomer",loginCustomer);
+		model.addAttribute("bookingPaymentCompany",bookingPaymentCompany);
+		model.addAttribute("bkpPrice",bkpPrice);
+		model.addAttribute("bkcId",bkcId);
+		model.addAttribute("bkpoName",bkpoName);
+		model.addAttribute("bkpName",bkpName);
 		model.addAttribute("qtyInput",qtyInput);
 		model.addAttribute("dates",dates);
 		model.addAttribute("productTime",productTime);
@@ -235,10 +255,10 @@ public class CustomerController {
 		List<Map<String, Object>> bookingProductTimeList= customerService.getBookingProductTimeList(bkcId);
 		
 		//예약 상품 정보
-		Map<String,Object> bookingProductInfo = customerService.bookingProductInfo(bkpName);
+		Map<String,Object> bookingProductInfo = customerService.bookingProductInfo(bkpName, bkcId);
 		
 		//예약상품 옵션 리스트
-		List<Map<String, Object>> bookingProductOptionList= customerService.getBookingProductOptionList(bkpName);
+		List<Map<String, Object>> bookingProductOptionList= customerService.getBookingProductOptionList(bkpName,bkcId);
 		
 		//예약업체별 시간or날짜 선택 
 		List<Map<String, Object>> bookingProductSelectTime = customerService.getBookingProductSelectTime(bkcId);

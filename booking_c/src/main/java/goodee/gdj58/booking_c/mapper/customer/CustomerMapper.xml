@@ -37,6 +37,11 @@
 			customer_id customerId
 			, customer_name customerName
 			, customer_nickname customerNickName
+			, customer_phone customerPhone
+			, customer_email customerEmail
+			, customer_point customerPoint
+			, customer_rank customerRank
+			, customer_pay customerPay
 		FROM customer
 		WHERE customer_id = #{customerId} AND customer_pw = PASSWORD(#{customerPw})
 	</select>
@@ -106,6 +111,19 @@
 			)
 	</insert>
 	
+	
+	
+	<!-- 결제페이지 - 사업자정보 -->
+	<select id="getBookingPaymentCompany" resultType="java.util.Map" parameterType="String">
+		SELECT booking_company_id bkcId
+				, booking_company_name bkcName
+				, booking_company_number bkcNumber
+				, booking_company_phone bkcPhone
+				, booking_company_address bkcAddress
+		FROM booking_company bkc
+		WHERE bkc.booking_company_id = #{bkcId}
+	</select>
+	
 	<!-- 예약시 예약시간 리스트-->
 	<select id="getBookingProductTimeList" resultType="java.util.Map" parameterType="String">
 		WITH RECURSIVE CTE  AS (
@@ -128,11 +146,11 @@
 				, bkp.booking_product_min_people bkpMin
 				, bkp.booking_product_price bkpPrice
 		FROM booking_product bkp
-		WHERE bkp.booking_product_name = #{bkpName}
+		WHERE bkp.booking_product_name = #{bkpName}  AND bkp.booking_company_id = #{bkcId}
 	
 	</select>	
 	<!-- 상품 예약 옵션 리스트 -->
-	<select id="getBookingProductOptionList" resultType="java.util.Map" parameterType="String">
+	<select id="getBookingProductOptionList" resultType="java.util.Map" parameterType="java.util.Map">
 		SELECT bkp.booking_product_no 
 				, bkp.booking_product_name bkpName
 				, bkp.booking_product_max_people bkpMax
@@ -142,7 +160,7 @@
 				, bkpo.booking_product_option_price bkpoPrice 
 		FROM booking_product bkp
 				INNER JOIN booking_product_option bkpo ON bkp.booking_product_no = bkpo.booking_product_no
-		WHERE bkp.booking_product_name = #{bkpName}
+		WHERE bkp.booking_product_name = #{bkpName} AND bkp.booking_company_id = #{bkcId}
 	</select>
 	
 	
@@ -150,12 +168,15 @@
 	<select id="getBookingProductSelectTime" resultType="java.util.Map" parameterType="String">
 		SELECT bkc.booking_company_id bkcId
 				, bkc.booking_company_name bkcName
-				, if(bkci.booking_company_img_origin_name IS NULL, '업체사진없음',bkci.booking_company_img_origin_name ) bkciOrigin
-				, bkcd.booking_company_type_content bkcdType
+				, if(bkci.booking_company_img_origin_name IS NULL, '기업사진없음',bkci.booking_company_img_origin_name ) bkciOrigin
+				, bkct.booking_company_type_content bkcdType
 				, bkct.group_no 
+				, bkcp.booking_product_no bkcProductNo
+				, bkcp.booking_product_name bkcProductName
 		FROM booking_company bkc 
+				INNER JOIN booking_product bkcp ON bkc.booking_company_id = bkcp.booking_company_id
 				INNER JOIN booking_company_detail bkcd ON bkc.booking_company_id = bkcd.booking_company_id
-				INNER JOIN booking_company_type bkct ON bkcd.booking_company_type_content = bkct.booking_company_type_content
+				INNER JOIN booking_company_type bkct ON bkcd.booking_company_type_no = bkct.booking_company_type_no
 				LEFT OUTER JOIN booking_company_img bkci ON bkc.booking_company_id = bkci.booking_company_id
 		WHERE bkc.booking_company_id = #{bkcId}
 		
@@ -201,7 +222,7 @@
 				, bkct.group_no bkctNo
 		FROM booking_company bkc
 			INNER JOIN booking_company_detail bkcd ON bkc.booking_company_id = bkcd.booking_company_id
-			INNER JOIN booking_company_type bkct ON bkcd.booking_company_type_content = bkct.booking_company_type_content
+			INNER JOIN booking_company_type bkct ON bkcd.booking_company_type_no = bkct.booking_company_type_no
 			INNER JOIN booking_product bkp ON bkc.booking_company_id = bkp.booking_company_id
 			LEFT OUTER  JOIN booking_product_img bkpi ON bkp.booking_product_no = bkpi.booking_product_no
 		WHERE bkc.booking_company_id = #{bkcId}
@@ -247,8 +268,9 @@
 					INNER JOIN booking_company_img bkci ON bkc.booking_company_id = bkci.booking_company_id
 				WHERE bkc.booking_company_id = #{bkcId} AND bkci.booking_company_img_level = #{bkciLevel})
 				 ) bkciOrigin
-			,(SELECT bkcd.booking_company_type_content bkcType
+			,(SELECT bkct.booking_company_type_content bkcType
 				FROM booking_company_detail bkcd
+					INNER JOIN booking_company_type bkct ON bkcd.booking_company_type_no = bkct.booking_company_type_no
 				WHERE booking_company_id = #{bkcId}) bkcType
 		FROM booking bk 
 			INNER JOIN booking_company bkc ON bk.booking_company_id = bkc.booking_company_id
@@ -260,56 +282,59 @@
 	<select id="bookingCompanyCount" resultType="int" parameterType="String">
 		SELECT COUNT(a.bkcName) count
 	
-		FROM ( SELECT  bkc.booking_company_id bkcId
-					 , bkc.booking_company_name bkcName
-					 , bkcd.booking_company_type_content bkcdType
-					 , if(bkci.booking_company_img_origin_name IS NULL,'업체사진없음',bkci.booking_company_img_origin_name) bkciOrigin
-					 , bkcd.booking_company_addition_service bkcdAddService
-					 , if(rv.review_memo IS NULL, '리뷰없음', rv.review_memo) rvMemo 
-					 , if(rv.star_rating IS NULL, '별점없음', rv.star_rating) rvRating
-					 , if(rvi.review_img_origin_name IS NULL, '리뷰사진없음', rvi.review_img_origin_name) rviOrigin
-					 , if(bkcd.booking_company_opentime &#60;= NOW() AND bkcd.booking_company_closetime >= NOW(), '영업중','영업종료') bkcOpen
-					 , bkci.booking_company_img_level bkciLevel
-				FROM booking_company bkc
-					INNER JOIN booking_company_detail bkcd ON bkc.booking_company_id = bkcd.booking_company_id
-					LEFT OUTER JOIN booking_company_img bkci ON bkc.booking_company_id = bkci.booking_company_id
-					INNER JOIN booking bk ON bkc.booking_company_id = bk.booking_company_id
-					LEFT OUTER JOIN review rv ON bk.booking_no = rv.booking_no
-					LEFT OUTER JOIN review_img rvi ON rv.booking_no = rvi.booking_no
+		FROM ( 	SELECT  bkc.booking_company_id bkcId
+				       , bkc.booking_company_name bkcName
+				       , bkct.booking_company_type_content bkcdType
+				       , if(bkci.booking_company_img_origin_name IS NULL,'업체사진없음',bkci.booking_company_img_origin_name) bkciOrigin
+				       , bkcd.booking_company_addition_service bkcdAddService
+				       , if(rv.review_memo IS NULL, '리뷰없음', rv.review_memo) rvMemo 
+				       , if(rv.star_rating IS NULL, '별점없음', rv.star_rating) rvRating
+				       , if(rvi.review_img_origin_name IS NULL, '리뷰사진없음', rvi.review_img_origin_name) rviOrigin
+				       , if(bkcd.booking_company_opentime &#60;= NOW() AND bkcd.booking_company_closetime >=NOW(), '영업중','영업종료') bkcRunning
+				       , bkci.booking_company_img_level bkciLevel
+				       , bkcd.booking_company_opentime bkcOpen
+				       , bkcd.booking_company_closetime bkcClose
+			      FROM booking_company bkc
+			         INNER JOIN booking_company_detail bkcd ON bkc.booking_company_id = bkcd.booking_company_id
+			         INNER JOIN booking_company_type bkct ON bkcd.booking_company_type_no = bkct.booking_company_type_no
+			         LEFT outer JOIN booking_company_img bkci ON bkc.booking_company_id = bkci.booking_company_id
+			         INNER JOIN booking bk ON bkc.booking_company_id = bk.booking_company_id
+			         left OUTER  JOIN review rv ON bk.booking_no = rv.booking_no
+			         LEFT OUTER JOIN review_img rvi ON rv.booking_no = rvi.booking_no
 				WHERE
-						((bkcd.booking_company_type_content LIKE  CONCAT('%',#{searchWord},'%')) OR (bkc.booking_company_name LIKE  CONCAT('%',#{searchWord},'%')))
+						((bkct.booking_company_type_content LIKE  CONCAT('%',#{searchWord},'%')) OR (bkc.booking_company_name LIKE  CONCAT('%',#{searchWord},'%')))
 						AND (bkcd.booking_company_addition_service LIKE  CONCAT('%',#{optionWord},'%')) 
 						AND (bkci.booking_company_img_level = 'Y' OR bkci.booking_company_img_level IS NULL)
 		     	GROUP BY bkc.booking_company_id
-				ORDER BY bkc.booking_company_name ASC 
+				ORDER BY bkc.booking_company_name DESC 
 			  )a
 	</select>
 	
 	<!-- 예약업체 리스트 출력 -->
 	<select id="getBookingCompanyList" resultType="java.util.Map" parameterType="java.util.Map">
 		SELECT  bkc.booking_company_id bkcId
-				 , bkc.booking_company_name bkcName
-				 , bkcd.booking_company_type_content bkcdType
-				 , if(bkci.booking_company_img_origin_name IS NULL,'업체사진없음',bkci.booking_company_img_origin_name) bkciOrigin
-				 , bkcd.booking_company_addition_service bkcdAddService
-				 , if(rv.review_memo IS NULL, '리뷰없음', rv.review_memo) rvMemo 
-				 , if(rv.star_rating IS NULL, '별점없음', rv.star_rating) rvRating
-				 , if(rvi.review_img_origin_name IS NULL, '리뷰사진없음', rvi.review_img_origin_name) rviOrigin
-				 , if(bkcd.booking_company_opentime &#60;= NOW() AND bkcd.booking_company_closetime >= NOW(), 'Open','Close') bkcRunning
-				 , bkci.booking_company_img_level bkciLevel
-				 , bkcd.booking_company_opentime bkcOpen
-           	     , bkcd.booking_company_closetime bkcClose
+		       , bkc.booking_company_name bkcName
+		       , bkct.booking_company_type_content bkcdType
+		       , if(bkci.booking_company_img_origin_name IS NULL,'업체사진없음',bkci.booking_company_img_origin_name) bkciOrigin
+		       , bkcd.booking_company_addition_service bkcdAddService
+		       , if(rv.review_memo IS NULL, '리뷰없음', rv.review_memo) rvMemo 
+		       , if(rv.star_rating IS NULL, '별점없음', rv.star_rating) rvRating
+		       , if(rvi.review_img_origin_name IS NULL, '리뷰사진없음', rvi.review_img_origin_name) rviOrigin
+		       , if(bkcd.booking_company_opentime &#60;= NOW() AND bkcd.booking_company_closetime >=NOW(), '영업중','영업종료') bkcRunning
+		       , bkci.booking_company_img_level bkciLevel
+		       , bkcd.booking_company_opentime bkcOpen
+		       , bkcd.booking_company_closetime bkcClose
 		FROM booking_company bkc
-			INNER JOIN booking_company_detail bkcd ON bkc.booking_company_id = bkcd.booking_company_id
-			LEFT OUTER JOIN booking_company_img bkci ON bkc.booking_company_id = bkci.booking_company_id
-			INNER JOIN booking bk ON bkc.booking_company_id = bk.booking_company_id
-			LEFT OUTER JOIN review rv ON bk.booking_no = rv.booking_no
-			LEFT OUTER JOIN review_img rvi ON rv.booking_no = rvi.booking_no
-		WHERE
-				((bkcd.booking_company_type_content LIKE  CONCAT('%',#{searchWord},'%')) OR (bkc.booking_company_name LIKE  CONCAT('%',#{searchWord},'%')))
+		   INNER JOIN booking_company_detail bkcd ON bkc.booking_company_id = bkcd.booking_company_id
+		   INNER JOIN booking_company_type bkct ON bkcd.booking_company_type_no = bkct.booking_company_type_no
+		   LEFT outer JOIN booking_company_img bkci ON bkc.booking_company_id = bkci.booking_company_id
+		   INNER JOIN booking bk ON bkc.booking_company_id = bk.booking_company_id
+		   left OUTER  JOIN review rv ON bk.booking_no = rv.booking_no
+		   LEFT OUTER JOIN review_img rvi ON rv.booking_no = rvi.booking_no
+		WHERE ((bkct.booking_company_type_content LIKE  CONCAT('%',#{searchWord},'%')) OR (bkc.booking_company_name LIKE  CONCAT('%',#{searchWord},'%')))
 				AND (bkcd.booking_company_addition_service LIKE  CONCAT('%',#{optionWord},'%')) AND (bkci.booking_company_img_level = 'Y' OR bkci.booking_company_img_level IS NULL)
      	GROUP BY bkc.booking_company_id
-		ORDER BY bkc.booking_company_name ASC 
+		ORDER BY bkc.booking_company_name DESC 
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 </mapper>
