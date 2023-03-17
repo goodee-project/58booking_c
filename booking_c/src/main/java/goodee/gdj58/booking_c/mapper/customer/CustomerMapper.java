@@ -12,6 +12,8 @@ import goodee.gdj58.booking_c.vo.TotalId;
 
 @Mapper
 public interface CustomerMapper {
+	// 예약 내역 상세보기
+	ArrayList<Map<String, Object>> getBookingOne(String customerId, String bookingCompanyName);
 	// 고객 비밀번호 찾기
 	int updateCustomerPw(Customer customer);
 	// 고객 아이디 찾기

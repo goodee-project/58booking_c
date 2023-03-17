@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import goodee.gdj58.booking_c.service.CustomerService;
 import goodee.gdj58.booking_c.util.FontColor;
+import goodee.gdj58.booking_c.vo.Company;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,23 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CustomerController {
 	@Autowired CustomerService customerService;
+	
+	// 예약내역 상세보기
+	@GetMapping("/bookingOne")
+	public String getBookingOne(Model model, Company company
+								, @RequestParam(value="customerId") String customerId
+								, @RequestParam(value="companyName") String companyName) {
+		
+		List<Map<String, Object>> list = customerService.getBookingOne(customerId, companyName);
+
+		log.debug(FontColor.CYAN+"customerControllerId :"+customerId);
+		log.debug(FontColor.CYAN+"list :"+list);
+		log.debug(FontColor.CYAN+"customerControllercompanyName :"+companyName);
+		
+		model.addAttribute("companyName", companyName);
+		model.addAttribute("list", list);
+		return "customer/bookingOne";
+	}
 	// 고객 비밀번호 수정
 	@GetMapping("/log/modifyPw")
 	public String findCustomerPw(Model model
@@ -43,13 +61,14 @@ public class CustomerController {
 		return "customer/modifyPw";
 	}
 	@PostMapping("/log/modifyPw")
-	public String updateCustomerPw(Customer customer) {
+	public String updateCustomerPw(Customer customer, HttpSession session) {
 		int updateRow = customerService.updateCustomerPw(customer.getCustomerEmail(), customer.getCustomerId(), customer.getCustomerPw());
 		if(updateRow == 0) {
 			log.debug(FontColor.CYAN+"패스워드 변경 실패");
 			return "redirect:/customer/findPw";
 		}
 		log.debug(FontColor.CYAN+"패스워드 변경 성공");
+		session.invalidate(); // 비밀번호 변경시 로그아웃 처리
 		return "redirect:/log/loginCustomer";
 	}
 	

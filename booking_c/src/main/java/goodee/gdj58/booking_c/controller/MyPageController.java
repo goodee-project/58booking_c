@@ -1,5 +1,6 @@
 package goodee.gdj58.booking_c.controller;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -310,7 +311,7 @@ public class MyPageController {
 		
 		// 고객 로그인
 		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
-		
+
 		// 디버깅
 		log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
 		log.debug(FontColor.YELLOW + "currentPage : " + currentPage);
@@ -319,7 +320,7 @@ public class MyPageController {
 		
 		// 예약 리스트
 		List<Map<String, Object>> bookingList = myPageService.bookingList(customer.getCustomerId(), bookingState, dateSort, currentPage, rowPerPage);
-		
+
 		// 데이터 개수
 		int bookingCnt = myPageService.bookingCnt(customer.getCustomerId(), bookingState);
 		
@@ -342,6 +343,7 @@ public class MyPageController {
 		boolean next = (endPage == lastPage) ? false : true; // 다음 버튼 활성화
 		
 		// 데이터 담아서 view에서 출력
+		model.addAttribute("customerId", customer.getCustomerId());
 		model.addAttribute("bookingList", bookingList);
 		model.addAttribute("bookingState", bookingState);
 		model.addAttribute("currentPage", currentPage);

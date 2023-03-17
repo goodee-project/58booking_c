@@ -22,6 +22,7 @@
 				<td><input type="password" name="customerPwCk" id="newPwCk"></td>
 			</tr>
 		</table>
+		<span>문제가 생겼나요? <a href="">자주묻는질문</a></span><br>
 		<button type="button" id="modifyBtn">비밀번호 변경</button>
 	</form>
 	<script>

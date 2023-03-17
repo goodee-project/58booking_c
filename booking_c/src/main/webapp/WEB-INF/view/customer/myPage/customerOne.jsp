@@ -186,7 +186,7 @@
 												<th>비밀번호</th>
 												<td>
 													****
-													 
+													<button type="button" onclick="location.href='${pageContext.request.contextPath}/log/modifyPw?email=${customerOne.customerEmail}&id=${customerOne.customerId}'">변경</button> 
 												</td>
 											</tr>
 											<tr>

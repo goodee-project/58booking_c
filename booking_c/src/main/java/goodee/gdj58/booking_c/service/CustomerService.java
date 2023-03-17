@@ -20,12 +20,20 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class CustomerService {
 	@Autowired private CustomerMapper customerMapper;
+	
+	// 예약내역 상세보기
+	public List<Map<String, Object>> getBookingOne(String customerId, String companyName) {
+		return customerMapper.getBookingOne(customerId, companyName);
+	}
+	
 	// 고객 비밀번호 찾기(수정)
 	public int updateCustomerPw(String customerEmail, String customerId, String customerPw) {
+		
 		Customer customer = new Customer();
 		customer.setCustomerEmail(customerEmail);
 		customer.setCustomerId(customerId);
 		customer.setCustomerPw(customerPw);
+		
 		log.debug(FontColor.CYAN+customerEmail+"<-이메일");
 		log.debug(FontColor.CYAN+customerId+"<-아이디");
 		log.debug(FontColor.CYAN+customerPw+"<-패스워드");
