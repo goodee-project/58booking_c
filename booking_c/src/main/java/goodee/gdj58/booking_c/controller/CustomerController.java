@@ -37,18 +37,26 @@ public class CustomerController {
 	@GetMapping("/bookingOne")
 	public String getBookingOne(Model model, Company company
 								, @RequestParam(value="customerId") String customerId
-								, @RequestParam(value="companyName") String companyName) {
+								, @RequestParam(value="companyName") String companyName
+								, @RequestParam(value="requestDate") String requestDate
+								, @RequestParam(value="bkcId") String bkcId) {
 		
-		List<Map<String, Object>> list = customerService.getBookingOne(customerId, companyName);
-
+		List<Map<String, Object>> list = customerService.getBookingOne(customerId, companyName, requestDate);
+		List<Map<String, Object>> companyMap = customerService.getBookingCompanyDetailMap(bkcId);
+		
 		log.debug(FontColor.CYAN+"customerControllerId :"+customerId);
 		log.debug(FontColor.CYAN+"list :"+list);
 		log.debug(FontColor.CYAN+"customerControllercompanyName :"+companyName);
+		log.debug(FontColor.CYAN+"customerControllerrequestDate :"+requestDate);
+		log.debug(FontColor.CYAN+"customerControllercompanyMap :"+companyMap);
 		
+		model.addAttribute("companyMap", companyMap);
+		model.addAttribute("requestDate", requestDate);
 		model.addAttribute("companyName", companyName);
 		model.addAttribute("list", list);
 		return "customer/bookingOne";
 	}
+	
 	// 고객 비밀번호 수정
 	@GetMapping("/log/modifyPw")
 	public String findCustomerPw(Model model

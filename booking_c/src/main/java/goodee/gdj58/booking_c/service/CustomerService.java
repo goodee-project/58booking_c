@@ -25,8 +25,8 @@ public class CustomerService {
 	@Autowired private CustomerMapper customerMapper;
 	
 	// 예약내역 상세보기
-	public List<Map<String, Object>> getBookingOne(String customerId, String companyName) {
-		return customerMapper.getBookingOne(customerId, companyName);
+	public List<Map<String, Object>> getBookingOne(String customerId, String companyName, String requestDate) {
+		return customerMapper.getBookingOne(customerId, companyName, requestDate);
 	}
 	
 	// 고객 비밀번호 찾기(수정)
