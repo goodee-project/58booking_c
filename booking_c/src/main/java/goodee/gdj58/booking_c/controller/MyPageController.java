@@ -1,7 +1,10 @@
 package goodee.gdj58.booking_c.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import goodee.gdj58.booking_c.service.BookingService;
@@ -21,6 +25,7 @@ import goodee.gdj58.booking_c.util.FontColor;
 import goodee.gdj58.booking_c.vo.Booking;
 import goodee.gdj58.booking_c.vo.BookingCancel;
 import goodee.gdj58.booking_c.vo.Customer;
+import goodee.gdj58.booking_c.vo.CustomerImg;
 import goodee.gdj58.booking_c.vo.PaySaveHistory;
 import goodee.gdj58.booking_c.vo.PointSaveHistory;
 import goodee.gdj58.booking_c.vo.Report;
@@ -33,14 +38,64 @@ public class MyPageController {
 	@Autowired BookingService bookingService;
 	@Autowired PayPointService payPointService;
 	
-	// 고객 정보 수정
+	// 고객 정보(사진) 수정
 	@PostMapping("/customer/myPage/updateCustomerOne")
 	public String updateCustomerOne(HttpSession session
-								, Customer customer) {
+								, HttpServletRequest request
+								, Customer customer
+								, @RequestParam("file") MultipartFile file
+								, @RequestParam("fileName") String fileName) {
 		
-		int row = myPageService.updateCustomerOne(customer);
-		if (row == 0) {
-			log.debug(FontColor.YELLOW + "정보 수정 실패");
+		// 새로운 파일이 등록되었는지 확인
+		if(file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
+			
+			// 경로
+			String path = request.getServletContext().getRealPath("/upload/");
+			
+			new File(path + request.getParameter("")).delete();
+			
+			// 프로필 사진 수정용
+			String fileRealName = file.getOriginalFilename(); // 파일명
+			String kind = file.getContentType(); // 파일종류
+			long fileSize = file.getSize(); // 파일사이즈
+			
+			// 디버깅
+			log.debug(FontColor.YELLOW + "fileRealName : " + fileRealName);
+
+			// 고유 랜덤 문자 생성
+			UUID uuid = UUID.randomUUID();
+			String[] uuids = uuid.toString().split("-");
+			String uniqueName = uuids[0];
+			
+			// 경로에 사진 업로드
+			File saveFile = new File(path + "\\" + uniqueName + fileRealName);
+			
+			try {
+				// 실제 저장 메서드
+				file.transferTo(saveFile);
+			} catch(IllegalStateException e) {
+				e.printStackTrace();
+			} catch(IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			// 기존 파일 삭제
+			new File(path + "\\" + fileName).delete();
+			
+			String saveName = uniqueName + fileRealName;
+			
+			// 사진 vo에 저장
+			CustomerImg img = new CustomerImg();
+			img.setCustomerId(customer.getCustomerId());
+			img.setCustomerImgKind(kind);
+			img.setCustomerImgOriginName(fileRealName);
+			img.setCustomerImgSaveName(saveName);
+			img.setCustomerImgSize(fileSize);
+			
+			int row = myPageService.updateCustomerOne(customer, img);
+			if (row == 0) {
+				log.debug(FontColor.YELLOW + "정보 수정 실패");
+			}
 		}
 		
 		return "redirect:/customer/myPage/customerOne";

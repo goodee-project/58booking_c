@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.booking_c.mapper.myPage.MyPageMapper">
+	<!-- 고객 프로필사진 수정 -->
+	<update id="updateCustomerImg" parameterType="goodee.gdj58.booking_c.vo.CustomerImg">
+		UPDATE customer_img
+		SET customer_img_save_name = #{customerImgSaveName}
+			, customer_img_origin_name = #{customerImgOriginName}
+			, customer_img_kind = #{customerImgKind}
+			, customer_img_size = #{customerImgSize}
+		WHERE customer_id = #{customerId}
+	</update>
+
 	<!-- 고객 정보 수정 -->
 	<update id="updateCustomerOne" parameterType="goodee.gdj58.booking_c.vo.Customer">
 		UPDATE customer 
@@ -242,7 +252,7 @@
 			, c.createdate createdate
 			, ci.customer_img_save_name customerImgSaveName
 			, ci.customer_img_origin_name customerImgOriginName
-		FROM customer c INNER JOIN customer_img ci
+		FROM customer c LEFT OUTER JOIN customer_img ci
 		ON c.customer_id = ci.customer_id
 		WHERE c.customer_id = #{customerId}
 	</select>

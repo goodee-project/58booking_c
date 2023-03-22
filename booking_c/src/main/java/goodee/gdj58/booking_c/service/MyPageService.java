@@ -10,19 +10,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.booking_c.mapper.myPage.MyPageMapper;
 import goodee.gdj58.booking_c.mapper.payPoint.PayPointMapper;
+import goodee.gdj58.booking_c.util.FontColor;
 import goodee.gdj58.booking_c.vo.Customer;
+import goodee.gdj58.booking_c.vo.CustomerImg;
 import goodee.gdj58.booking_c.vo.PaySaveHistory;
 import goodee.gdj58.booking_c.vo.Report;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 public class MyPageService {
 	@Autowired private MyPageMapper myPageMapper;
 	@Autowired private PayPointMapper payPointMapper;
-	
 	// 고객 정보 수정
-	public int updateCustomerOne(Customer customer) {
-		return myPageMapper.updateCustomerOne(customer);
+	public int updateCustomerOne(Customer customer, CustomerImg customerImg) {
+		int row = 0;
+		int row2 = 0;
+		row = myPageMapper.updateCustomerOne(customer);
+		if(row == 1) {
+			row2 = myPageMapper.updateCustomerImg(customerImg);
+			if(row2 == 0) {
+				log.debug(FontColor.YELLOW + "고객 정보 수정 실패");
+			}
+		}
+		return row2;
 	}
 	
 	// 회원 탈퇴
@@ -127,6 +139,6 @@ public class MyPageService {
 	
 	// 고객 상세 정보
 	public Map<String, Object> customerOne(String customerId) {
-		return myPageMapper.customerOne("cus1");
+		return myPageMapper.customerOne(customerId);
 	}
 }

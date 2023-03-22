@@ -24,7 +24,7 @@
 	    <link href="../../resources/css/custom.css" rel="stylesheet">
 	    <style>
 	    	th {
-	    		width: 200px;
+	    		width: 100px;
 	    	}
 	    	
 	    	tr {
@@ -43,9 +43,10 @@
 	    		$('#modifyBtn').click(function() {
 	    			var html = `<table class="table table-borderless">
 									<tr>
-										<td rowspan="13" style="width: 100px;">
-											<img src="${pageContext.request.contextPath}/upload/${customerOne.customerImgOriginName}" width="150" height="150">
-											<button>사진 수정</button>
+										<td rowspan="13" style="width: 220px;">
+											<img id="preview" src="${pageContext.request.contextPath}/upload/${customerOne.customerImgSaveName}" width="150" height="150">
+											<input type="hiiden" name="fileName" value="${customerOne.customerImgSaveName}">
+											<input type="file" name="file" id="file" style="width: 220px;">
 										</td>
 										<th>아이디</th>
 										<td>
@@ -129,6 +130,23 @@
 		    			$('input[name=customerPhone]').val($('#customerPhone1').val()+$('#customerPhone2').val()+$('#customerPhone3').val());
 		    			$('#modifyForm').submit();
 		    		});
+	    			
+	    			function readURL(input) {
+	    				if (input.files && input.files[0]) {
+	    					var reader = new FileReader();
+	    					reader.onload = function(e) {
+	    						$('#preview').attr('src', e.target.result); 
+	    					}
+	    					reader.readAsDataURL(input.files[0]);
+	    				}
+	    			}
+
+	    			$(":input[name='file']").change(function() {
+	    				if( $(":input[name='file']").val() == '' ) {
+	    					$('#preview').attr('src' , '');  
+	    				}
+	    				readURL(this);
+	    			});
 	    		});
 	    	});
 	    	function postCode() {
@@ -180,11 +198,11 @@
 									<div style="float: left;">
 										<h3 style="font-weight: bold;">내 정보</h3>
 									</div>
-									<form action="${pageContext.request.contextPath}/customer/myPage/updateCustomerOne" method="post" id="modifyForm">
+									<form action="${pageContext.request.contextPath}/customer/myPage/updateCustomerOne" method="post" id="modifyForm" enctype="multipart/form-data">
 										<table class="table table-borderless">
 											<tr>
-												<td rowspan="13" style="width: 100px;">
-													<img src="${pageContext.request.contextPath}/upload/${customerOne.customerImgOriginName}" width="150" height="150">
+												<td rowspan="13" style="width: 220px;">
+													<img src="${pageContext.request.contextPath}/upload/${customerOne.customerImgSaveName}" width="150" height="150">
 												</td>
 												<th>아이디</th>
 												<td>${customerOne.customerId}</td>

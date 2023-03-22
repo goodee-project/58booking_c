@@ -38,7 +38,7 @@
 									<table class="table table-borderless">
 										<tr>
 											<td rowspan="2" style="width: 300px;">
-												<img src="${pageContext.request.contextPath}/upload/${customerOne.customerImgOriginName}" width="200" height="200">
+												<img src="${pageContext.request.contextPath}/upload/${customerOne.customerImgSaveName}" width="200" height="200">
 											</td>
 											<td>
 												이름 : ${customerOne.customerName}
