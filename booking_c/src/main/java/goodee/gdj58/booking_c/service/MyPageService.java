@@ -20,6 +20,11 @@ public class MyPageService {
 	@Autowired private MyPageMapper myPageMapper;
 	@Autowired private PayPointMapper payPointMapper;
 	
+	// 고객 정보 수정
+	public int updateCustomerOne(Customer customer) {
+		return myPageMapper.updateCustomerOne(customer);
+	}
+	
 	// 회원 탈퇴
 	public int deactiveCustomer(Customer customer, PaySaveHistory paySaveHistory) {
 		int row = 0;

@@ -1,10 +1,8 @@
 package goodee.gdj58.booking_c.controller;
 
-import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Map;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -34,6 +32,19 @@ public class MyPageController {
 	@Autowired MyPageService myPageService;
 	@Autowired BookingService bookingService;
 	@Autowired PayPointService payPointService;
+	
+	// 고객 정보 수정
+	@PostMapping("/customer/myPage/updateCustomerOne")
+	public String updateCustomerOne(HttpSession session
+								, Customer customer) {
+		
+		int row = myPageService.updateCustomerOne(customer);
+		if (row == 0) {
+			log.debug(FontColor.YELLOW + "정보 수정 실패");
+		}
+		
+		return "redirect:/customer/myPage/customerOne";
+	}
 	
 	// 회원 탈퇴
 	@GetMapping("/customer/myPage/deactiveCustomer")
@@ -100,7 +111,11 @@ public class MyPageController {
 	
 	// 페이 충전
 	@PostMapping("/customer/pay/insertPay")
-	public String insertPay(HttpSession session, RedirectAttributes redirectAttr, PaySaveHistory paySaveHistory, @RequestParam(value = "state") String state, HttpServletRequest request) {
+	public String insertPay(HttpSession session
+						, RedirectAttributes redirectAttr
+						, PaySaveHistory paySaveHistory
+						, @RequestParam(value = "state") String state
+						, HttpServletRequest request) {
 		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		
 		// 디버깅

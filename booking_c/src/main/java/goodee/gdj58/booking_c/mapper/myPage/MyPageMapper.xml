@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.booking_c.mapper.myPage.MyPageMapper">
+	<!-- 고객 정보 수정 -->
+	<update id="updateCustomerOne" parameterType="goodee.gdj58.booking_c.vo.Customer">
+		UPDATE customer 
+		SET customer_nickname = #{customerNickname}
+			, customer_phone = #{customerPhone}
+			, customer_postcode = #{customerPostcode}
+			, customer_address = #{customerAddress}
+		WHERE customer_id = #{customerId}
+	</update>
+
 	<!-- 회원 탈퇴 시 보유 페이 0 -->
 	<update id="updatePay" parameterType="goodee.gdj58.booking_c.vo.PaySaveHistory">
 		UPDATE customer
@@ -183,6 +193,7 @@
 	<select id="bookingList" resultType="map" parameterType="map">
 		SELECT
 			b.booking_no bookingNo
+			, b.booking_company_id bkcId
 			, bc.booking_company_name companyName
 			, bp.booking_product_name productName
 			, b.booking_date bookingDate
@@ -206,6 +217,7 @@
 		<if test="bookingState != null || bookingState != ''">
 			AND b.booking_state LIKE CONCAT('%', #{bookingState}, '%')
 		</if>
+		GROUP BY b.booking_request_date
 		<if test="dateSort == 'DESC'"> ORDER BY  b.booking_date DESC </if>
 		<if test="dateSort == 'ASC'"> ORDER BY  b.booking_date ASC </if>
 	</select>
