@@ -31,6 +31,7 @@
 		if($('#point').val() > ${loginCustomer.customerPoint})
 			{
 				alert('보유 포인트 초과');
+				$('#point').val(0); 
 				return;
 			} 
 		var totalCount = ${rankDiscount + optionPrice};
@@ -52,15 +53,20 @@
 			}
 		});
 		
-		var msg = "<c:out value='${msg}'/>";
-		if(msg != '') {
-			alert(msg);
-		}
-		
+		$('#payBtn').click(function(){
+		var result = confirm("충전페이지로 이동합니다");
+			
+		if(result)
+			{
+			 	location.replace('${pageContext.request.contextPath}/customer/pay/payList');
+				return;
+			}
+		else
+			{
+				return;
+			}
+		})
 
-		$('#payBtn').click(function() {
-			alert("충전 페이지로 이동합니다.");
-		});
 	});
 	</script>
 <title> </title>
@@ -68,40 +74,58 @@
 <body>
 	<!-- 임시메뉴 -->
 	<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include><br><br>
-	<span>결제 상세페이지 </span><br>
-	<span>상품명 : ${bkpName } - ${bkpPrice }원 </span><br>
-	<span>인원 : ${qtyInput }</span><br>
-	<span>날짜 : ${dates}</span><br>
-	<c:if test="${productTime != ''}">
-		<span>시간 : ${productTime}</span><br>
-	</c:if>
-	<span>옵션 : ${bkpoName } - ${optionPrice}원</span><br><br><br>
 	
-	<span>기업명 : ${bookingPaymentCompany.bkcName}</span><br>
-	<span>사업자번호 : ${bookingPaymentCompany.bkcNumber}</span><br>
-	<span>전화번호 : ${bookingPaymentCompany.bkcPhone}</span><br>
-	<span>주소 : ${bookingPaymentCompany.bkcAddress}</span><br><br><br>
-	
-	<span>예약자 정보</span><br>
-	<span>예약자 : ${loginCustomer.customerName }</span><br>
-	<span>전화번호 : ${loginCustomer.customerPhone }</span><br>
-	<span>이메일 : ${loginCustomer.customerEmail }</span><br><br><br>
-	
-	<span>결제</span><br>
-	<span>상품금액 : ${rankDiscount +  optionPrice}원 </span><br>
-	<span>보유 포인트 : ${loginCustomer.customerPoint}P</span><br>
-	<span>사용 포인트 : <input type="text" name="point" id="point" value="10">P &nbsp;
-				<button type="button" id="pointBtn">사용</button>	
-	</span><br>
-	<span>회원등급 : ${loginCustomer.customerRank} </span><br>
-	<span>페이잔액 : ${loginCustomer.customerPay}P 
-			<a href="${pageContext.request.contextPath}/customer/pay/payList" class="btn_1" id="payBtn">충전하기</a>
-	</span><br>
-	
-	<span>총결제 금액 : 
-			<input type="text" name="finalCount" id="finalCount" value="${rankDiscount +  optionPrice}">원 
-	</span><br>
-	
+	<form>
+		<span>${bkpName } 결제 상세페이지 </span><br>
+		<span>날짜 : ${dates}</span><br>
+		<c:if test="${productTime != ''}">
+			<span>시간 : ${productTime}</span><br>
+		</c:if>
+		<span>인원 : ${qtyInput }</span><br>
+		<span>상품가격 : ${bkpPrice }원 </span><br>
+		<span>선택 옵션</span><br>
+		
+		
+		
+		
+		<c:forEach var="tbkpoNo" items="${bookingOptionList }" varStatus="status">
+			<c:forEach var="bkpoNo" items="${option }" varStatus="status">
+					<c:if test="${tbkpoNo.optionNo ==bkpoNo }">
+						- ${tbkpoNo.optionName}<br>
+					</c:if>
+			</c:forEach>
+		</c:forEach>		
+		
+		<span>총 옵션 가격 : ${optionPrice}원 </span><br><br><br>
+		
+		<span>기업명 : ${bookingPaymentCompany.bkcName}</span><br>
+		<span>사업자번호 : ${bookingPaymentCompany.bkcNumber}</span><br>
+		<span>전화번호 : ${bookingPaymentCompany.bkcPhone}</span><br>
+		<span>주소 : ${bookingPaymentCompany.bkcAddress}</span><br><br><br>
+		
+		<span>예약자 정보</span><br>
+		<span>예약자 : ${loginCustomer.customerName }</span><br>
+		<span>전화번호 : ${loginCustomer.customerPhone }</span><br>
+		<span>이메일 : ${loginCustomer.customerEmail }</span><br><br><br>
+		
+		<span>결제</span><br>
+		<span>상품금액 : ${rankDiscount +  optionPrice}원 </span><br>
+		<span>보유 포인트 : ${loginCustomer.customerPoint}P</span><br>
+		<span>사용 포인트 : <input type="text" name="point" id="point" value="10">P &nbsp;
+					<button type="button" id="pointBtn">사용</button>	
+		</span><br>
+		<span>회원등급 : ${loginCustomer.customerRank} </span><br>
+		<span>페이잔액 : ${loginCustomer.customerPay}P 
+				<button type="button" class="btn_1" id="payBtn">충전하기</button>
+		</span><br>
+		
+		<span>총결제 금액 : 
+				<input type="text" name="finalCount" id="finalCount" value="${rankDiscount +  optionPrice}">원 
+		</span><br>
+		
+		<button type="submit">결제하기</button>
+	</form>
+		
 	
 	
 	

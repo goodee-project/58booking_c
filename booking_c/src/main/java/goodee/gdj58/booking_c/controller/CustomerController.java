@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import goodee.gdj58.booking_c.service.CustomerService;
 import goodee.gdj58.booking_c.util.FontColor;
+import goodee.gdj58.booking_c.vo.BookingOption;
 import goodee.gdj58.booking_c.vo.Company;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
@@ -215,10 +216,13 @@ public class CustomerController {
 			, @RequestParam (value = "qtyInput") int qtyInput
 			, @RequestParam (value = "dates") String dates
 			, @RequestParam (value = "productTime", defaultValue = "") String productTime
-			, @RequestParam (value = "option", defaultValue = "0") ArrayList<Integer> option
+			, @RequestParam (value = "option", defaultValue = "") ArrayList<Integer> option
 			, @RequestParam (value = "bkpMax") int bkpMax
+			, @RequestParam (value = "bkpNo") int bkpNo
 			)
 	{
+		log.debug(FontColor.RED + option.size() + "<---option");
+		
 		//에약인원 초과시 이전페이지로 redirect
 		String referer = request.getHeader("Referer");
 		String msg = null;
@@ -256,10 +260,13 @@ public class CustomerController {
 		log.debug(FontColor.RED+bkpPrice+"<---상품 가격");
 		log.debug(FontColor.RED+rankDiscount+"<---랭크 할인 가격");
 		
+		//옵션 리스트
+		List<BookingOption> bookingOptionList = customerService.bookingOptionList();
+		
 		//기업 정보
 		Map<String,Object> bookingPaymentCompany = customerService.bookingPaymentCompany(bkcId);
 		
-		int optionPrice = option.stream().mapToInt(Integer::intValue).sum();
+		int optionPrice = customerService.totalOptionPrice(bkpNo, option);
 		model.addAttribute("loginCustomer",loginCustomer);
 		model.addAttribute("bookingPaymentCompany",bookingPaymentCompany);
 		model.addAttribute("rankDiscount",rankDiscount);
@@ -271,6 +278,8 @@ public class CustomerController {
 		model.addAttribute("dates",dates);
 		model.addAttribute("productTime",productTime);
 		model.addAttribute("optionPrice",optionPrice);
+		model.addAttribute("option",option);
+		model.addAttribute("bookingOptionList",bookingOptionList);
 		return "customer/booking/bookingProductPayment";
 	}
 	

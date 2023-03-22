@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import goodee.gdj58.booking_c.vo.BookingOption;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
 import goodee.gdj58.booking_c.vo.TotalId;
@@ -29,9 +30,15 @@ public interface CustomerMapper {
 	// 고객 회원가입
 	public int insertCustomer(Customer customer);
 	
+	
+	
+	
+	//옵션리스트
+	ArrayList<BookingOption> getBookingOptionList();
 	//결제페이지 - 사업자 정보
 	Map<String, Object> getBookingPaymentCompany(String bkcId);
-	
+	//결제 페이지 상품 옵션 가격구하기
+	Integer totalOptionPrice(int bkpNo, ArrayList<Integer> paramMap);
 	//예약시 상품 시간 리스트
 	ArrayList<Map<String, Object>> getBookingProductTimeList(String bkcId);
 	//에약시 상품정보 확인

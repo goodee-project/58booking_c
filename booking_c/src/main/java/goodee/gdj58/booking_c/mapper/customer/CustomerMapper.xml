@@ -2,50 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="goodee.gdj58.booking_c.mapper.customer.CustomerMapper">
-	<!-- 예약내역 상세보기 -->
-	<select id="getBookingOne" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT
-			b.customer_id customerId
-			, b.booking_company_id bkCompanyId
-			, b.booking_date bkDate
-			, b.booking_request_date bkRequestDate
-			, b.product_no productNo
-			, b.option_no optionNo
-			, b.booking_price kPrice
-			, b.booking_use_point bkUsePoint
-			, b.booking_rank_discount bkRankDiscount
-			, b.booking_total_price bkTotalPrice
-			, b.booking_state bkState
-			, b.booking_people bkPeople
-			, bp.booking_product_no bkProductNo
-			, bp.booking_company_id bkCompanyId
-			, bp.booking_product_name bkProductName
-			, bp.booking_product_price bkProductPrice
-			, bpo.booking_product_no bkProductNo
-			, bpo.booking_product_option_name bkProductOptionName
-			, bpo.booking_product_option_memo bkProductOptionMemo
-			, bpo.booking_product_option_price bkProductOptionPrice
-			, bkc.booking_company_id bkCompanyId
-			, bkc.booking_company_name bkCompanyName
-			, bkc.booking_company_ceo bkCompanyCeo
-			, bkc.booking_company_phone bkCompanyPhone
-			, bkc.booking_company_address bkCompanyAddress
-			, c.customer_id customerId
-			, c.customer_name customerName
-			, c.customer_phone customerPhone
-			, c.customer_email customerEmail
-			FROM booking b
-			LEFT OUTER JOIN booking_product bp
-			ON b.booking_company_id = bp.booking_company_id
-			LEFT OUTER JOIN booking_product_option bpo
-			ON bp.booking_product_no = bpo.booking_product_no
-			LEFT OUTER JOIN booking_company bkc
-			ON bp.booking_company_id = bkc.booking_company_id
-			LEFT OUTER JOIN customer c
-			ON b.customer_id = c.customer_id
-			WHERE b.customer_id = #{customerId} AND bkc.booking_company_name = #{bookingCompanyName}		
-	</select>
-	
 	<!-- 패스워드 찾기(수정) -->
 	<update id="updateCustomerPw" parameterType="goodee.gdj58.booking_c.vo.Customer">
 		UPDATE customer
@@ -157,6 +113,53 @@
 	
 	
 	
+	
+	
+	
+	<!-- 옵션 리스트 -->
+	<select id="getBookingOptionList" resultType="java.util.Map">
+		SELECT booking_product_option_no optionNo
+			, booking_product_option_name optionName
+		FROM booking_product_option bkpo
+	</select>
+
+	<!-- 결제 페이지 상품 옵션 가격구하기 -->
+	<select id="totalOptionPrice" resultType="int" parameterType="java.util.Map">
+				SELECT 
+		<choose>
+			<when test="!paramMap.isEmpty()">
+				SUM(bkpo.booking_product_option_price) sumOptionPrice
+				FROM booking_product_option bkpo
+				WHERE bkpo.booking_product_no = #{bkpNo} 
+				<foreach item="bkpoNo" collection="paramMap" open="AND bkpo.booking_product_option_no IN (" close=")" separator=",">
+							#{bkpoNo}
+				</foreach>
+			</when>
+			<otherwise>
+				if(bkpo.booking_product_option_price IS NULL,0,0) sumOptionPrice
+				FROM booking_product_option bkpo
+				WHERE bkpo.booking_product_no = #{bkpNo} 
+				GROUP BY sumOptionPrice
+			</otherwise>
+		</choose>
+		
+<!-- 		<if test="paramMap == null or paramMap == 0">
+			SELECT if(bkpo.booking_product_option_price IS NULL,0,0) sumOptionPrice
+			FROM booking_product_option bkpo
+			WHERE bkpo.booking_product_no = #{bkpNo} 
+			GROUP BY sumOptionPrice
+		</if>
+		<if test="paramMap != null or paramMap != 0">
+		SELECT SUM(bkpo.booking_product_option_price) sumOptionPrice
+		FROM booking_product_option bkpo
+		WHERE bkpo.booking_product_no = #{bkpNo} 
+
+			<foreach item="bkpoNo" collection="paramMap" open="AND bkpo.booking_product_option_no IN (" close=")" separator=",">
+				#{bkpoNo}
+			</foreach>
+		</if> -->
+	</select>
+	
 	<!-- 결제페이지 - 사업자정보 -->
 	<select id="getBookingPaymentCompany" resultType="java.util.Map" parameterType="String">
 		SELECT booking_company_id bkcId
@@ -185,7 +188,8 @@
 	
 	<!-- 에약시 상품정보 확인 -->
 	<select id="getBookingProductInfo" resultType="java.util.Map" parameterType="String">
-		SELECT bkp.booking_product_name bkpName
+		SELECT  bkp.booking_product_no bkpNo
+				, bkp.booking_product_name bkpName
 				, bkp.booking_product_max_people bkpMax
 				, bkp.booking_product_min_people bkpMin
 				, bkp.booking_product_price bkpPrice
@@ -195,7 +199,8 @@
 	</select>	
 	<!-- 상품 예약 옵션 리스트 -->
 	<select id="getBookingProductOptionList" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT bkp.booking_product_no 
+		SELECT booking_product_option_no bkpoNo
+				, bkp.booking_product_no bkpNo
 				, bkp.booking_product_name bkpName
 				, bkp.booking_product_max_people bkpMax
 				, bkp.booking_product_min_people bkpMin

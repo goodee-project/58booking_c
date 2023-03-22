@@ -1,5 +1,6 @@
 package goodee.gdj58.booking_c.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import goodee.gdj58.booking_c.controller.CustomerController;
 import goodee.gdj58.booking_c.mapper.customer.CustomerMapper;
 import goodee.gdj58.booking_c.util.FontColor;
+import goodee.gdj58.booking_c.vo.BookingOption;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
 import goodee.gdj58.booking_c.vo.TotalId;
@@ -82,8 +84,16 @@ public class CustomerService {
 	
 	
 	
+	public List<BookingOption> bookingOptionList()
+	{
+		return customerMapper.getBookingOptionList();
+	}
 	
-	
+	//결제 페이지 상품 옵션 가격구하기
+	public int totalOptionPrice(int bkpNo, ArrayList<Integer> paramMap)
+	{
+		return customerMapper.totalOptionPrice(bkpNo, paramMap);
+	}
 	//결제페이지 - 사업자 정보
 	public Map<String, Object> bookingPaymentCompany(String bkcId)
 	{
@@ -99,7 +109,6 @@ public class CustomerService {
 	{
 		return customerMapper.getBookingProductInfo(bkpName, bkcId);
 	}
-	
 	//상품 예약 옵션 리스트
 	public List<Map<String, Object>> getBookingProductOptionList(String bkpName, String bkcId)
 	{

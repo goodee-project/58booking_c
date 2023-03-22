@@ -17,16 +17,22 @@
 		});
 	</script>
 	<script>
-		function changePeople(value){
-				console.log(value);
-			}
 		
 		$(document).ready(function() {
 			 if($('#msg').val() != '')
 				{
 					alert('최대인원 이상 예약 불가');
 					return;
-				} 
+				}
+		$('#bookingBtn').click(function(){
+				if($('#bookingDate').val() == '')
+					{
+						alert('날짜를 선택해주세요');
+						return;
+					}
+				$('#booking').submit();
+			
+			});
 		});
 	</script>
 
@@ -161,18 +167,21 @@
 							</div>
 							<!-- /col -->
 							<aside class="col-lg-4" id="sidebar">
-							<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post">
+							<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post" id="booking">
 								<input type="hidden" name="bkcId" value="${bkcId }"> 
 								<input type="hidden" name="bkpMax" value="${bookingProductInfo.bkpMax}">
 								<input type="hidden" name="bkpPrice" value="${bookingProductInfo.bkpPrice}">
 								<input type="hidden" name="bkpName" value="${bkpName}">
+								<input type="hidden" name="bkpNo" value="${bookingProductInfo.bkpNo}">
+								
+
 								<div class="box_detail booking">
 									<div class="price">
 										<span>날짜형 예약</span>
 									</div>
 		
 									<div class="form-group input-dates">
-										<input class="form-control" type="text" name="dates" placeholder="When..">
+										<input class="form-control" type="text" name="dates" placeholder="When.." id="bookingDate">
 										<i class="icon_calendar"></i>
 									</div>
 		
@@ -190,13 +199,13 @@
 									<div class="form-group clearfix">
 										<div class="custom-select-form">
 											<c:forEach var="bkpo" items="${bookingProductOptionList }">
-												<input type="checkbox" name="option" value="${bkpo.bkpoPrice }">${bkpo.bkpoName }<br>
+												<input type="checkbox" name="option" value="${bkpo.bkpoNo }">${bkpo.bkpoName }
 												<input type="hidden" name="bkpoName" value="${bkpo.bkpoName }">
 											</c:forEach>
 										</div>
 									</div>
 									
-									<button type="submit" class=" add_top_30 btn_1 full-width purchase">예약</button>
+									<button type="button" id="bookingBtn" class=" add_top_30 btn_1 full-width purchase">예약</button>
 									
 								</div>
 								
@@ -455,17 +464,19 @@
 							<!-- /col -->
 							
 							<aside class="col-lg-4" id="sidebar">
-								<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post">
+								<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post" id="booking">
 									<input type="hidden" name="bkcId" value="${bkcId }"> 
 									<input type="hidden" name="bkpMax" value="${bookingProductInfo.bkpMax}">
+									<input type="hidden" name="bkpPrice" value="${bookingProductInfo.bkpPrice}">
 									<input type="hidden" name="bkpName" value="${bkpName}">
+									<input type="hidden" name="bkpNo" value="${bookingProductInfo.bkpNo}">
 									<div class="box_detail booking">
 										<div class="price">
 											<span>시간형 예약</span>
 										</div>
 										
 										<div class="form-group input-dates scroll-fix">
-											<input class="form-control" type="text" name="dates" placeholder="When..">
+											<input class="form-control" type="text" name="dates" placeholder="When.." id="bookingDate">
 											<i class="icon_calendar"></i>
 										</div>
 										
@@ -491,7 +502,8 @@
 										<div class="form-group clearfix">
 											<div class="custom-select-form">
 												<c:forEach var="bkpo" items="${bookingProductOptionList }">
-													<input type="checkbox" name="option" value="${bkpo.bkpoPrice }">${bkpo.bkpoName }<br>
+													<input type="checkbox" name="option" value="${bkpo.bkpoNo }">${bkpo.bkpoName }
+													<input type="hidden" name="bkpoName" value="${bkpo.bkpoName }"><br>
 												</c:forEach>
 											</div>
 										</div>
@@ -620,34 +632,6 @@
 
 		
 	</c:if>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<table>
-		<tr>
-			<td>업체 사진 :  
-				<c:forEach var="bkc" items="${bookingProductSelectTime}">
-						${bkc.bkciOrigin }
-				</c:forEach>
-			</td>
-		</tr>
-		<tr>
-				<td>업체명 : ${bkcName}</td>
-		</tr>
-		<tr>
-				<td>상품명 : ${bkpName}</td>
-		</tr>
-	</table>
+
 </body>
 </html>
