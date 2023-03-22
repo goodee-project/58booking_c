@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import goodee.gdj58.booking_c.service.CustomerService;
 import goodee.gdj58.booking_c.util.FontColor;
+import goodee.gdj58.booking_c.vo.Booking;
 import goodee.gdj58.booking_c.vo.BookingOption;
 import goodee.gdj58.booking_c.vo.Company;
 import goodee.gdj58.booking_c.vo.Customer;
@@ -204,6 +205,67 @@ public class CustomerController {
 	
 	
 	
+	//결제 후 예약내역 등록
+	@PostMapping("/customer/booking/addBooking")
+	public String addBooking(
+			Model model
+			, HttpSession session
+			, Booking booking
+			, @RequestParam (value = "customerId") String customerId
+			, @RequestParam (value = "bkcId") String bkcId
+			, @RequestParam (value = "dates") String dates
+			, @RequestParam (value = "bkpNo") int bkpNo
+			, @RequestParam (value = "bkpPrice") int bkpPrice
+			, @RequestParam (value = "point") int point
+			, @RequestParam (value = "bkpRankDiscount") int bkpRankDiscount
+			, @RequestParam (value = "finalCount") int finalCount
+			, @RequestParam (value = "bookingPeople") int bookingPeople
+			, @RequestParam (value = "option") ArrayList<Integer> bkpoNo
+			, @RequestParam (value = "optionSize") int optionSize
+			, @RequestParam (value = "dayList") ArrayList<String> dayList
+			)
+	{
+		log.debug(FontColor.RED + dayList+ "<---bookingDayList addBooking");
+		
+		booking.setCustomerId(customerId);
+		booking.setCompanyId(bkcId);
+		booking.setProductNo(bkpNo);
+		booking.setPrice(bkpPrice);
+		booking.setUsePoint(point);
+		booking.setRankDiscount(bkpRankDiscount);
+		booking.setTotalPrice(finalCount);
+		booking.setBookingPeople(bookingPeople);
+
+
+		for(int j=0; j<dayList.size(); j++)
+		{
+			String bookingDay = dayList.get(j);
+			booking.setRequestDate(bookingDay);
+			log.debug(FontColor.RED + bookingDay+ "<---bookingDay");
+			if(bkpoNo == null || bkpoNo.get(0)==0)
+			{
+				log.debug(FontColor.RED + "<---bkpoNo null if문 진입");
+				booking.setOptionNo(0);
+				customerService.addBooking(booking);
+			}
+			
+			else 
+			{
+				
+				for(int i=0; i<optionSize; i++)
+				{
+					
+					log.debug(FontColor.RED + bkpoNo+ "<---bkpoNo");
+					int optionNo = (int)(bkpoNo.get(i));
+					booking.setOptionNo(optionNo);
+					customerService.addBooking(booking);
+				}
+			}
+		
+		}
+		return "customer/booking/bookingSuccessAddBooking";
+	}
+	
 	//결제페이지
 	@PostMapping("/customer/booking/bookingProductPayment")
 	public String bookingProductProductPayment(Model model
@@ -216,12 +278,33 @@ public class CustomerController {
 			, @RequestParam (value = "qtyInput") int qtyInput
 			, @RequestParam (value = "dates") String dates
 			, @RequestParam (value = "productTime", defaultValue = "") String productTime
-			, @RequestParam (value = "option", defaultValue = "") ArrayList<Integer> option
+			, @RequestParam (value = "option", defaultValue = "" ) ArrayList<Integer> option
 			, @RequestParam (value = "bkpMax") int bkpMax
 			, @RequestParam (value = "bkpNo") int bkpNo
+
 			)
 	{
+		
+		
+		
+		//날짜형 예약시 날짜 일 수 계산
+		String startDate = dates.substring(0,10);
+		String endDate = dates.substring(13,23);
+
+		log.debug(FontColor.RED +startDate + "<---startDate");
+		log.debug(FontColor.RED +endDate + "<---endDate");
+		
+		int dayCalculation = customerService.dayCalculation(startDate, endDate);
+		log.debug(FontColor.RED +dayCalculation + "<---dayCalculation");
+		
+		List<Map<String,Object>> bookingDayList = customerService.bookingDayList(startDate, endDate);
+		log.debug(FontColor.RED +bookingDayList + "<---bookingDayList");
+		
+		
+		
 		log.debug(FontColor.RED + option.size() + "<---option");
+		
+		int optionSize = option.size();
 		
 		//에약인원 초과시 이전페이지로 redirect
 		String referer = request.getHeader("Referer");
@@ -272,6 +355,7 @@ public class CustomerController {
 		model.addAttribute("rankDiscount",rankDiscount);
 		model.addAttribute("bkpPrice",bkpPrice);
 		model.addAttribute("bkcId",bkcId);
+		model.addAttribute("bkpNo",bkpNo);
 		model.addAttribute("bkpoName",bkpoName);
 		model.addAttribute("bkpName",bkpName);
 		model.addAttribute("qtyInput",qtyInput);
@@ -279,6 +363,8 @@ public class CustomerController {
 		model.addAttribute("productTime",productTime);
 		model.addAttribute("optionPrice",optionPrice);
 		model.addAttribute("option",option);
+		model.addAttribute("optionSize",optionSize);
+		model.addAttribute("bookingDayList",bookingDayList);
 		model.addAttribute("bookingOptionList",bookingOptionList);
 		return "customer/booking/bookingProductPayment";
 	}

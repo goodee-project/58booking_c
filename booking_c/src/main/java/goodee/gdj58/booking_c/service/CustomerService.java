@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import goodee.gdj58.booking_c.controller.CustomerController;
 import goodee.gdj58.booking_c.mapper.customer.CustomerMapper;
 import goodee.gdj58.booking_c.util.FontColor;
+import goodee.gdj58.booking_c.vo.Booking;
 import goodee.gdj58.booking_c.vo.BookingOption;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
@@ -83,7 +84,24 @@ public class CustomerService {
 	
 	
 	
+	//날짜형 예약시 기간 날짜 출력
+	public List<Map<String, Object>> bookingDayList(String startDate,String endDate)
+	{
+		return customerMapper.bookingDayList(startDate, endDate);
+	}
 	
+	//날짜형 에약시 일 수 구하기
+	public int dayCalculation(String startDate,String endDate)
+	{
+		return customerMapper.dayCalculation(startDate, endDate);
+	}
+	//결제 후 예약내역 등록
+	public int addBooking(Booking booking)
+	{
+		return customerMapper.addBooking(booking);
+	}
+	
+	//옵션 리스트
 	public List<BookingOption> bookingOptionList()
 	{
 		return customerMapper.getBookingOptionList();

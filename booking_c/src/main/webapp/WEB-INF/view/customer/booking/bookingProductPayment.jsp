@@ -66,6 +66,20 @@
 				return;
 			}
 		})
+		
+		$('#paymentBtn').click(function(){
+			var optionTest = $('#option').val();
+			console.log($('#option').val()+"<--option");
+			console.log(optionTest+"<--optionTest");
+			if($('#option').val() == '[]')
+				{
+					$('#option').val(optionTest.replace('[]',0));
+					var beChangNo = parseInt($('#option').val());
+					console.log($('#option').val()+"<--option if");
+					console.log(typeof beChangNo+"<--option if typeof");
+				}
+			$('#paymentForm').submit();
+		});
 
 	});
 	</script>
@@ -75,7 +89,21 @@
 	<!-- 임시메뉴 -->
 	<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include><br><br>
 	
-	<form>
+	<form action="${pageContext.request.contextPath}/customer/booking/addBooking" method="post" id=paymentForm>
+		<input type="text" name="customerId" value="${loginCustomer.customerId }">
+		<input type="text" name="bkcId" value="${bookingPaymentCompany.bkcId}">
+		<input type="text" name="dates" value="${dates}">
+		<input type="text" name="bkpNo" value="${bkpNo }">
+		<input type="text" name="bkpPrice" value="${bkpPrice }">
+		<input type="text" name="bkpRankDiscount" value="${bkpPrice -  rankDiscount}">
+		<input type="text" name="bookingPeople" value="${qtyInput }">
+		<input type="text" name="option" value="${option }" id="option">
+		<input type="text" name="optionSize" value="${optionSize }">
+		
+		
+		<c:forEach var="dayList" items="${bookingDayList}">
+			<input type="text" name="dayList" value="${dayList.selecteDate }"><br>
+		</c:forEach>
 		<span>${bkpName } 결제 상세페이지 </span><br>
 		<span>날짜 : ${dates}</span><br>
 		<c:if test="${productTime != ''}">
@@ -85,16 +113,18 @@
 		<span>상품가격 : ${bkpPrice }원 </span><br>
 		<span>선택 옵션</span><br>
 		
-		
-		
-		
-		<c:forEach var="tbkpoNo" items="${bookingOptionList }" varStatus="status">
-			<c:forEach var="bkpoNo" items="${option }" varStatus="status">
-					<c:if test="${tbkpoNo.optionNo ==bkpoNo }">
-						- ${tbkpoNo.optionName}<br>
-					</c:if>
-			</c:forEach>
-		</c:forEach>		
+
+			<c:forEach var="tbkpoNo" items="${bookingOptionList }" varStatus="status">
+					<c:forEach var="bkpoNo" items="${option }" varStatus="status">
+							<c:if test="${tbkpoNo.optionNo ==bkpoNo }">
+								- ${tbkpoNo.optionName}<br>
+								<input type="text" name="bkpoNo" value="${bkpoNo }">
+								
+							</c:if>
+					</c:forEach>
+				
+			</c:forEach>		
+	
 		
 		<span>총 옵션 가격 : ${optionPrice}원 </span><br><br><br>
 		
@@ -109,9 +139,10 @@
 		<span>이메일 : ${loginCustomer.customerEmail }</span><br><br><br>
 		
 		<span>결제</span><br>
+		<span>등급 할인받은 금액 : ${bkpPrice -  rankDiscount}</span><br>
 		<span>상품금액 : ${rankDiscount +  optionPrice}원 </span><br>
 		<span>보유 포인트 : ${loginCustomer.customerPoint}P</span><br>
-		<span>사용 포인트 : <input type="text" name="point" id="point" value="10">P &nbsp;
+		<span>사용 포인트 : <input type="text" name="point" id="point" value="0">P &nbsp;
 					<button type="button" id="pointBtn">사용</button>	
 		</span><br>
 		<span>회원등급 : ${loginCustomer.customerRank} </span><br>
@@ -123,7 +154,7 @@
 				<input type="text" name="finalCount" id="finalCount" value="${rankDiscount +  optionPrice}">원 
 		</span><br>
 		
-		<button type="submit">결제하기</button>
+		<button type="button" id="paymentBtn">결제하기</button>
 	</form>
 		
 	

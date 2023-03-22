@@ -182,6 +182,7 @@
 		
 									<div class="form-group input-dates">
 										<input class="form-control" type="text" name="dates" placeholder="When.." id="bookingDate">
+										<input class="form-control" type="text" name="endDates" placeholder="When.." id="bookingDate">
 										<i class="icon_calendar"></i>
 									</div>
 		
@@ -323,8 +324,9 @@
 				  }
 			  });
 			  $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
-				  $(this).val(picker.startDate.format('YYYY-MM-DD') + ' > ' + picker.endDate.format('YYYY-MM-DD'));
+				  $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
 			  });
+
 			  $('input[name="dates"]').on('cancel.daterangepicker', function(ev, picker) {
 				  $(this).val('');
 			  });

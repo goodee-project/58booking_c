@@ -2,50 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="goodee.gdj58.booking_c.mapper.customer.CustomerMapper">
-	<!-- 예약내역 상세보기 -->
-	<select id="getBookingOne" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT
-			b.customer_id customerId
-			, b.booking_company_id bkCompanyId
-			, b.booking_date bkDate
-			, b.booking_request_date bkRequestDate
-			, b.product_no productNo
-			, b.option_no optionNo
-			, b.booking_price kPrice
-			, b.booking_use_point bkUsePoint
-			, b.booking_rank_discount bkRankDiscount
-			, b.booking_total_price bkTotalPrice
-			, b.booking_state bkState
-			, b.booking_people bkPeople
-			, bp.booking_product_no bkProductNo
-			, bp.booking_company_id bkCompanyId
-			, bp.booking_product_name bkProductName
-			, bp.booking_product_price bkProductPrice
-			, bpo.booking_product_no bkProductNo
-			, bpo.booking_product_option_name bkProductOptionName
-			, bpo.booking_product_option_memo bkProductOptionMemo
-			, bpo.booking_product_option_price bkProductOptionPrice
-			, bkc.booking_company_id bkCompanyId
-			, bkc.booking_company_name bkCompanyName
-			, bkc.booking_company_ceo bkCompanyCeo
-			, bkc.booking_company_phone bkCompanyPhone
-			, bkc.booking_company_address bkCompanyAddress
-			, c.customer_id customerId
-			, c.customer_name customerName
-			, c.customer_phone customerPhone
-			, c.customer_email customerEmail
-			FROM booking b
-			LEFT OUTER JOIN booking_product bp
-			ON b.booking_company_id = bp.booking_company_id
-			LEFT OUTER JOIN booking_product_option bpo
-			ON bp.booking_product_no = bpo.booking_product_no
-			LEFT OUTER JOIN booking_company bkc
-			ON bp.booking_company_id = bkc.booking_company_id
-			LEFT OUTER JOIN customer c
-			ON b.customer_id = c.customer_id
-			WHERE b.customer_id = #{customerId} AND bkc.booking_company_name = #{bookingCompanyName}		
-	</select>
-	
 	<!-- 패스워드 찾기(수정) -->
 	<update id="updateCustomerPw" parameterType="goodee.gdj58.booking_c.vo.Customer">
 		UPDATE customer
@@ -158,6 +114,55 @@
 	
 	
 	
+	
+	<!-- 날짜형 예약시 기간 출력 -->
+	<select id="bookingDayList" resultType="java.util.Map" parameterType="String">
+		select selecteDate from 
+			 (select adddate('2010-01-01',t4.i*10000 + t3.i*1000 + t2.i*100 + t1.i*10 + t0.i) selecteDate from
+			 (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t0,
+			 (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t1,
+			 (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t2,
+			 (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t3,
+			 (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t4) v
+		where selecteDate 
+		between #{startDate} and #{endDate}
+	</select>
+	
+	<!-- 날짜형 예약시 일 수 구하기 -->
+	<select id="dayCalculation" resultType="int" parameterType="String">
+		SELECT DATEDIFF(#{endDate},#{startDate});
+	</select>
+	
+	
+	<!-- 결제 후 예약내역 등록 -->
+	<insert id="addBooking" parameterType="goodee.gdj58.booking_c.vo.Booking">
+		INSERT INTO booking (customer_id
+							,booking_company_id
+							,booking_date
+
+							,product_no
+							,option_no
+							,booking_price
+							,booking_use_point
+							,booking_rank_discount
+							,booking_total_price
+							,booking_state
+							,booking_people
+							) 
+					VALUES(#{customerId}
+							,#{companyId}
+							,#{requestDate}
+
+							,#{productNo}
+							,#{optionNo}
+							,#{price}
+							,#{usePoint}
+							,#{rankDiscount}
+							,#{totalPrice}
+							,'예약승인대기'
+							,#{bookingPeople}
+							)
+	</insert>
 	
 	
 	<!-- 옵션 리스트 -->

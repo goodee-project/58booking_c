@@ -16,5 +16,5 @@ public class Booking {
 	private int rankDiscount;
 	private int totalPrice;
 	private String bookingState;
-	private String bookingPeople;
+	private int bookingPeople;
 }

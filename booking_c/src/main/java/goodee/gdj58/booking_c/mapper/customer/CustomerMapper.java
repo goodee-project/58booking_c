@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import goodee.gdj58.booking_c.vo.Booking;
 import goodee.gdj58.booking_c.vo.BookingOption;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
@@ -33,6 +34,20 @@ public interface CustomerMapper {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	//날짜형 예약시 기간 날짜 출력
+	ArrayList<Map<String,Object>> bookingDayList(String startDate, String endDate);
+	//날짜형 예약시 일 수 구하기
+	int dayCalculation (String startDate, String endDate); 
+	//결제 후 예약 내역 등록
+	int addBooking(Booking booking);
 	//옵션리스트
 	ArrayList<BookingOption> getBookingOptionList();
 	//결제페이지 - 사업자 정보
