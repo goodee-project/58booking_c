@@ -232,11 +232,15 @@ public class CustomerController {
 			, @RequestParam (value = "optionSize") int optionSize
 			, @RequestParam (value = "dayList") ArrayList<String> dayList
 			, @RequestParam (value = "productTime") String productTime
+			, @RequestParam (value = "havePoint") int havePoint
+			, @RequestParam (value = "bkpName") String bkpName
 			)
 	{
 
 		log.debug(FontColor.RED + productTime+ "<---productTime");
 		log.debug(FontColor.RED + dayList+ "<---bookingDayList addBooking");
+		
+		int remainPoint = havePoint - point;
 		
 		booking.setCustomerId(customerId);
 		booking.setCompanyId(bkcId);
@@ -257,7 +261,12 @@ public class CustomerController {
 			{
 				log.debug(FontColor.RED + "<---bkpoNo null if문 진입");
 				booking.setOptionNo(0);
-				customerService.addBooking(booking);
+				
+				customerService.addBooking(booking, customerId,remainPoint);
+				Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
+				loginCustomer.setCustomerPoint(remainPoint);
+				session.setAttribute("loginCustomer", loginCustomer);
+
 			}
 			
 			else 
@@ -269,11 +278,23 @@ public class CustomerController {
 					log.debug(FontColor.RED + bkpoNo+ "<---bkpoNo");
 					int optionNo = (int)(bkpoNo.get(i));
 					booking.setOptionNo(optionNo);
-					customerService.addBooking(booking);
+					customerService.addBooking(booking, customerId,remainPoint);
+					Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
+					loginCustomer.setCustomerPoint(remainPoint);
+					session.setAttribute("loginCustomer", loginCustomer);
+
 				}
 			}
 		
 		}
+		
+		//상품 이미지 출력
+		List<Map<String, Object>> bookingAfterProductImg = customerService.bookingAfterProductImg(bkcId, bkpNo);
+		log.debug(FontColor.RED+bkcId +"<----bkcId ");
+		log.debug(FontColor.RED+bkpNo +"<----bkpNo ");
+		log.debug(FontColor.RED+bookingAfterProductImg +"<----bookingAfterProductImg ");
+		model.addAttribute("bookingAfterProductImg", bookingAfterProductImg);
+		model.addAttribute("bkpName", bkpName);
 
 		return "customer/booking/bookingSuccessAddBooking";
 	}

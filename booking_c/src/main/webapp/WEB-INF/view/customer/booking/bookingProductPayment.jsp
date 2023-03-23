@@ -114,6 +114,8 @@
 		<input type="hidden" name="bookingPeople" value="${qtyInput }">
 		<input type="hidden" name="option" value="${option }" id="option">
 		<input type="hidden" name="optionSize" value="${optionSize }">
+		<input type="hidden" name="havePoint" value="${loginCustomer.customerPoint}">
+		<input type="hidden" name="bkpName" value="${bkpName }">
 		
 		
 		<c:if test="${bookingDayList != null}">
@@ -176,7 +178,7 @@
 				<input type="text" name="finalCount" id="finalCount" value="${rankDiscount +  optionPrice}">원 
 		</span><br>
 		
-		<button type="button" id="paymentBtn">결제하기</button>
+		<button type="button" id="paymentBtn">예약하기</button>
 	</form>
 		
 	

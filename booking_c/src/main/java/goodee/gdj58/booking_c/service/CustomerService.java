@@ -82,7 +82,15 @@ public class CustomerService {
 	
 	
 	
-	
+	//에약 확정 후 상품 사진
+	public List<Map<String, Object>> bookingAfterProductImg(String bkcId, int bkpNo)
+	{
+		Map<String, Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("bkcId", bkcId);
+		paramMap.put("bkpNo", bkpNo);
+		
+		return customerMapper.bookingAfterProductImg(paramMap);
+	}
 	
 	//날짜형 예약시 기간 날짜 출력
 	public List<Map<String, Object>> bookingDayList(String startDate,String endDate)
@@ -95,11 +103,24 @@ public class CustomerService {
 	{
 		return customerMapper.dayCalculation(startDate, endDate);
 	}
+
+	
 	//결제 후 예약내역 등록
+	public int addBooking(Booking booking, String cusId, int point)
+	{
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("cusId", cusId);
+		paramMap.put("point", point);
+		customerMapper.updatePointAfterBooking(paramMap);
+		
+		return customerMapper.addBooking(booking);
+	}
+	
+	/*결제 후 예약내역 등록
 	public int addBooking(Booking booking)
 	{
 		return customerMapper.addBooking(booking);
-	}
+	}*/
 	
 	//옵션 리스트
 	public List<BookingOption> bookingOptionList()

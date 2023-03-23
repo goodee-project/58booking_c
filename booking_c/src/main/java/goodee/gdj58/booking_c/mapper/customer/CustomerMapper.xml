@@ -159,6 +159,28 @@
 	
 	
 	
+	
+	
+	
+	<!--예약 확정시 상품 사진  -->
+	<select id="bookingAfterProductImg" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT bkp.booking_product_name bkpName
+				, if(bkpi.booking_product_img_save_name IS NULL,'상품사진없음',bkpi.booking_product_img_save_name) bkpiSave
+		FROM booking_product bkp
+			LEFT OUTER JOIN booking_product_img bkpi ON bkp.booking_product_no = bkpi.booking_product_no
+		WHERE bkp.booking_company_id = #{bkcId} AND bkp.booking_product_no = #{bkpNo}
+	</select>
+	<!-- 예약 확정시 고객 포인트 업데이트 -->
+	<update id="updatePointAfterBooking" parameterType="java.util.Map">
+		
+		UPDATE customer cus
+		SET cus.customer_point = #{point}
+			
+		WHERE cus.customer_id = #{cusId}
+	</update>
+	
+	
+	
 	<!-- 날짜형 예약시 기간 출력 -->
 	<select id="bookingDayList" resultType="java.util.Map" parameterType="String">
 		select selecteDate from 
