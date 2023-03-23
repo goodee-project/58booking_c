@@ -202,22 +202,26 @@
 							</script>
 						</c:forEach>					
 					</div>
-					<div style="padding-top:30px;">
+					
+					<div style="padding-top:30px;">						
+						<!-- 다시예약하기 클릭시 해당 업체 예약페이지로 이동 -->
+						<button type="button"  onclick="location.href='${pageContext.request.contextPath}/customer/booking/bookingCompanyDetailBooking?bkcId=${bk.bkcId}'">다시 예약하기</button>
+						<!-- 예약상태 방문완료인 경우만 리뷰작성 가능 -->
 						<c:forEach items="${list}" var="bk">
-							<!-- 다시예약하기 클릭시 해당 업체 예약페이지로 이동 -->
-							<button type="button"  onclick="location.href='${pageContext.request.contextPath}/customer/booking/bookingCompanyDetailBooking?bkcId=${bk.bkcId}'">다시 예약하기</button>
-							<!-- 예약상태 방문완료인 경우만 리뷰작성 가능 -->
 							<c:if test="${bk.bkState eq '방문완료'}">
 								<button type="button" class="btn" data-toggle="modal" data-target="#reviewModal">리뷰쓰기</button>
 							</c:if>
-						</c:forEach>
+						</c:forEach>						
 						<button type="button">pdf저장</button>
 					</div>
 					<!-- 리뷰작성 모달 -->
 					<div class="modal fade" id="reviewModal" role="dialog" aria-hidden="true">
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
-								<form>
+								<form action="${pageContext.request.contextPath}/review/addReview" method="post" enctype="multipart/form-data">
+									<c:forEach items="${list}" var="bk">
+										<input type="hidden" name="bookingNo" value="${bk.bookingNo}">
+									</c:forEach>	
 									<div class="modal-header">
 										<!-- 모달 이름 -->
 										<h5 class="modal-title" id="exampleModalLabel">리뷰 작성</h5>
@@ -227,16 +231,25 @@
 									</div>
 									<div class="modal-body">
 										<div>
-											<button type="button">사진 첨부</button>
+											<span>별점</span><br>
+											<input type="radio" name="starRating" value="1">1
+											<input type="radio" name="starRating" value="2">2
+											<input type="radio" name="starRating" value="3">3
+											<input type="radio" name="starRating" value="4">4
+											<input type="radio" name="starRating" value="5">5
+										</div>
+										<div>
+											<label>사진 첨부</label>
+											<input type="file" name="file">
 										</div>
 										<textarea rows="5" cols="60" name="reviewMemo" placeholder="이용후기를 남겨주세요." style="width=400px;"></textarea>
 									</div>
+									<div class="modal-footer">
+										<!-- data-dismiss="modal"를 통해 모달을 닫을수 있다. -->
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+										<button type="submit" class="btn btn-primary">작성</button>
+									</div>
 								</form>
-								<div class="modal-footer">
-									<!-- data-dismiss="modal"를 통해 모달을 닫을수 있다. -->
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-									<button type="button" class="btn btn-primary">작성</button>
-								</div>
 							</div>
 						</div>
 					</div>

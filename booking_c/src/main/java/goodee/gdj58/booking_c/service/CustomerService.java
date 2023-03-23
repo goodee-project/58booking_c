@@ -1,21 +1,28 @@
 package goodee.gdj58.booking_c.service;
 
+import java.io.File;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import goodee.gdj58.booking_c.controller.CustomerController;
 import goodee.gdj58.booking_c.mapper.customer.CustomerMapper;
 import goodee.gdj58.booking_c.util.FontColor;
 import goodee.gdj58.booking_c.vo.Booking;
 import goodee.gdj58.booking_c.vo.BookingOption;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
+import goodee.gdj58.booking_c.vo.Review;
+import goodee.gdj58.booking_c.vo.ReviewImg;
 import goodee.gdj58.booking_c.vo.TotalId;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -23,6 +30,68 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class CustomerService {
 	@Autowired private CustomerMapper customerMapper;
+	// 리뷰 작성
+	public String addReview(Review review, ReviewImg reviewImg, int bookingNo
+							, @RequestParam("file") MultipartFile file
+							, String path) {
+		log.debug(FontColor.CYAN+"리뷰 bookingNo :"+bookingNo);
+		// review
+		int reviewRow = customerMapper.insertReview(review, bookingNo);
+		if(reviewRow == 0) {
+			log.debug(FontColor.CYAN+"리뷰 입력 실패");
+			return "실패";
+		}
+		log.debug(FontColor.CYAN+"리뷰 입력 성공");
+		
+		// reviewImg
+		// 파일명을 얻어낼 수 있는 메서드!
+		String fileRealName = file.getOriginalFilename();
+		String fileKind = file.getContentType(); // kind
+		long size = file.getSize(); // 파일 사이즈
+		
+		log.debug(FontColor.CYAN+fileRealName+"<--fileRealName값");
+		log.debug(FontColor.CYAN+fileKind+"<--fileKind값");
+		log.debug(FontColor.CYAN+size+"<--size값");
+		
+		// 확장자
+		String fileExtension = fileRealName.substring(fileRealName.lastIndexOf("."),fileRealName.length());
+		
+		// 랜덤문자열 생성
+		UUID uuid = UUID.randomUUID();
+		log.debug(uuid.toString());
+		
+		String[] uuids = uuid.toString().split("-");
+		String uniqueName = uuids[0];
+		log.debug(FontColor.CYAN+"생성된 고유문자열" + uniqueName);
+		
+		// 파일 경로에 저장
+		File saveFile = new File(path+"\\"+uniqueName + fileExtension); 
+		try {
+			file.transferTo(saveFile); // 실제 파일 저장메서드(filewriter 작업을 손쉽게 한방에 처리해준다.)
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// 업로드 파일을 customerImg 타입에 저장
+		String saveName = uniqueName + fileRealName;
+		log.debug("saveName : "+saveName);
+		
+		// 가공
+		ReviewImg rImg = new ReviewImg();
+		rImg.setReviewImgSaveName(saveName);
+		rImg.setReviewImgOriginName(fileRealName);
+		rImg.setReviewImgKind(fileKind);
+		rImg.setReviewImgSize(size);
+		
+		int imgRow = customerMapper.insertReviewImg(rImg, bookingNo);
+		if(imgRow == 0) {
+			log.debug(FontColor.CYAN+"리뷰사진 입력 실패");
+			return "실패";
+		}
+		log.debug(FontColor.CYAN+"리뷰사진 입력 성공");
+		return "성공";
+	}
 	
 	// 예약내역 상세보기
 	public List<Map<String, Object>> getBookingOne(String customerId, String companyName, String requestDate) {

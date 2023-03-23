@@ -26,13 +26,15 @@ import goodee.gdj58.booking_c.vo.BookingOption;
 import goodee.gdj58.booking_c.vo.Company;
 import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
+import goodee.gdj58.booking_c.vo.Review;
+import goodee.gdj58.booking_c.vo.ReviewImg;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
 public class CustomerController {
 	@Autowired CustomerService customerService;
-	
+
 	// 예약내역 상세보기
 	@GetMapping("/bookingOne")
 	public String getBookingOne(Model model, Company company
@@ -45,7 +47,7 @@ public class CustomerController {
 		List<Map<String, Object>> companyMap = customerService.getBookingCompanyDetailMap(bkcId);
 		
 		log.debug(FontColor.CYAN+"customerControllerId :"+customerId);
-		log.debug(FontColor.CYAN+"list :"+list);
+		log.debug(FontColor.CYAN+"bklist :"+list);
 		log.debug(FontColor.CYAN+"customerControllercompanyName :"+companyName);
 		log.debug(FontColor.CYAN+"customerControllerrequestDate :"+requestDate);
 		log.debug(FontColor.CYAN+"customerControllercompanyMap :"+companyMap);
@@ -55,6 +57,22 @@ public class CustomerController {
 		model.addAttribute("companyName", companyName);
 		model.addAttribute("list", list);
 		return "customer/bookingOne";
+	}
+	// 리뷰 입력
+	@PostMapping("review/addReview")
+	public String addReview(HttpServletRequest request, Model model, Review review, ReviewImg reviewImg
+							, @RequestParam(value="bookingNo") int bookigNo
+							, @RequestParam("file") MultipartFile file) {
+		
+		String path = request.getServletContext().getRealPath("/upload/");
+		String rs = customerService.addReview(review, reviewImg, bookigNo, file, path);
+		
+		if(rs.equals("실패")) {
+			log.debug(FontColor.CYAN+rs);
+			return "redirect:/customer/booking/bookingList";
+		}
+		
+		return "customer/review/reviewList";
 	}
 	
 	// 고객 비밀번호 수정

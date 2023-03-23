@@ -2,10 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="goodee.gdj58.booking_c.mapper.customer.CustomerMapper">
+	<!-- 리뷰 작성(사진등록) -->
+	<insert id="insertReviewImg" parameterType="goodee.gdj58.booking_c.vo.ReviewImg">
+		INSERT INTO reviewImg(
+			booking_no
+			, review_img_save_name
+			, review_img_origin_name
+			, review_img_kind
+			, review_img_size
+			) VALUES (
+				#{bookingNo}
+				, #{reviewImgSaveName}
+				, #{reviewImgOriginName}
+				, #{reviewImgKind}
+				, #{reviewImgSize}
+			);
+	</insert>
+	
+	<!-- 리뷰 작성 -->
+	<insert id="insertReview" parameterType="goodee.gdj58.booking_c.vo.Review">
+		INSERT INTO review(
+			booking_no
+			, review_memo
+			, star_rating
+			) VALUES (
+				#{bookingNo}
+				, #{reviewMemo}
+				, #{starRating}
+			);
+	</insert>
+	
 	<!-- 예약내역 상세보기 -->
 	<select id="getBookingOne" resultType="java.util.Map" parameterType="java.util.Map">
 		SELECT
-			b.customer_id customerId
+			b.booking_no bookingNo
+			, b.customer_id customerId
 			, b.booking_company_id bkcId
 			, b.booking_date bkDate
 			, b.booking_request_date bkRequestDate

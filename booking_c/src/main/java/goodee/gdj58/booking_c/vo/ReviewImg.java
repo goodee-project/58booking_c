@@ -8,5 +8,5 @@ public class ReviewImg {
 	private String reviewImgSaveName;
 	private String reviewImgOriginName;
 	private String reviewImgKind;
-	private int reviewImgSize;
+	private long reviewImgSize;
 }
