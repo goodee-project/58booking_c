@@ -231,8 +231,11 @@ public class CustomerController {
 			, @RequestParam (value = "option") ArrayList<Integer> bkpoNo
 			, @RequestParam (value = "optionSize") int optionSize
 			, @RequestParam (value = "dayList") ArrayList<String> dayList
+			, @RequestParam (value = "productTime") String productTime
 			)
 	{
+
+		log.debug(FontColor.RED + productTime+ "<---productTime");
 		log.debug(FontColor.RED + dayList+ "<---bookingDayList addBooking");
 		
 		booking.setCustomerId(customerId);
@@ -243,11 +246,11 @@ public class CustomerController {
 		booking.setRankDiscount(bkpRankDiscount);
 		booking.setTotalPrice(finalCount);
 		booking.setBookingPeople(bookingPeople);
-
+		log.debug(FontColor.RED+bkpoNo.get(0)+"<----optionNo ---1");
 
 		for(int j=0; j<dayList.size(); j++)
 		{
-			String bookingDay = dayList.get(j);
+			String bookingDay = dayList.get(j) +" "+ productTime;
 			booking.setRequestDate(bookingDay);
 			log.debug(FontColor.RED + bookingDay+ "<---bookingDay");
 			if(bkpoNo == null || bkpoNo.get(0)==0)
@@ -271,6 +274,7 @@ public class CustomerController {
 			}
 		
 		}
+
 		return "customer/booking/bookingSuccessAddBooking";
 	}
 	
@@ -296,18 +300,23 @@ public class CustomerController {
 		
 		
 		//날짜형 예약시 날짜 일 수 계산
-		String startDate = dates.substring(0,10);
-		String endDate = dates.substring(13,23);
-
-		log.debug(FontColor.RED +startDate + "<---startDate");
-		log.debug(FontColor.RED +endDate + "<---endDate");
-		
-		int dayCalculation = customerService.dayCalculation(startDate, endDate);
-		log.debug(FontColor.RED +dayCalculation + "<---dayCalculation");
-		
-		List<Map<String,Object>> bookingDayList = customerService.bookingDayList(startDate, endDate);
-		log.debug(FontColor.RED +bookingDayList + "<---bookingDayList");
-		
+		if(dates.length()>10)
+		{
+			
+			String startDate = dates.substring(0,10);
+			String endDate = dates.substring(13,23);
+	
+			log.debug(FontColor.RED +startDate + "<---startDate");
+			log.debug(FontColor.RED +endDate + "<---endDate");
+			
+			//int dayCalculation = customerService.dayCalculation(startDate, endDate);
+			//log.debug(FontColor.RED +dayCalculation + "<---dayCalculation");
+			
+			List<Map<String,Object>> bookingDayList = customerService.bookingDayList(startDate, endDate);
+			log.debug(FontColor.RED +bookingDayList + "<---bookingDayList");
+			
+			model.addAttribute("bookingDayList",bookingDayList);
+		}
 		
 		
 		log.debug(FontColor.RED + option.size() + "<---option");
@@ -372,7 +381,7 @@ public class CustomerController {
 		model.addAttribute("optionPrice",optionPrice);
 		model.addAttribute("option",option);
 		model.addAttribute("optionSize",optionSize);
-		model.addAttribute("bookingDayList",bookingDayList);
+		//model.addAttribute("bookingDayList",bookingDayList);
 		model.addAttribute("bookingOptionList",bookingOptionList);
 		return "customer/booking/bookingProductPayment";
 	}

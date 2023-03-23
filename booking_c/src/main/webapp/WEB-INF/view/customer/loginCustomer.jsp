@@ -68,12 +68,12 @@
 			  <form action="${pageContext.request.contextPath}/log/loginCustomer" method="post" id="loginForm">
 				<div class="form-group">
 					<label>ID</label>
-					<input type="email" class="form-control"  name="customerId" id="id">
+					<input type="email" class="form-control"  name="customerId" id="id" value="cus1">
 					<i class="ti-user"></i>
 				</div>
 				<div class="form-group">
 					<label>Password</label>
-					<input type="password" class="form-control" name="customerPw" id="pw">
+					<input type="password" class="form-control" name="customerPw" id="pw" value="1234">
 					<i class="icon_lock_alt"></i>
 				</div>
 				<div class="clearfix add_bottom_30">

@@ -69,18 +69,33 @@
 		
 		$('#paymentBtn').click(function(){
 			var optionTest = $('#option').val();
-			console.log($('#option').val()+"<--option");
-			console.log(optionTest+"<--optionTest");
 			if($('#option').val() == '[]')
 				{
 					$('#option').val(optionTest.replace('[]',0));
 					var beChangNo = parseInt($('#option').val());
 					console.log($('#option').val()+"<--option if");
 					console.log(typeof beChangNo+"<--option if typeof");
+					
+					console.log($('#productTime').val());
+					console.log(typeof $('#productTime').val());
+					/*
+					$('#productTime').val(productTimeInt);
+					console.log($('#productTime').val());
+					*/
+					$('#paymentForm').submit();
+					return;
 				}
+			var no1 = optionTest.replace('[','');
+			var no2 = no1.replace(']','');
+			console.log($('#option').val()+"<--option");
+			console.log(no2+"<--no2");
+			$('#option').val(no2);
+			console.log($('#productTime').val());
 			$('#paymentForm').submit();
 		});
-
+		
+		
+		
 	});
 	</script>
 <title> </title>
@@ -90,20 +105,29 @@
 	<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include><br><br>
 	
 	<form action="${pageContext.request.contextPath}/customer/booking/addBooking" method="post" id=paymentForm>
-		<input type="text" name="customerId" value="${loginCustomer.customerId }">
-		<input type="text" name="bkcId" value="${bookingPaymentCompany.bkcId}">
-		<input type="text" name="dates" value="${dates}">
-		<input type="text" name="bkpNo" value="${bkpNo }">
-		<input type="text" name="bkpPrice" value="${bkpPrice }">
-		<input type="text" name="bkpRankDiscount" value="${bkpPrice -  rankDiscount}">
-		<input type="text" name="bookingPeople" value="${qtyInput }">
-		<input type="text" name="option" value="${option }" id="option">
-		<input type="text" name="optionSize" value="${optionSize }">
+		<input type="hidden" name="customerId" value="${loginCustomer.customerId }">
+		<input type="hidden" name="bkcId" value="${bookingPaymentCompany.bkcId}">
+		<input type="hidden" name="dates" value="${dates}">
+		<input type="hidden" name="bkpNo" value="${bkpNo }">
+		<input type="hidden" name="bkpPrice" value="${bkpPrice }">
+		<input type="hidden" name="bkpRankDiscount" value="${bkpPrice -  rankDiscount}">
+		<input type="hidden" name="bookingPeople" value="${qtyInput }">
+		<input type="hidden" name="option" value="${option }" id="option">
+		<input type="hidden" name="optionSize" value="${optionSize }">
 		
 		
-		<c:forEach var="dayList" items="${bookingDayList}">
-			<input type="text" name="dayList" value="${dayList.selecteDate }"><br>
-		</c:forEach>
+		<c:if test="${bookingDayList != null}">
+			<input type="hidden" name="productTime" value="00:00:00" id="productTime">
+			<c:forEach var="dayList" items="${bookingDayList}">
+				<input type="hidden" name="dayList" value="${dayList.selecteDate }"><br>
+			</c:forEach>
+		</c:if>
+		<c:if test="${bookingDayList == null}">
+			<span>dates</span>
+			<input type="hidden" name="dayList" value="${dates }">
+			<input type="hidden" name="productTime" value="${productTime }" id="productTime">
+		</c:if>
+		
 		<span>${bkpName } 결제 상세페이지 </span><br>
 		<span>날짜 : ${dates}</span><br>
 		<c:if test="${productTime != ''}">
@@ -119,10 +143,8 @@
 							<c:if test="${tbkpoNo.optionNo ==bkpoNo }">
 								- ${tbkpoNo.optionName}<br>
 								<input type="text" name="bkpoNo" value="${bkpoNo }">
-								
 							</c:if>
 					</c:forEach>
-				
 			</c:forEach>		
 	
 		

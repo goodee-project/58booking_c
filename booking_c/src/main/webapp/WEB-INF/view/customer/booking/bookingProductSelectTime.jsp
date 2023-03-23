@@ -182,7 +182,6 @@
 		
 									<div class="form-group input-dates">
 										<input class="form-control" type="text" name="dates" placeholder="When.." id="bookingDate">
-										<input class="form-control" type="text" name="endDates" placeholder="When.." id="bookingDate">
 										<i class="icon_calendar"></i>
 									</div>
 		
