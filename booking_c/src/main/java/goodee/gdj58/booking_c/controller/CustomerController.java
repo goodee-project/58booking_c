@@ -231,6 +231,15 @@ public class CustomerController {
 	
 	
 	
+	//템플릿 테스트
+	@GetMapping("/customer/booking/test")
+	public String test(){
+		
+		return "/customer/booking/templatTestDay";
+	}
+	
+	
+	
 	//결제 후 예약내역 등록
 	@PostMapping("/customer/booking/addBooking")
 	public String addBooking(
@@ -252,7 +261,7 @@ public class CustomerController {
 			, @RequestParam (value = "productTime") String productTime
 			, @RequestParam (value = "havePoint") int havePoint
 			, @RequestParam (value = "bkpName") String bkpName
-			, @RequestParam (value = "bkpoName") ArrayList<String> bkpoName
+			, @RequestParam (value = "bkpoName") String bkpoName
 			)
 	{
 
@@ -281,7 +290,7 @@ public class CustomerController {
 			{
 				log.debug(FontColor.RED + "<---bkpoNo null if문 진입");
 				booking.setOptionNo(0);
-				
+				bkpoName = "옵션없음";
 				customerService.addBooking(booking, customerId,remainPoint);
 				Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
 				loginCustomer.setCustomerPoint(remainPoint);
@@ -343,7 +352,8 @@ public class CustomerController {
 	{
 		
 		
-		
+		log.debug(FontColor.RED +bkpoName + "<---bkpoName");
+;
 		//날짜형 예약시 날짜 일 수 계산
 		if(dates.length()>10)
 		{
@@ -364,7 +374,8 @@ public class CustomerController {
 		}
 		
 		
-		log.debug(FontColor.RED + option.size() + "<---option");
+		log.debug(FontColor.RED + option + "<---option");
+		log.debug(FontColor.RED + option.size() + "<---option.size()");
 		
 		int optionSize = option.size();
 		

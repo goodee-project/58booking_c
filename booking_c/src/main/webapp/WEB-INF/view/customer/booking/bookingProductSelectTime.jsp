@@ -22,17 +22,37 @@
 			 if($('#msg').val() != '')
 				{
 					alert('최대인원 이상 예약 불가');
-					return;
 				}
-		$('#bookingBtn').click(function(){
-				if($('#bookingDate').val() == '')
-					{
-						alert('날짜를 선택해주세요');
-						return;
-					}
-				$('#booking').submit();
+			$('#bookingBtn1').click(function(){
+					if($('#bookingDate').val() == '')
+						{
+							alert('날짜를 선택해주세요');
+							return;
+						}
+					$('#booking1').submit();
+				});
 			
-			});
+					
+			$('#bookingBtn2').click(function(){					
+					  $.ajax({
+								url:'bkcOffdayCheck'
+								, type : 'get'
+								, data : {dates:$('#bookingDate').val(), bkcId:$('#bkcId').val()}
+								, success: function(model)
+								{
+									console.log('모델값:'+model);
+									if(model=='no') {
+										console.log('예약가능');
+										$('#booking2').submit();
+										return;
+									} else {
+										alert($('#bookingDate').val()+'는 정기 휴무일 입니다.');
+										$('#bookingDate').focus();
+										return;
+									}
+								}
+							});
+				});
 		});
 	</script>
 
@@ -167,7 +187,7 @@
 							</div>
 							<!-- /col -->
 							<aside class="col-lg-4" id="sidebar">
-							<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post" id="booking">
+							<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post" id="booking1">
 								<input type="hidden" name="bkcId" value="${bkcId }"> 
 								<input type="hidden" name="bkpMax" value="${bookingProductInfo.bkpMax}">
 								<input type="hidden" name="bkpPrice" value="${bookingProductInfo.bkpPrice}">
@@ -205,7 +225,7 @@
 										</div>
 									</div>
 									
-									<button type="button" id="bookingBtn" class=" add_top_30 btn_1 full-width purchase">예약</button>
+									<button type="button" id="bookingBtn1" class=" add_top_30 btn_1 full-width purchase">예약</button>
 									
 								</div>
 								
@@ -325,7 +345,6 @@
 			  $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
 				  $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
 			  });
-
 			  $('input[name="dates"]').on('cancel.daterangepicker', function(ev, picker) {
 				  $(this).val('');
 			  });
@@ -465,8 +484,8 @@
 							<!-- /col -->
 							
 							<aside class="col-lg-4" id="sidebar">
-								<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post" id="booking">
-									<input type="hidden" name="bkcId" value="${bkcId }"> 
+								<form action="${pageContext.request.contextPath}/customer/booking/bookingProductPayment" method="post" id="booking2">
+									<input type="hidden" name="bkcId" value="${bkcId }" id="bkcId"> 
 									<input type="hidden" name="bkpMax" value="${bookingProductInfo.bkpMax}">
 									<input type="hidden" name="bkpPrice" value="${bookingProductInfo.bkpPrice}">
 									<input type="hidden" name="bkpName" value="${bkpName}">
@@ -509,7 +528,7 @@
 											</div>
 										</div>
 										
-										<button type="submit" class=" add_top_30 btn_1 full-width purchase">예약</button>
+										<button type="button" id="bookingBtn2" class=" add_top_30 btn_1 full-width purchase">예약</button>
 									</div>
 								</form>
 							</aside>

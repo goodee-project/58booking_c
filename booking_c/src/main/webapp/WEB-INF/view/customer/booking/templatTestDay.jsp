@@ -9,12 +9,17 @@
 	<jsp:include page="/WEB-INF/view/customer/booking/inc/headCore.jsp"></jsp:include>
 
     <title>Panagea | Premium site template for travel agencies, hotels and restaurant listing.</title>
+       <!-- BASE CSS -->
+    <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/vendors.css" rel="stylesheet">
+
+    <!-- YOUR CUSTOM CSS -->
+    <link href="css/custom.css" rel="stylesheet">
 </head>
-<body class="datepicker_mobile_full"><!-- Remove this class to disable datepicker full on mobile -->
+<body>
 	
-	<div id="page" class="theia-exception">
-		
-	<header class="header menu_fixed">
+<header class="header menu_fixed">
 		<div id="preloader"><div data-loader="circle-side"></div></div><!-- /Preload -->
 		<div id="logo">
 			<a href="index.html">
@@ -65,7 +70,7 @@
                         <li><a href="index-9.html">Home AirBnb</a></li>
 					</ul>
 				</li>
-
+				
 			</ul>
 		</nav>
 
@@ -73,76 +78,159 @@
 	<!-- /header -->
 	
 	<main>
-		<section class="hero_in restaurants_detail">
+		<div class="hero_in cart_section">
 			<div class="wrapper">
 				<div class="container">
-					<h1 class="fadeInUp"><span></span>Restaurant detail page</h1>
+					<div class="bs-wizard clearfix">
+						<div class="bs-wizard-step">
+							<div class="text-center bs-wizard-stepnum">Your cart</div>
+							<div class="progress">
+								<div class="progress-bar"></div>
+							</div>
+							<a href="cart-1.html" class="bs-wizard-dot"></a>
+						</div>
+
+						<div class="bs-wizard-step active">
+							<div class="text-center bs-wizard-stepnum">Payment</div>
+							<div class="progress">
+								<div class="progress-bar"></div>
+							</div>
+							<a href="#0" class="bs-wizard-dot"></a>
+						</div>
+
+						<div class="bs-wizard-step disabled">
+							<div class="text-center bs-wizard-stepnum">Finish!</div>
+							<div class="progress">
+								<div class="progress-bar"></div>
+							</div>
+							<a href="#0" class="bs-wizard-dot"></a>
+						</div>
+					</div>
+					<!-- End bs-wizard -->
 				</div>
-				
 			</div>
-		</section>
+		</div>
 		<!--/hero_in-->
 
 		<div class="bg_color_1">
-			<nav class="secondary_nav sticky_horizontal">
-				<div class="container">
-					<ul class="clearfix">
-						<li><a href="#description" class="active">Description</a></li>
-						
-					</ul>
-				</div>
-			</nav>
 			<div class="container margin_60_35">
 				<div class="row">
 					<div class="col-lg-8">
-						<section id="description">
-							<h2>Description</h2>
-							<p>Per consequat adolescens ex, cu nibh commune <strong>temporibus vim</strong>, ad sumo viris eloquentiam sed. Mea appareat omittantur eloquentiam ad, nam ei quas oportere democritum. Prima causae admodum id est, ei timeam inimicus sed. Sit an meis aliquam, cetero inermis vel ut. An sit illum euismod facilisis, tamquam vulputate pertinacia eum at.</p>
-							<p>Cum et probo menandri. Officiis consulatu pro et, ne sea sale invidunt, sed ut sint <strong>blandit</strong> efficiendi. Atomorum explicari eu qui, est enim quaerendum te. Quo harum viris id. Per ne quando dolore evertitur, pro ad cibo commune.</p>
-						</section>
-						<!-- /section -->
+						<div class="box_cart">
+						
+						<div class="form_title">
+							<h3>Your Details</h3>
+						</div>
+						<div class="step">
+							<form action="${pageContext.request.contextPath}/customer/booking/addBooking" method="post" id=paymentForm>
+								<input type="hidden" name="customerId" value="${loginCustomer.customerId }">
+								<input type="hidden" name="bkcId" value="${bookingPaymentCompany.bkcId}">
+								<input type="hidden" name="dates" value="${dates}">
+								<input type="hidden" name="bkpNo" value="${bkpNo }">
+								<input type="hidden" name="bkpPrice" value="${bkpPrice }">
+								<input type="hidden" name="bkpRankDiscount" value="${bkpPrice -  rankDiscount}">
+								<input type="hidden" name="bookingPeople" value="${qtyInput }">
+								<input type="hidden" name="option" value="${option }" id="option">
+								<input type="hidden" name="optionSize" value="${optionSize }">
+								<input type="hidden" name="havePoint" value="${loginCustomer.customerPoint}">
+								<input type="hidden" name="bkpName" value="${bkpName }">
+								
+								
+								<c:if test="${bookingDayList != null}">
+									<input type="hidden" name="productTime" value="00:00:00" id="productTime">
+									<c:forEach var="dayList" items="${bookingDayList}">
+										<input type="hidden" name="dayList" value="${dayList.selecteDate }"><br>
+									</c:forEach>
+								</c:if>
+								<c:if test="${bookingDayList == null}">
+									<span>dates</span>
+									<input type="hidden" name="dayList" value="${dates }">
+									<input type="hidden" name="productTime" value="${productTime }" id="productTime">
+								</c:if>
+								
+								<span>${bkpName } 결제 상세페이지 </span><br>
+								<span>날짜 : ${dates}</span><br>
+								<c:if test="${productTime != ''}">
+									<span>시간 : ${productTime}</span><br>
+								</c:if>
+								<span>인원 : ${qtyInput }</span><br>
+								<span>상품가격 : ${bkpPrice }원 </span><br>
+								<span>선택 옵션</span><br>
+								
+						
+									<c:forEach var="tbkpoNo" items="${bookingOptionList }" varStatus="status">
+											<c:forEach var="bkpoNo" items="${option }" varStatus="status">
+													<c:if test="${tbkpoNo.optionNo ==bkpoNo }">
+														- ${tbkpoNo.optionName}<br>
+														<input type="hidden" name="bkpoNo" value="${bkpoNo }">
+														<input type="hidden" name="bkpoName" value="${tbkpoNo.optionName}">
+													</c:if>
+											</c:forEach>
+									</c:forEach>		
+							
+								
+								<span>총 옵션 가격 : ${optionPrice}원 </span><br><br><br>
+								
+								<span>기업명 : ${bookingPaymentCompany.bkcName}</span><br>
+								<span>사업자번호 : ${bookingPaymentCompany.bkcNumber}</span><br>
+								<span>전화번호 : ${bookingPaymentCompany.bkcPhone}</span><br>
+								<span>주소 : ${bookingPaymentCompany.bkcAddress}</span><br><br><br>
+								
+								<span>예약자 정보</span><br>
+								<span>예약자 : ${loginCustomer.customerName }</span><br>
+								<span>전화번호 : ${loginCustomer.customerPhone }</span><br>
+								<span>이메일 : ${loginCustomer.customerEmail }</span><br><br><br>
+								
+								<span>결제</span><br>
+								<span>등급 할인받은 금액 : ${bkpPrice -  rankDiscount}</span><br>
+								<span>상품금액 : ${rankDiscount +  optionPrice}원 </span><br>
+								<span>보유 포인트 : ${loginCustomer.customerPoint}P</span><br>
+								<span>사용 포인트 : <input type="text" name="point" id="point" value="0">P &nbsp;
+											<button type="button" id="pointBtn">사용</button>	
+								</span><br>
+								<span>회원등급 : ${loginCustomer.customerRank} </span><br>
+								<span>페이잔액 : ${loginCustomer.customerPay}P 
+										<button type="button" class="btn_1" id="payBtn">충전하기</button>
+								</span><br>
+								
+								<span>총결제 금액 : 
+										<input type="text" name="finalCount" id="finalCount" value="${rankDiscount +  optionPrice}">원 
+								</span><br>
+								
+								<button type="button" id="paymentBtn">예약하기</button>
+							</form>
+						</div>
+						<hr>
+						<!--End step -->
+
+
+						<!--End step -->
+
+						
+
+						<hr>
+						<!--End step -->
+					
+						</div>
 					</div>
 					<!-- /col -->
 					
 					<aside class="col-lg-4" id="sidebar">
-						<div class="box_detail booking">
-							<div class="price">
-								<span>날짜형 예약</span>
+						<div class="box_detail">
+							<div id="total_cart">
+								총결제 금액 <br><br>
+								<input type="text" name="finalCount" id="finalCount" value="${rankDiscount +  optionPrice}" >원
 							</div>
-
-							<div class="form-group input-dates">
-								<input class="form-control" type="text" name="dates" placeholder="When..">
-								<i class="icon_calendar"></i>
-							</div>
-
-							<div class="panel-dropdown">
-								<a href="#">Guests <span class="qtyTotal">1</span></a>
-								<div class="panel-dropdown-content right">
-									<div class="qtyButtons">
-										<label>Adults</label>
-										<input type="text" name="qtyInput" value="1">
-									</div>
-									<div class="qtyButtons">
-										<label>Childrens</label>
-										<input type="text" name="qtyInput" value="0">
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group clearfix">
-								<div class="custom-select-form">
-									<select class="wide">
-										<option>Room Type</option>	
-										<option>Single Room</option>
-										<option>Double Room</option>
-										<option>Suite Room</option>
-									</select>
-								</div>
-							</div>
-							<a href="cart-1.html" class=" add_top_30 btn_1 full-width purchase">예약</a>
-							
+							<ul class="cart_details">
+								<li>등급 할인받은 금액 <span> ${bkpPrice -  rankDiscount}</span></li>
+								<li>상품금액 <span>${rankDiscount +  optionPrice}원</span></li>
+								<li>보유 포인트 <span>${loginCustomer.customerPoint}P</span></li>
+								<li>사용 포인트 <span><input type="text" name="point" id="point" value="0">&nbsp;P&nbsp;&nbsp;&nbsp;<button type="button" id="pointBtn">사용</button></span></li><br>
+								<li>회원등급 <span> ${loginCustomer.customerRank} </span></li>
+								<li>페이잔액 <span>${loginCustomer.customerPay}P&nbsp;&nbsp;&nbsp;<button type="button" id="payBtn">충전하기</button></span></li>
+							</ul>
+							<a href="cart-3.html" class="btn_1 full-width purchase">예약하기</a>
 						</div>
-						
 					</aside>
 				</div>
 				<!-- /row -->
@@ -237,35 +325,61 @@
 	<!--/footer-->
 	</div>
 	<!-- page -->
-
+	
+	<!-- Sign In Popup -->
+	<div id="sign-in-dialog" class="zoom-anim-dialog mfp-hide">
+		<div class="small-dialog-header">
+			<h3>Sign In</h3>
+		</div>
+		<form>
+			<div class="sign-in-wrapper">
+				<a href="#0" class="social_bt facebook">Login with Facebook</a>
+				<a href="#0" class="social_bt google">Login with Google</a>
+				<div class="divider"><span>Or</span></div>
+				<div class="form-group">
+					<label>Email</label>
+					<input type="email" class="form-control" name="email" id="email">
+					<i class="icon_mail_alt"></i>
+				</div>
+				<div class="form-group">
+					<label>Password</label>
+					<input type="password" class="form-control" name="password" id="password" value="">
+					<i class="icon_lock_alt"></i>
+				</div>
+				<div class="clearfix add_bottom_15">
+					<div class="checkboxes float-start">
+						<label class="container_check">Remember me
+						  <input type="checkbox">
+						  <span class="checkmark"></span>
+						</label>
+					</div>
+					<div class="float-end mt-1"><a id="forgot" href="javascript:void(0);">Forgot Password?</a></div>
+				</div>
+				<div class="text-center"><input type="submit" value="Log In" class="btn_1 full-width"></div>
+				<div class="text-center">
+					Don’t have an account? <a href="register.html">Sign up</a>
+				</div>
+				<div id="forgot_pw">
+					<div class="form-group">
+						<label>Please confirm login email below</label>
+						<input type="email" class="form-control" name="email_forgot" id="email_forgot">
+						<i class="icon_mail_alt"></i>
+					</div>
+					<p>You will receive an email containing a link allowing you to reset your password to a new preferred one.</p>
+					<div class="text-center"><input type="submit" value="Reset Password" class="btn_1"></div>
+				</div>
+			</div>
+		</form>
+		<!--form -->
+	</div>
+	<!-- /Sign In Popup -->
 	
 	<div id="toTop"></div><!-- Back to top button -->
 	
-
-	<!-- css footerCore -->
-	<jsp:include page="/WEB-INF/view/customer/booking/inc/footerCore.jsp"></jsp:include>
-	
-	<!-- DATEPICKER  -->
-	<script>
-	$(function() {
-	  $('input[name="dates"]').daterangepicker({
-		  autoUpdateInput: false,
-		  parentEl:'.scroll-fix',
-		  minDate:new Date(),
-		  opens: 'left',
-		  locale: {
-			  cancelLabel: 'Clear'
-		  }
-	  });
-	  $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
-		  $(this).val(picker.startDate.format('YY-MM-DD') + ' > ' + picker.endDate.format('YY-MM-DD'));
-	  });
-	  $('input[name="dates"]').on('cancel.daterangepicker', function(ev, picker) {
-		  $(this).val('');
-	  });
-	});
-	</script>
-	
-	
+	<!-- COMMON SCRIPTS -->
+    <script src="${pageContext.request.contextPath}/resources/js/common_scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/phpmailer/validate.js"></script>
+  
 </body>
 </html>

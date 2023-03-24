@@ -8,7 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="Panagea - Premium site template for travel agencies, hotels and restaurant listing.">
 		<meta name="author" content="Ansonika">
-		<title>마이페이지 | 페이 내역</title>
+		<title>결제 페이지</title>
 		<link rel="shortcut icon" href="../../resources/img/favicon.ico" type="image/x-icon">
 	    <link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
 	    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
@@ -140,15 +140,22 @@
 		<span>선택 옵션</span><br>
 		
 
-			<c:forEach var="tbkpoNo" items="${bookingOptionList }" varStatus="status">
-					<c:forEach var="bkpoNo" items="${option }" varStatus="status">
-							<c:if test="${tbkpoNo.optionNo ==bkpoNo }">
-								- ${tbkpoNo.optionName}<br>
-								<input type="hidden" name="bkpoNo" value="${bkpoNo }">
-								<input type="text" name="bkpoName" value="${tbkpoNo.optionName}">
-							</c:if>
-					</c:forEach>
-			</c:forEach>		
+			<c:if test="${optionSize == 0}">
+				<input type="hidden" name="bkpoName" value="옵션없음">
+			</c:if>
+			
+			<c:if test="${optionSize != 0}">
+				<c:forEach var="tbkpoNo" items="${bookingOptionList }" varStatus="status">
+						<c:forEach var="bkpoNo" items="${option }" varStatus="status">
+								<c:if test="${tbkpoNo.optionNo ==bkpoNo }">
+									- ${tbkpoNo.optionName}<br>
+									<input type="hidden" name="bkpoNo" value="${bkpoNo }">
+									<input type="hidden" name="bkpoName" value="${tbkpoNo.optionName}">
+								</c:if>
+	
+						</c:forEach>
+				</c:forEach>		
+			</c:if>
 	
 		
 		<span>총 옵션 가격 : ${optionPrice}원 </span><br><br><br>
