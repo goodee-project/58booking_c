@@ -51,19 +51,7 @@
 							    <label><a href="${pageContext.request.contextPath}/customer/myPage/deactiveCustomer">회원 탈퇴</a></label>
 							</li>
 						</ul>
-						<h6>외 기능</h6>
-						<ul>
-							<li>
-							    <label><a href="${pageContext.request.contextPath }/log/loginCustomer">로그인</a></label>
-							</li>
-							<li>
-							    <label><a href="${pageContext.request.contextPath }/log/addCustomer">회원가입</a></label>
-							</li>
-							<li>
-							    <label><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyList">예약업체 검색페이지</a></label>
-							</li>
-						</ul>
-						<h6>로그아웃</h6>
+						<h6></h6>
 						<ul>
 							<li>
 							    <label><a href="${pageContext.request.contextPath}/customer/logout">로그아웃</a></label>

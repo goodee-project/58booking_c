@@ -22,6 +22,19 @@
 		<link href="../../resources/css/vendors.css" rel="stylesheet">
 	    <link href="../../resources/css/blog.css" rel="stylesheet">
 	    <link href="../../resources/css/custom.css" rel="stylesheet">
+	    <style>
+	    	.box {
+			    width: 150px;
+			    height: 150px; 
+			    border-radius: 70%;
+			    overflow: hidden;
+			}
+			.profile {
+			    width: 100%;
+			    height: 100%;
+			    object-fit: cover;
+			}
+	    </style>
 	</head>
 	<body>
 		<div class="container margin_60_35">
@@ -38,15 +51,17 @@
 									<table class="table table-borderless">
 										<tr>
 											<td rowspan="2" style="width: 300px;">
-												<img src="${pageContext.request.contextPath}/upload/${customerOne.customerImgSaveName}" width="200" height="200">
+												<div class="box">
+													<img class="profile" src="${pageContext.request.contextPath}/upload/${customerOne.customerImgSaveName}" width="200" height="200">
+												</div>
 											</td>
 											<td>
-												이름 : ${customerOne.customerName}
+												<span style="font-weight: bold;">이름</span>&nbsp;&nbsp;${customerOne.customerName}
 											</td>
 										</tr>
 										<tr>
 											<td>
-												닉네임 : ${customerOne.customerNickname}
+												<span style="font-weight: bold;">닉네임</span>&nbsp;&nbsp;${customerOne.customerNickname}
 											</td>
 										</tr>
 									</table>

@@ -35,6 +35,17 @@
 				height: 70px;
 				resize: none;
 			}
+	    	.box {
+			    width: 150px;
+			    height: 150px; 
+			    border-radius: 70%;
+			    overflow: hidden;
+			}
+			.profile {
+			    width: 100%;
+			    height: 100%;
+			    object-fit: cover;
+			}
 	    </style>
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 	    <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -43,10 +54,12 @@
 	    		$('#modifyBtn').click(function() {
 	    			var html = `<table class="table table-borderless">
 									<tr>
-										<td rowspan="13" style="width: 220px;">
-											<img id="preview" src="${pageContext.request.contextPath}/upload/${customerOne.customerImgSaveName}" width="150" height="150">
-											<input type="hiiden" name="fileName" value="${customerOne.customerImgSaveName}">
-											<input type="file" name="file" id="file" style="width: 220px;">
+										<td rowspan="13" style="width: 240px;">
+											<div class="box">
+												<img id="preview" class="profile" src="${pageContext.request.contextPath}/upload/${customerOne.customerImgSaveName}" width="150" height="150">
+											</div>
+											<input type="hidden" name="fileName" value="${customerOne.customerImgSaveName}">
+											<input type="file" name="file" id="file" style="width: 220px;" class="form-control">
 										</td>
 										<th>아이디</th>
 										<td>
@@ -110,7 +123,7 @@
 										<th>주소</th>
 										<td>
 											<textarea rows="5" class="form-control" name="customerAddress" id="textarea" readonly>${customerOne.customerAddress}</textarea>
-											<button type="button" class="btn btn-default" onclick="postCode();"> 우편번호 찾기</button>
+											<button type="button" class="btn_1" onclick="postCode();"> 우편번호 찾기</button>
 										</td>
 									</tr>
 									<tr>
@@ -122,7 +135,9 @@
 										<td><fmt:formatNumber value="${customerOne.customerPay}" pattern="###,###,###,###"/>원</td>
 									</tr>
 								</table>
-								<button type="button" class="btn btn-default" id="modifyBtn2">수정</button>
+								<div align="right">
+									<button type="button" class="btn_1" id="modifyBtn2">수정</button>
+								</div>
 								
 								`
     				$(this.form).html(html);
@@ -201,8 +216,10 @@
 									<form action="${pageContext.request.contextPath}/customer/myPage/updateCustomerOne" method="post" id="modifyForm" enctype="multipart/form-data">
 										<table class="table table-borderless">
 											<tr>
-												<td rowspan="13" style="width: 220px;">
-													<img src="${pageContext.request.contextPath}/upload/${customerOne.customerImgSaveName}" width="150" height="150">
+												<td rowspan="13" style="width: 240px;">
+													<div class="box">
+														<img class="profile" src="${pageContext.request.contextPath}/upload/${customerOne.customerImgSaveName}" width="150" height="150">
+													</div>
 												</td>
 												<th>아이디</th>
 												<td>${customerOne.customerId}</td>
@@ -211,7 +228,7 @@
 												<th>비밀번호</th>
 												<td>
 													****
-													<button type="button" onclick="location.href='${pageContext.request.contextPath}/log/modifyPw?email=${customerOne.customerEmail}&id=${customerOne.customerId}'">변경</button> 
+													<button type="button" class="btn_1" onclick="location.href='${pageContext.request.contextPath}/log/modifyPw?email=${customerOne.customerEmail}&id=${customerOne.customerId}'">변경</button> 
 												</td>
 											</tr>
 											<tr>
@@ -265,7 +282,9 @@
 												<td><fmt:formatNumber value="${customerOne.customerPay}" pattern="###,###,###,###"/>원</td>
 											</tr>
 										</table>
-										<button id="modifyBtn" type="button">정보 수정</button>
+										<div align="right">
+											<button id="modifyBtn" class="btn_1" type="button">정보 수정</button>
+										</div>
 									</form>
 								</div>
 							</div>

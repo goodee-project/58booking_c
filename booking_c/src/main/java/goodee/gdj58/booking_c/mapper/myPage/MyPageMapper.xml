@@ -192,11 +192,14 @@
 
 	<!-- 페이징용 예약 내역 데이터 개수 -->
 	<select id="bookingCnt" resultType="int" parameterType="map">
-		SELECT 
+		SELECT COUNT(c.cnt)
+		FROM
+		(SELECT 
 			COUNT(*) cnt
 		FROM customer c INNER JOIN booking b
 		ON c.customer_id = b.customer_id
 		WHERE c.customer_id = #{customerId}
+		GROUP BY b.booking_request_date) c
 	</select>
 
 	<!-- 예약 내역 리스트 -->
@@ -230,6 +233,7 @@
 		GROUP BY b.booking_request_date
 		<if test="dateSort == 'DESC'"> ORDER BY  b.booking_date DESC </if>
 		<if test="dateSort == 'ASC'"> ORDER BY  b.booking_date ASC </if>
+		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 
 	<!-- 고객 상세 정보 -->
