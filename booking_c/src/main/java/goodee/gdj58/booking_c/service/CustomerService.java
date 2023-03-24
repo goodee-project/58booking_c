@@ -35,8 +35,9 @@ public class CustomerService {
 							, @RequestParam("file") MultipartFile file
 							, String path) {
 		log.debug(FontColor.CYAN+"리뷰 bookingNo :"+bookingNo);
+		log.debug(FontColor.CYAN+"리뷰 review :"+review);
 		// review
-		int reviewRow = customerMapper.insertReview(review, bookingNo);
+		int reviewRow = customerMapper.insertReview(review);
 		if(reviewRow == 0) {
 			log.debug(FontColor.CYAN+"리뷰 입력 실패");
 			return "실패";
@@ -75,16 +76,17 @@ public class CustomerService {
 		}
 		// 업로드 파일을 customerImg 타입에 저장
 		String saveName = uniqueName + fileRealName;
-		log.debug("saveName : "+saveName);
+		log.debug(FontColor.CYAN+"saveName : "+saveName);
 		
 		// 가공
 		ReviewImg rImg = new ReviewImg();
+		rImg.setBookingNo(bookingNo);
 		rImg.setReviewImgSaveName(saveName);
 		rImg.setReviewImgOriginName(fileRealName);
 		rImg.setReviewImgKind(fileKind);
 		rImg.setReviewImgSize(size);
 		
-		int imgRow = customerMapper.insertReviewImg(rImg, bookingNo);
+		int imgRow = customerMapper.insertReviewImg(rImg);
 		if(imgRow == 0) {
 			log.debug(FontColor.CYAN+"리뷰사진 입력 실패");
 			return "실패";

@@ -3,48 +3,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>비밀번호 찾기</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Panagea - Premium site template for travel agencies, hotels and restaurant listing.">
+    <meta name="author" content="Ansonika">
+
+    <!-- Favicons-->
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/img/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/img/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="${pageContext.request.contextPath}/resources/img/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="${pageContext.request.contextPath}/resources/img/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="${pageContext.request.contextPath}/resources/img/apple-touch-icon-144x144-precomposed.png">
+
+    <!-- GOOGLE WEB FONT -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- BASE CSS -->
+    <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/vendors.css" rel="stylesheet">
+
+    <!-- YOUR CUSTOM CSS -->
+    <link href="${pageContext.request.contextPath}/resources/css/custom.css" rel="stylesheet">
+	<title>비밀번호 찾기</title>
 </head>
 <body>
 	<!-- 임시메뉴 -->
     <jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
-	<h2>비밀번호 찾기</h2>
-	<table border="1">
-		<tr>
-			<th>아이디</th>
-			<td>
-				<input type="text" name="customerId" id="id" placeholder="아이디를 입력해주세요.">
-				<div id="idMsg"></div>
-			</td>
-		</tr>
-		<tr>
-			<th>이메일주소</th>
-			<td>
-				<input type="text" id="email1" name="customerEmail1">
-				<span>@</span>
-				<select id="email2" name="customerEmail2">
-					<option value="gmail.com">gmail.com</option>
-					<option value="naver.com">naver.com</option>
-					<option value="daum.net">daum.net</option>
-					<option value="hanmail.net">hanmail.net</option>
-					<option value="nate.com">nate.com</option>
-					<option value="test.com">test.com</option>
-				</select>
-				<button type="button" id="emailCkBtn">인증번호 발송</button>
-				<div id="emailMsg"></div>
-				<div id="emailSendMsg"></div>
-			</td>
-		</tr>
-		<tr>
-			<th>인증번호</th>
-			<td>
-				<input type="text" id="codeCk" placeholder="인증번호를 입력해주세요." disabled>
-				<button type="button" id="codeCkBtn" disabled>인증번호 확인</button>
-				<div id="emailResultMsg"></div>
-			</td>
-		</tr>
-	</table>
+	<nav id="menu" class="fake_menu"></nav>
+	
+	<div id="preloader">
+		<div data-loader="circle-side"></div>
+	</div>
+	<!-- End Preload -->
+	
+	<div id="login" class="con">
+		<aside style="width:30%;">
+			<figure>
+				<a href="index.html"><h2>비밀번호 찾기</h2></a>
+			</figure>
+				<div class="form-group">
+					<label>아이디</label>					
+					<input class="form-control" name="customerId" id="id" placeholder="아이디를 입력해주세요.">
+					<div id="idMsg"></div>
+				</div>
+				<div class="form-group">
+					<label>이메일주소</label><br>
+					<input type="text" name="customerEmail1" id="email1">
+					<span>@</span>
+					<select id="email2" name="customerEmail2">
+						<option value="gmail.com">gmail.com</option>
+						<option value="naver.com">naver.com</option>
+						<option value="daum.net">daum.net</option>
+						<option value="hanmail.net">hanmail.net</option>
+						<option value="nate.com">nate.com</option>
+						<option value="test.com">test.com</option>
+					</select>
+					<button type="button" id="emailCkBtn" class="btn btn-primary btn-sm">인증번호 발송</button>
+					<div id="emailMsg"></div>
+					<div id="emailSendMsg"></div>
+				</div>
+				<div class="form-group">
+					<label>인증번호</label>
+					<input class="form-control" type="text" id="codeCk" name="" placeholder="인증번호를 입력해주세요." disabled>
+					<button type="button" id="codeCkBtn" class="btn btn-primary btn-sm" disabled>인증번호 확인</button>
+					<div id="emailResultMsg"></div>
+				</div>
+				<div id="a"></div>
+				<div id="pass-info" class="clearfix"></div>
+				<div class="text-center add_top_10">이메일 인증에 성공시 비밀번호 변경창으로 자동 이동합니다.</div>
+				<div class="text-center add_top_10">
+					<strong><a href="${pageContext.request.contextPath}/log/loginCustomer">로그인</a></strong> /
+					<strong><a href="${pageContext.request.contextPath}/log/findId">아이디찾기</a></strong>
+				</div>
+			<div class="copy">Booking</div>
+		</aside>
+	</div>
+	<!-- /login -->
+	
+	<!-- COMMON SCRIPTS -->
+    <script src="${pageContext.request.contextPath}/resources/js/common_scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/phpmailer/validate.js"></script>
+	
+	<!-- SPECIFIC SCRIPTS -->
+	<script src="${pageContext.request.contextPath}/resources/js/pw_strenght.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	<script>
 		$(document).ready(function(){

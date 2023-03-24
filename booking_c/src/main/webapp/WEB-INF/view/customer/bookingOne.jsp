@@ -36,8 +36,40 @@
 			margin: 30px 0px;
 		}
     </style>
+    <script>
+	    $(document).ready(function(){
+			let bookingNo = 0;
+			
+			// 모달에 예약번호 넣기
+			$(".reviewBtn").click(function(){
+				bookingNo = $(this).data('id');
+				$("#bookingNo").val(bookingNo);
+			});
+			
+			// 답글 유효성 검사
+			$("#btn").click(function(){
+				let check = false;
+				
+				if($("#bookingNo").val() == 0){
+					alert('알 수 없는 오류가 발생했습니다.');
+					return;
+				}else if($('#reviewMemo').val().length < 1 || $('#reviewMemo').val().trim() == ''){
+					alert('리뷰 내용을 입력해 주세요.');
+					return;
+				}else{
+					check = true;
+				}
+				
+				if(check){
+					$('#form').submit();
+				}
+			});
+		});
+    </script>
 </head>
 <body>
+	<!-- 임시메뉴 -->
+    <jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 	<div id="page">
 		<div class="bg_color_1">
 			<div class="container margin_80_55">
@@ -209,7 +241,7 @@
 						<!-- 예약상태 방문완료인 경우만 리뷰작성 가능 -->
 						<c:forEach items="${list}" var="bk">
 							<c:if test="${bk.bkState eq '방문완료'}">
-								<button type="button" class="btn" data-toggle="modal" data-target="#reviewModal">리뷰쓰기</button>
+								<button type="button" class="reviewBtn" data-toggle="modal" data-target="#reviewModal" data-id="${bk.bookingNo}">리뷰쓰기</button>
 							</c:if>
 						</c:forEach>						
 						<button type="button">pdf저장</button>
@@ -218,18 +250,16 @@
 					<div class="modal fade" id="reviewModal" role="dialog" aria-hidden="true">
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
-								<form action="${pageContext.request.contextPath}/review/addReview" method="post" enctype="multipart/form-data">
-									<c:forEach items="${list}" var="bk">
-										<input type="hidden" name="bookingNo" value="${bk.bookingNo}">
-									</c:forEach>	
-									<div class="modal-header">
-										<!-- 모달 이름 -->
-										<h5 class="modal-title" id="exampleModalLabel">리뷰 작성</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-										</button>
-									</div>
+								<div class="modal-header">
+									<!-- 모달 이름 -->
+									<h5 class="modal-title" id="exampleModalLabel">리뷰 작성</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<form action="${pageContext.request.contextPath}/review/addReview" method="post" enctype="multipart/form-data" id="form">
 									<div class="modal-body">
+										<input type="hidden" name="bookingNo" id="bookingNo">
 										<div>
 											<span>별점</span><br>
 											<input type="radio" name="starRating" value="1">1
@@ -239,15 +269,15 @@
 											<input type="radio" name="starRating" value="5">5
 										</div>
 										<div>
-											<label>사진 첨부</label>
+											<span>파일업로드</span>
 											<input type="file" name="file">
 										</div>
-										<textarea rows="5" cols="60" name="reviewMemo" placeholder="이용후기를 남겨주세요." style="width=400px;"></textarea>
+										<textarea rows="5" cols="60" name="reviewMemo" id="reviewMemo" placeholder="이용후기를 남겨주세요."></textarea>
 									</div>
 									<div class="modal-footer">
 										<!-- data-dismiss="modal"를 통해 모달을 닫을수 있다. -->
 										<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-										<button type="submit" class="btn btn-primary">작성</button>
+										<button type="button" id="btn" class="btn btn-primary">작성</button>
 									</div>
 								</form>
 							</div>

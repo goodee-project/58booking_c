@@ -299,7 +299,6 @@
 		SELECT SUM(bkpo.booking_product_option_price) sumOptionPrice
 		FROM booking_product_option bkpo
 		WHERE bkpo.booking_product_no = #{bkpNo} 
-
 			<foreach item="bkpoNo" collection="paramMap" open="AND bkpo.booking_product_option_no IN (" close=")" separator=",">
 				#{bkpoNo}
 			</foreach>

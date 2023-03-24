@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <meta charset="utf-8">
+	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Panagea - Premium site template for travel agencies, hotels and restaurant listing.">
     <meta name="author" content="Ansonika">
@@ -85,6 +85,15 @@
 		  }
 		}
 </script>
+<style>
+	.con {
+		position: absolute;
+		top: 50%;
+		left: 35%;
+		background: #f00;
+		margin: -50px 0 0 -50px;
+	}
+</style>
 </head>
 <body>
 	<!-- 임시메뉴 -->
@@ -96,7 +105,7 @@
 	</div>
 	<!-- End Preload -->
 	
-	<div id="login">
+	<div id="login" class="con">
 		<aside style="width:700px;">
 			<figure>
 				<a href="index.html"><img src="${pageContext.request.contextPath}/resources/img/logo_sticky.svg" width="155" height="36" alt="" class="logo_sticky"></a>

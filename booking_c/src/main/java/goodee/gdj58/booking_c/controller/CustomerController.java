@@ -72,7 +72,7 @@ public class CustomerController {
 			return "redirect:/customer/booking/bookingList";
 		}
 		
-		return "customer/review/reviewList";
+		return "redirect:/customer/review/reviewList";
 	}
 	
 	// 고객 비밀번호 수정
