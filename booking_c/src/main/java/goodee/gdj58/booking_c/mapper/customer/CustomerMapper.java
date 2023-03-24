@@ -79,7 +79,7 @@ public interface CustomerMapper {
 	//예약업체 세부정보 홈
 	ArrayList<Map<String, Object>> getBookingCompanyDetailHome(String bkcId);
 	//예약업체 세부정보 공통
-	ArrayList<Map<String, Object>> getBookingCompanyDetailCommon(Map<String, Object> paramMap);
+	Map<String, Object> getBookingCompanyDetailCommon(Map<String, Object> paramMap);
 	//예약업체 총 수
 	int bookingCompanyCount(String searchWord);
 	//예약업체 리스트 출력

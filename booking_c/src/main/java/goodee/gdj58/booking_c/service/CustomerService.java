@@ -258,7 +258,7 @@ public class CustomerService {
 	}
 	
 	//예약업체 세부정보 공통
-	public List<Map<String, Object>> getBookingCompanyDetailCommon(String bkcId, String bkciLevel)
+	public Map<String, Object> getBookingCompanyDetailCommon(String bkcId, String bkciLevel)
 	{
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("bkcId", bkcId);

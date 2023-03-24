@@ -252,11 +252,13 @@ public class CustomerController {
 			, @RequestParam (value = "productTime") String productTime
 			, @RequestParam (value = "havePoint") int havePoint
 			, @RequestParam (value = "bkpName") String bkpName
+			, @RequestParam (value = "bkpoName") ArrayList<String> bkpoName
 			)
 	{
 
 		log.debug(FontColor.RED + productTime+ "<---productTime");
 		log.debug(FontColor.RED + dayList+ "<---bookingDayList addBooking");
+		log.debug(FontColor.RED + bkpoName+ "<---bkpoName");
 		
 		int remainPoint = havePoint - point;
 		
@@ -313,6 +315,10 @@ public class CustomerController {
 		log.debug(FontColor.RED+bookingAfterProductImg +"<----bookingAfterProductImg ");
 		model.addAttribute("bookingAfterProductImg", bookingAfterProductImg);
 		model.addAttribute("bkpName", bkpName);
+		model.addAttribute("bkpoName", bkpoName);
+		model.addAttribute("dates", dates);
+		model.addAttribute("bookingPeople", bookingPeople);
+		model.addAttribute("finalCount", finalCount);
 
 		return "customer/booking/bookingSuccessAddBooking";
 	}
@@ -481,7 +487,7 @@ public class CustomerController {
 			, @RequestParam(value = "bkcId") String bkcId
 			, @RequestParam(value = "bkciLevel", defaultValue = "") String bkciLevel)
 	{
-		List<Map<String, Object>> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
+		Map<String, Object> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
 		List<Map<String, Object>> bookingCompanyDetailMap = customerService.getBookingCompanyDetailMap(bkcId);
 		model.addAttribute("bookingCompanyDetailCommon",bookingCompanyDetailCommon);
 		model.addAttribute("bookingCompanyDetailMap",bookingCompanyDetailMap);
@@ -498,7 +504,7 @@ public class CustomerController {
 
 			)
 	{
-		List<Map<String, Object>> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
+		Map<String, Object> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
 		List<Map<String, Object>> bookingCompanyDetailReview = customerService.getBookingCompanyDetailReview(bkcId);
 		model.addAttribute("bookingCompanyDetailCommon",bookingCompanyDetailCommon);
 		model.addAttribute("bookingCompanyDetailReview",bookingCompanyDetailReview);
@@ -513,7 +519,7 @@ public class CustomerController {
 											, @RequestParam(value = "bkcId") String bkcId
 											, @RequestParam(value = "bkciLevel", defaultValue = "") String bkciLevel)
 	{
-		List<Map<String, Object>> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
+		Map<String, Object> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
 		List<Map<String, Object>> bookingCompanyDetailBooking = customerService.getBookingCompanyDetailBooking(bkcId);
 		model.addAttribute("bookingCompanyDetailCommon",bookingCompanyDetailCommon);
 		model.addAttribute("bookingCompanyDetailBooking",bookingCompanyDetailBooking);
@@ -528,7 +534,7 @@ public class CustomerController {
 										, @RequestParam(value = "bkcId") String bkcId
 										, @RequestParam(value = "bkciLevel", defaultValue = "") String bkciLevel) 
 	{
-		List<Map<String, Object>> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
+		Map<String, Object> bookingCompanyDetailCommon = customerService.getBookingCompanyDetailCommon(bkcId, bkciLevel);
 		List<Map<String, Object>> bookingCompanyDetailHome = customerService.getBookingCompanyDetailHome(bkcId);
 		//홈 내용 추가 예정
 		model.addAttribute("bookingCompanyDetailCommon",bookingCompanyDetailCommon);

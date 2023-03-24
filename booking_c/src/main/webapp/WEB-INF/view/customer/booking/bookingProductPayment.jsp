@@ -144,7 +144,8 @@
 					<c:forEach var="bkpoNo" items="${option }" varStatus="status">
 							<c:if test="${tbkpoNo.optionNo ==bkpoNo }">
 								- ${tbkpoNo.optionName}<br>
-								<input type="text" name="bkpoNo" value="${bkpoNo }">
+								<input type="hidden" name="bkpoNo" value="${bkpoNo }">
+								<input type="text" name="bkpoName" value="${tbkpoNo.optionName}">
 							</c:if>
 					</c:forEach>
 			</c:forEach>		
