@@ -4,96 +4,160 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
-</head>
-<body>
-	<!-- 임시메뉴 -->
-    <jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
-	<div>
-		<p>안녕하십니까?</p>
-		<p>고객님의 소중한 개인정보보호를 위해 서비스를 
-		1년간 이용하지 않은 계정은 휴면상태로 전환하고 있습니다</p>
-		<p>휴면 상태를 해제하기 위해서는 이메일 인증을 진행해주시길 바랍니다.</p>
-	</div>
-	<table border="1">
-		<tr>
-			<th>아이디</th>
-			<td><input type="text" name=""></td>
-		</tr>
-		<tr>
-			<th>이메일주소</th>
-			<td>
-				<input type="text" id="email1" name="customerEmail1">
-				<span>@</span>
-				<select id="email2" name="customerEmail2">
-					<option value="gmail.com">gmail.com</option>
-					<option value="naver.com">naver.com</option>
-					<option value="daum.net">daum.net</option>
-					<option value="hanmail.net">hanmail.net</option>
-					<option value="nate.com">nate.com</option>
-					<option value="test.com">test.com</option>
-				</select>
-				<button type="button" id="emailCkBtn">인증번호 발송</button>
-				<div id="emailMsg"></div>
-				<div id="emailSendMsg"></div>
-			</td>
-		</tr>
-		<tr>
-			<th>인증번호</th>
-			<td>
-				<input type="text" id="codeCk" placeholder="인증번호를 입력해주세요." disabled>
-				<button type="button" id="codeCkBtn" disabled>인증번호 확인</button>
-				<div id="emailResultMsg"></div>
-			</td>
-		</tr>
-	</table>
-	<script>
-		// 이메일 인증
-		var code = ''; // 인증번호를 담을 변수
-		$('#emailCkBtn').click(function() {
-			if($('#email1').val() == ''){ // 이메일 유효성 확인
-				alert('이메일을 입력해주세요.');
-			} else {
-				$('#emailCkBtn').attr('disabled',true); // 중복 전송 방지위한 비활성화
-				
-				$.ajax({
-					url:'emailCk'
-					, type:'get'
-					, data:{customerEmail1:$('#email1').val(), customerEmail2:$('#email2').val()}
-					, success:function(model) {
-						code = model;
-						console.log(code);
-						
-						if(code == 'fail'){
-							alert('인증번호 전송에 실패하였습니다. 입력한 이메일을 확인해주세요.');
-							$('#email').attr('disabled',false); // 입력 재활성화
-							$('#emailCkBtn').attr('disabled',false); // 버튼 재활성화
-						} else {
-							alert('인증번호가 전송되었습니다. 전송된 인증번호를 입력해주세요.');
-							$('#codeCk').attr('disabled',false); // 인증번호 입력 활성화
-							$('#codeCkBtn').attr('disabled',false); // 인증확인 버튼 활성화
-							$('#email').attr('value', $('#email1').val()+'@'+$('#email2').val());
-						}
-					}			
-				});
-			}
-		});
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="Ansonika">
+<title>예약 | 업체 로그인</title>
+<link rel="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+<!-- Icon fonts-->
+<link href="${pageContext.request.contextPath}/resources/admin_section/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+<!-- Your custom styles -->
+<link href="${pageContext.request.contextPath}/resources/admin_section/css/custom.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<!-- 쿠키 사용 -->
+
+
+<script>
+	$(document).ready(function(){
 		
-		// 인증번호 비교
-		var ckResult = false; // 이메일 인증 성공 여부를 담을 변수 (false : 인증실패, true : 인증성공)
-		$('#codeCkBtn').click(function() {
-			if($('#codeCk').val() == code){ // 인증번호 일치 시
-				$('#email1').attr('readonly',true);
-				$('#email2').attr('readonly',true);
-				$('#emailCkBtn').attr('disabled',true); // 중복 전송 방지위한 비활성화
-				$('#codeCkBtn').attr('disabled',true); // 중복 인증 방지위한 버튼 비활성화
-				alert('이메일 인증에 성공하였습니다.');
-				ckResult = true;
-				console.log(ckResult);
-			} else { // 인증번호 실패 시
-				alert('이메일 인증에 실패하였습니다.\n인증번호를 확인해주세요.');
+		// 로그인 유효성
+		$('#loginBtn').click(function(){
+			
+			if($('#id').val() == ''){
+				alert('아이디를 입력해주세요.');
+				return;
 			}
+			
+			if($('#key').val() == ''){
+				alert('비밀번호를 입력해주세요.');
+				return;
+			}
+			$('#loginForm').submit();
 		});
-	</script>
+	});
+	
+</script>
+<script>
+$(document).ready(function(){
+    $('.main i').on('click',function(){
+        $('input').toggleClass('active');
+        if($('input').hasClass('active')){
+            $(this).attr('class',"fa fa-eye-slash fa-lg")
+            .prev('input').attr('type',"text");
+        }else{
+            $(this).attr('class',"fa fa-eye fa-lg")
+            .prev('input').attr('type','password');
+        }
+    });
+});
+</script>
+<style>
+div.main{
+    position: relative;
+    padding: 20px;
+}
+div.main input{
+    width: 300px;
+    height: 30px;
+    border: 0;
+    text-indent: 10px;
+}
+div.main i{
+    position: absolute;
+    left: 75%;
+    top: 27px;
+}
+</style>
+</head>
+<body class="fixed-nav sticky-footer" id="page-top">
+	<!-- Navigation-->
+	<!-- /Navigation-->
+	
+	<div class="content-wrapper w-75 mx-auto" style="margin-left:0px">
+		<div class="container-fluid">
+		<button type=button id="test" style="display:none;">dddd</button>
+			<!-- 본문 입력 -->
+			<div class="box_general w-50 mx-auto pt-4 pb-2">
+				<form action="${pageContext.request.contextPath}/beforeLogin/loginCompany" method="post" id="loginForm">
+					<!-- 로그인 폼 -->
+					<table class="table table-borderless w-50 mx-auto">
+						<tr>
+							<td class="text-center mt-2"><h2>COMPANY LOGIN</h2></td>
+						</tr>
+						<tr>
+							<td>
+								<div><strong>ID</strong></div>
+								<div>
+									<input type="text" id="id" name="companyId" class="form-control" placeholder="Enter ID">	
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="main">
+  <input type="password" placeholder="비밀번호를 입력하세요" id="key">
+  <i class="fa fa-eye fa-lg"></i>
+</div>
+
+							</td>
+						</tr>
+						<tr>
+							<td><!-- 로그인 정보 저장 여부 -->
+								<div>
+									<label>
+										<input type="checkbox" id="saveLoginInfo">
+										<span class="checkmark">Remember me</span>
+									</label>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td><!-- 로그인 버튼 -->
+								<div class="text-center mb-5">
+									<button type="button" id="loginBtn" class="btn btn-lg btn-primary">LOGIN</button>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td><!-- 아이디찾기/비밀번호 찾기 링크 -->
+								<div class="text-center mb-1 mt-3">
+									<a href="${pageContext.request.contextPath}/beforeLogin/findCompanyId">아이디 찾기</a>
+									<span> | </span>
+									<a href="${pageContext.request.contextPath}/beforeLogin/findCompanyPw">비밀번호 찾기</a>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="text-center mb-4">
+									<strong>새로운 업체 등록을 원하시나요? <a href="${pageContext.request.contextPath}/beforeLogin/addCompany">Sign up</a></strong>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div><!-- 본문 끝 -->
+		</div>
+	</div>
+	
+<!-- Custom scripts for all pages-->
+<script src="${pageContext.request.contextPath}/resources/admin_section/js/admin.js"></script>
+
+<!-- Bootstrap core JavaScript-->
+<script src="${pageContext.request.contextPath}/resources/admin_section/vendor/jquery/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/admin_section/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="${pageContext.request.contextPath}/resources/admin_section/vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Page level plugin JavaScript-->
+<script src="${pageContext.request.contextPath}/resources/admin_section/vendor/chart.js/Chart.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/admin_section/vendor/datatables/jquery.dataTables.js"></script>
+<script src="${pageContext.request.contextPath}/resources/admin_section/vendor/datatables/dataTables.bootstrap4.js"></script>
+<script src="${pageContext.request.contextPath}/resources/admin_section/vendor/jquery.magnific-popup.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="${pageContext.request.contextPath}/resources/admin_section/js/admin.js"></script>
+<!-- Custom scripts for this page-->
+<script src="${pageContext.request.contextPath}/resources/admin_section/vendor/dropzone.min.js"></script>
 </body>
 </html>

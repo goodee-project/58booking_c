@@ -19,7 +19,11 @@
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+	<link rel="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    
+    <!-- Icon fonts-->
+	<link href="${pageContext.request.contextPath}/resources/admin_section/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+   
     <!-- BASE CSS -->
     <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
@@ -27,30 +31,46 @@
 
     <!-- YOUR CUSTOM CSS -->
     <link href="${pageContext.request.contextPath}/resources/css/custom.css" rel="stylesheet">
-<title></title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-<script>
-	$(document).ready(function(){
-		$('#loginBtn').click(function(){
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$('#loginBtn').click(function(){
+				
+				// ID,PASSWORD 유효성 검사
+				if($('#id').val() == '') { 
+					alert('아이디를 확인해주세요.');
+					return;
+				}
+				
+				if($('#pw').val() == '') {
+					alert('비밀번호를 확인해주세요.');
+					return;
+				}
+				
+				$('#loginForm').submit();
+			});
 			
-			// ID,PASSWORD 유효성 검사
-			if($('#id').val() == '') { 
-				alert('아이디를 확인해주세요.');
-				return;
-			}
-			
-			if($('#pw').val() == '') {
-				alert('비밀번호를 확인해주세요.');
-				return;
-			}
-			
-			$('#loginForm').submit();
+			// 비밀번호 보이게
+		    $('.main i').on('click',function(){ 
+		        $('input').toggleClass('active');
+		        if($('input').hasClass('active')){
+		            $(this).attr('class',"fa fa-eye-slash fa-lg")
+		            .prev('input').attr('type',"text");
+		        }else{
+		            $(this).attr('class',"fa fa-eye fa-lg")
+		            .prev('input').attr('type','password');
+		        }
+		    });
 		});
-	});
-</script>
+	</script>
+	<style>
+	.log {
+	    background-image: url("${pageContext.request.contextPath}/resources/img/bg.jpg");
+	    background-size: cover;
+	}
+	</style>
 </head>
-<body id="login_bg">
+<body class="log">
 	<!-- 임시메뉴 -->
     <jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 	<nav id="menu" class="fake_menu"></nav>
@@ -65,16 +85,15 @@
 			<figure>
 				<a href="index.html"><img src="${pageContext.request.contextPath}/resources/img/logo_sticky.svg" width="155" height="36" alt="" class="logo_sticky"></a>
 			</figure>
-			  <form action="${pageContext.request.contextPath}/log/loginCustomer" method="post" id="loginForm">
-				<div class="form-group">
+			<form action="${pageContext.request.contextPath}/log/loginCustomer" method="post" id="loginForm">
+				<div>
 					<label>ID</label>
-					<input type="email" class="form-control"  name="customerId" id="id" value="cus1">
-					<i class="ti-user"></i>
+					<input type="text" class="form-control"  name="customerId" id="id" value="cus1">
 				</div>
-				<div class="form-group">
+				<div class="main" style="position: relative;">
 					<label>Password</label>
 					<input type="password" class="form-control" name="customerPw" id="pw" value="1234">
-					<i class="icon_lock_alt"></i>
+					<i class="fa fa-eye fa-lg" style="position: absolute; left: 90%; top: 40px;"></i>
 				</div>
 				<div class="clearfix add_bottom_30">
 					<div class="checkboxes float-start">
