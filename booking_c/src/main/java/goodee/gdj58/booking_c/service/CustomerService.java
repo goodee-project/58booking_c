@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -132,23 +134,82 @@ public class CustomerService {
 	public Customer loginCustomer(Customer customer) {
 		return customerMapper.selectCustomer(customer);
 	}
-	// 고객 회원가입(토탈ID)
-	public int insertTotalId(String id) {
+
+	// 고객 회원가입
+	public String insertCustomer(Customer customer, CustomerImg customerImg
+								, @RequestParam("file") MultipartFile file
+								, HttpServletRequest request ) {
+		// 1. totalId
+		String customerId = customer.getCustomerId();
+		log.debug(FontColor.CYAN+"customerId : "+customerId);
+		// 데이터 가공
 		TotalId paramTotalId = new TotalId();
-		paramTotalId.setId(id);
+		paramTotalId.setId(customerId);
 		paramTotalId.setTotalIdKind("고객");
 		paramTotalId.setTotalIdActive("활성화");
+		int totalRow = customerMapper.insertTotalId(paramTotalId);
+		if(totalRow == 0) {
+			log.debug(FontColor.CYAN+"시스템 에러로 totalId 등록 실패");
+			return "실패";
+		}
+		log.debug(FontColor.CYAN+totalRow+"<--totalRow값");
 		
-		return customerMapper.insertTotalId(paramTotalId);
-	}	
-	
-	// 고객 회원가입(사진)
-	public int insertCustomerImg(CustomerImg customerImg) {
-		return customerMapper.insertCustomerImg(customerImg);
-	}
-	// 고객 회원가입
-	public int insertCustomer(Customer customer) {
-		return customerMapper.insertCustomer(customer);
+		// 2. customer
+		int cusRow = customerMapper.insertCustomer(customer);
+		if(cusRow == 0) {
+			log.debug(FontColor.CYAN+"customer 등록 실패");
+			return "실패";
+		}
+		
+		// 3. customerImg
+		// 파일명을 얻어낼 수 있는 메서드!
+		String fileRealName = file.getOriginalFilename();
+		String fileKind = file.getContentType(); // kind
+		long size = file.getSize(); // 파일 사이즈
+		log.debug(FontColor.CYAN+fileRealName+"<--fileRealName값");
+		log.debug(FontColor.CYAN+fileKind+"<--fileKind값");
+		log.debug(FontColor.CYAN+size+"<--size값");
+		
+		// 확장자
+		String fileExtension = fileRealName.substring(fileRealName.lastIndexOf("."),fileRealName.length());
+		
+		// 랜덤문자열 생성
+		UUID uuid = UUID.randomUUID();
+		log.debug(uuid.toString());
+		
+		String[] uuids = uuid.toString().split("-");
+		String uniqueName = uuids[0];
+		log.debug(FontColor.CYAN+"생성된 고유문자열" + uniqueName);
+		
+		// 경로
+		String path = request.getServletContext().getRealPath("/upload/");
+		
+		// 파일 경로에 저장
+		File saveFile = new File(path+"\\"+uniqueName + fileExtension); 
+		try {
+			file.transferTo(saveFile); // 실제 파일 저장메서드(filewriter 작업을 손쉽게 한방에 처리해준다.)
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// 업로드 파일을 customerImg 타입에 저장
+		String saveName = uniqueName + fileRealName;
+		log.debug("saveName : "+saveName);
+		
+		CustomerImg cImg = new CustomerImg();
+		cImg.setCustomerImgOriginName(fileRealName);
+		cImg.setCustomerImgSaveName(saveName);
+		cImg.setCustomerImgKind(fileKind);
+		cImg.setCustomerImgSize(size);
+		cImg.setCustomerId(customer.getCustomerId());
+		
+		int imgRow = customerMapper.insertCustomerImg(cImg);
+		if(imgRow == 0) {
+			log.debug(FontColor.CYAN+"시스템 에러로 img 등록 실패");
+			return "실패";
+		}
+		return "성공";
 	}
 	
 	

@@ -135,7 +135,7 @@
 				</div>
 				<div class="form-group">
 					<label>닉네임</label>
-					<input class="form-control" type="text" name="customerNickname">
+					<input class="form-control" type="text" name="customerNickname" id="nick">
 					<i class="ti-user"></i>
 				</div>
 				<div class="form-group">
@@ -156,7 +156,7 @@
 				</div>
 				<div class="form-group">
 					<label>휴대폰번호</label>
-					<input class="form-control" type="text" name="customerPhone">
+					<input class="form-control" type="text" name="customerPhone" id="phone">
 					<i class="ti-user"></i>
 				</div>
 				<div class="form-group">
@@ -183,23 +183,23 @@
 				</div>
 				<div class="form-group">
 					<label>생년월일</label>
-					<input class="form-control" type="date" name="customerBirth">
+					<input class="form-control" type="date" name="customerBirth" id="birth">
 					<i class="ti-user"></i>
 				</div>
 				<div class="form-group">
 					<label>성별</label><br>
-					<input type="radio" name="customerGender" value="남">남
-					<input type="radio" name="customerGender" value="여">여
+					<input type="radio" class="gender" name="customerGender" value="남">남
+					<input type="radio" class="gender" name="customerGender" value="여">여
 				</div>
 				<div class="form-group">
 					<label>마케팅 수신 동의 여부</label><br>
-					<input type="checkbox" name="emailMarketingAccept" value="동의">동의
-					<input type="checkbox" name="emailMarketingAccept" value="미동의">미동의
+					<input type="radio" name="emailMarketingAccept" value="동의">동의
+					<input type="radio" name="emailMarketingAccept" value="미동의">미동의
 				</div>
 				<div class="form-group">
 					<label>개인정보 보관 동의 여부</label><br>
-					<input type="checkbox" name="infoAgree" value="동의">동의
-					<input type="checkbox" name="infoAgree" value="미동의">미동의
+					<input type="radio" name="infoAgree" value="동의">동의
+					<input type="radio" name="infoAgree" value="미동의">미동의
 				</div>
 				<div id="pass-info" class="clearfix"></div>
 				<button type="button" class="btn_1 rounded full-width add_top_30" id="addBtn">회원가입</button>
@@ -237,24 +237,6 @@
 				}
 			});
 		});
-	$('#addBtn').click(function() {
-		// 폼 유효성 검사
-		if($('#id').val() == ''){
-			alert('ID를 확인해주세요.');
-			return;
-		}
-		if($('#pw').val() == ''){
-			alert('비밀번호를 확인해주세요.');
-			return;
-		}
-		if($('#name').val() == ''){
-			alert('이름을 확인해주세요.');
-			return;
-		}
-		
-		// 폼 액션 전송
-		$('#addForm').submit();
-	});
 	
 	// 이메일 인증
 	var code = ''; // 인증번호를 담을 변수
@@ -301,6 +283,58 @@
 		} else { // 인증번호 실패 시
 			alert('이메일 인증에 실패하였습니다.\n인증번호를 확인해주세요.');
 		}
+	});
+	$('#addBtn').click(function() {
+		var agreeValue = $(':radio[name="infoAgree"]:checked').val();
+		console.log(agreeValue);
+		// 폼 유효성 검사
+		if($('#id').val() == ''){
+			alert('ID를 확인해주세요.');
+			return;
+		}
+		if($('#pw').val() == ''){
+			alert('비밀번호를 확인해주세요.');
+			return;
+		}
+		if($('#name').val() == ''){
+			alert('이름을 확인해주세요.');
+			return;
+		}
+		if($('#nick').val() == ''){
+			alert('닉네임을 확인해주세요.');
+			return;
+		}
+		if($('#addr1').val() == ''){
+			alert('주소를 확인해주세요.');
+			return;
+		}
+		if($('#phone').val() == ''){
+			alert('휴대폰번호를 확인해주세요.');
+			return;
+		}
+		if(ckResult == false){
+			alert('이메일 인증을 완료해주세요.');
+			return;
+		}
+		if($('#birth').val() == ''){
+			alert('생년월일을 확인해주세요.');
+			return;
+		}
+		if($(':radio[name="customerGender"]:checked').length < 1){
+			alert('성별을 선택해주세요.');
+			return;
+		}
+		if ($(':radio[name="emailMarketingAccept"]:checked').length < 1){ 
+			alert("마케팅 수신 약관을 확인해주세요.");
+			return;
+		}
+		if(agreeValue == '미동의'){
+			alert('개인정보 수집 약관에 동의해주셔야 가입이 가능합니다.');
+			return;
+		}
+		
+		// 폼 액션 전송
+		$('#addForm').submit();
 	});
 	</script>
 </body>

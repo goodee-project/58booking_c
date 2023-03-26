@@ -149,81 +149,18 @@ public class CustomerController {
 	@PostMapping("/log/addCustomer")
 	public String addCustomer(Model model
 								, Customer customer
+								, CustomerImg customerImg
 								, HttpServletRequest request
 								, @RequestParam("file") MultipartFile file) {	
 		log.debug(FontColor.CYAN+"custoer"+customer.toString());
-		
-		// 서비스에서 트랜잭션 처리하도록 코드 수정해야함
-		// 파일명을 얻어낼 수 있는 메서드!
-		String fileRealName = file.getOriginalFilename();
-		String fileKind = file.getContentType(); // kind
-		long size = file.getSize(); // 파일 사이즈
-		
-		log.debug(FontColor.CYAN+fileRealName+"<--fileRealName값");
-		log.debug(FontColor.CYAN+fileKind+"<--fileKind값");
-		log.debug(FontColor.CYAN+size+"<--size값");
-		
-		// 이미지 저장경로, 확장자
-		String fileExtension = fileRealName.substring(fileRealName.lastIndexOf("."),fileRealName.length());
 		// 경로
 		String path = request.getServletContext().getRealPath("/upload/");
-		log.debug(FontColor.CYAN+"확장자명" + fileExtension);
-		log.debug(FontColor.CYAN+"업로드 경로" + path);
-	
-		// 랜덤문자열 생성
-		UUID uuid = UUID.randomUUID();
-		log.debug(uuid.toString());
+		String rs = customerService.insertCustomer(customer, customerImg, file, request);
 		
-		String[] uuids = uuid.toString().split("-");
-		String uniqueName = uuids[0];
-		log.debug(FontColor.CYAN+"생성된 고유문자열" + uniqueName);
-		
-		// 파일 경로에 저장
-		File saveFile = new File(path+"\\"+uniqueName + fileExtension); 
-		try {
-			file.transferTo(saveFile); // 실제 파일 저장메서드(filewriter 작업을 손쉽게 한방에 처리해준다.)
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(rs.equals("실패")) {
+			log.debug(FontColor.CYAN+rs);
+			return "redirect:/customer/addCustomer";
 		}
-		
-		
-		// 업로드 파일을 customerImg 타입에 저장
-		String saveName = uniqueName + fileRealName;
-		log.debug("saveName : "+saveName);
-				
-		CustomerImg cImg = new CustomerImg();
-		cImg.setCustomerImgOriginName(fileRealName);
-		cImg.setCustomerImgSaveName(saveName);
-		cImg.setCustomerImgKind(fileKind);
-		cImg.setCustomerImgSize(size);
-		cImg.setCustomerId(customer.getCustomerId());
-		
-		// 1. totalId DB 저장
-		int totalRow = customerService.insertTotalId(customer.getCustomerId());
-		if(totalRow == 0) {
-			log.debug(FontColor.CYAN+"시스템 에러로 totalId 등록 실패");
-			return "costomer/addCustomer";
-		}
-		log.debug(FontColor.CYAN+totalRow+"<--totalRow값");
-		
-		// 2. customer DB 저장
-		int cusRow = customerService.insertCustomer(customer);
-		if(cusRow == 0) {
-			log.debug(FontColor.CYAN+"시스템 에러로 customer 등록 실패");
-			return "costomer/addCustomer";
-		}
-		log.debug(FontColor.CYAN+cusRow+"<--cusRow값");
-		
-		// 3. customerImg DB 저장
-		int imgRow = customerService.insertCustomerImg(cImg);
-		if(imgRow == 0) {
-			log.debug(FontColor.CYAN+"시스템 에러로 img 등록 실패");
-			return "costomer/addCustomer";
-		}
-		log.debug(FontColor.CYAN+imgRow+"<--imgRow값");
-		
 		return "/customer/loginCustomer";
 	}
 	
