@@ -71,8 +71,6 @@
 	</style>
 </head>
 <body class="log">
-	<!-- 임시메뉴 -->
-    <jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 	<nav id="menu" class="fake_menu"></nav>
 	
 	<div id="preloader">
