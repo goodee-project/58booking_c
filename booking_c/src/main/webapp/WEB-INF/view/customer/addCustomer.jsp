@@ -18,7 +18,11 @@
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+	<link rel="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+	
+	<!-- Icon fonts-->
+	<link href="${pageContext.request.contextPath}/resources/admin_section/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	   
     <!-- BASE CSS -->
     <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
@@ -93,6 +97,12 @@
 		background: #f00;
 		margin: -50px 0 0 -50px;
 	}
+	div {
+		margin : 10px;
+	}
+	label {
+		font-weight : bold;
+	}
 </style>
 </head>
 <body>
@@ -112,56 +122,49 @@
 			</figure>
 			<form method="post" action="${pageContext.request.contextPath}/log/addCustomer" enctype="multipart/form-data" id="addForm">
 				<input type="hidden" id="email" name="customerEmail">	
-				<div class="form-group">
-					<label>ID중복검사</label>
-					<input class="form-control" type="text" id="checkId" placeholder="사용할ID를 입력해주세요.">
-					<button type="button" id="ckBtn" class="btn_1 outline">중복검사</button>
-					<i class="ti-user"></i>
+				<div>
+					<label>ID중복검사</label><br>
+					<input type="text" id="checkId" placeholder="사용할ID를 입력해주세요." style="width:350px; height:40px;">
+					<button type="button" id="ckBtn" class="btn_1 outline btn-sm">중복검사</button>
 				</div>
-				<div class="form-group">
+				<div>
 					<label>아이디</label>
 					<input class="form-control" type="text" name="customerId" id="id" readonly="readonly">
-					<i class="ti-user"></i>
 				</div>
-				<div class="form-group">
+				<div class="main" style="position: relative;">
 					<label>비밀번호</label>
 					<input class="form-control" type="password" name="customerPw" id="pw">
-					<i class="icon_lock_alt"></i>
+					<i class="fa fa-eye fa-lg" id="show" style="position: absolute; left: 90%; top: 40px;"></i>
 				</div>
-				<div class="form-group">
+				<div>
 					<label>이름</label>
 					<input class="form-control" type="text" name="customerName" id="name">
-					<i class="ti-user"></i>
 				</div>
-				<div class="form-group">
+				<div>
 					<label>닉네임</label>
 					<input class="form-control" type="text" name="customerNickname" id="nick">
-					<i class="ti-user"></i>
 				</div>
-				<div class="form-group">
-					<label>프로필사진</label>
-					<input type="file" name="file" onchange="readURL(this);">
+				<div>
+					<label>프로필사진</label><br>
+					<input type="file" id="profile" name="file" onchange="readURL(this);">
 					<img id="preview" style="width: 150px; height: 80px;">
 				</div>
-				<div class="form-group">
+				<div>
 					<label>우편번호</label>
 					<button type="button" style="float:rigtht; width:150px; height:25px; padding:1px; font-size:13px;" class="btn btn-default" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button>
 					<input class="form-control" placeholder="우편번호" name="customerPostcode" id="addr1" type="text" readonly="readonly">
-					<i class="ti-user"></i>
 				</div>
-				<div class="form-group">
+				<div>
 					<label>주소</label>
 					<input class="form-control" placeholder="도로명 주소" name="customerAddress" id="addr2" type="text" readonly="readonly">
-					<i class="ti-user"></i>
 				</div>
-				<div class="form-group">
+				<div>
 					<label>휴대폰번호</label>
 					<input class="form-control" type="text" name="customerPhone" id="phone">
-					<i class="ti-user"></i>
 				</div>
-				<div class="form-group">
-					<label>이메일주소</label>
-					<input type="text" name="customerEmail1" id="email1">
+				<div>
+					<label>이메일주소</label><br>
+					<input type="text" name="customerEmail1" id="email1" style="width:150px;">
 					<span>@</span>
 					<select id="email2" name="customerEmail2">
 						<option value="gmail.com">gmail.com</option>
@@ -174,30 +177,35 @@
 					<button type="button" id="emailCkBtn" class="btn btn-primary btn-sm">인증번호 발송</button>
 					<div id="emailSendMsg"></div>
 				</div>
-				<div class="form-group">
-					<label>인증번호</label>
-					<input class="form-control" type="text" id="codeCk" name="" placeholder="인증번호를 입력해주세요." disabled>
+				<div>
+					<label>인증번호</label><br>
+					<input type="text" id="codeCk" name="" placeholder="인증번호를 입력해주세요." disabled style="width:250px;">
 					<button type="button" id="codeCkBtn" class="btn btn-primary btn-sm" disabled>인증번호 확인</button>
 					<div id="emailResultMsg"></div>
-					<i class="icon_lock_alt"></i>
 				</div>
-				<div class="form-group">
+				<div>
 					<label>생년월일</label>
 					<input class="form-control" type="date" name="customerBirth" id="birth">
-					<i class="ti-user"></i>
 				</div>
-				<div class="form-group">
+				<div>
 					<label>성별</label><br>
 					<input type="radio" class="gender" name="customerGender" value="남">남
 					<input type="radio" class="gender" name="customerGender" value="여">여
-				</div>
-				<div class="form-group">
-					<label>마케팅 수신 동의 여부</label><br>
+				</div><br>
+				<div>
+					<label>마케팅 수신 동의 여부(선택)</label>
+					<p>각종 이벤트 안내 및 다양한 정보들을 이메일로 받아보시겠습니까?</p>
 					<input type="radio" name="emailMarketingAccept" value="동의">동의
 					<input type="radio" name="emailMarketingAccept" value="미동의">미동의
-				</div>
-				<div class="form-group">
-					<label>개인정보 보관 동의 여부</label><br>
+				</div><br>
+				<div>
+					<label>개인정보 보관 동의 여부(필수)</label>
+					<p>가. 개인정보의 수집 및 이용 목적</p>
+					<p>① 저희 포털은 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며,
+					이용 목적이 변경되는 경우에는 개인정보 보호법 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.</p>
+					<p>1. 예약포털 서비스 제공을 위한 회원관리</p>
+					<p>1) 예약 신청 및 취소 등 포털 서비스 제공과 서비스 부정이용 방지를 목적으로 개인정보를
+					   처리합니다.</p>
 					<input type="radio" name="infoAgree" value="동의">동의
 					<input type="radio" name="infoAgree" value="미동의">미동의
 				</div>
@@ -219,123 +227,157 @@
 	<script src="${pageContext.request.contextPath}/resources/js/pw_strenght.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	<script>
-	// ID 중복검사
-	$('#ckBtn').click(function(){
-			$.ajax({
-				url:'idck'
-				, type:'get'
-				, data : {checkId:$('#checkId').val()}
-				, success:function(model){ // model : 'yes' / 'no'
-					console.log('model값:'+model);
-					if(model=='yes') {
-						// 사용가능한 아이디
-						$('#id').val($('#checkId').val());
-					} else {
-						// 사용중인 아이디
-						alert($('#checkId').val()+'는 사용중인 아이디입니다');
+		// 비밀번호 보이게
+	    $('.main i').on('click',function(){ 
+	        $('input').toggleClass('active');
+	        if($('input').hasClass('active')){
+	            $(this).attr('class',"fa fa-eye-slash fa-lg")
+	            .prev('input').attr('type',"text");
+	        }else{
+	            $(this).attr('class',"fa fa-eye fa-lg")
+	            .prev('input').attr('type','password');
+	        }
+	    });
+		// ID 중복검사
+		$('#ckBtn').click(function(){
+				$.ajax({
+					url:'idck'
+					, type:'get'
+					, data : {checkId:$('#checkId').val()}
+					, success:function(model){ // model : 'yes' / 'no'
+						console.log('model값:'+model);
+						if(model=='yes') {
+							// 사용가능한 아이디
+							$('#id').val($('#checkId').val());
+						} else {
+							// 사용중인 아이디
+							alert($('#checkId').val()+'는 사용중인 아이디입니다');
+						}
 					}
-				}
+				});
 			});
-		});
-	
-	// 이메일 인증
-	var code = ''; // 인증번호를 담을 변수
-	$('#emailCkBtn').click(function() {
-		if($('#email1').val() == ''){ // 이메일 유효성 확인
-			alert('이메일을 입력해주세요.');
-		} else {
-			$('#emailCkBtn').attr('disabled',true); // 중복 전송 방지위한 비활성화
-			
-			$.ajax({
-				url:'emailCk'
-				, type:'get'
-				, data:{customerEmail1:$('#email1').val(), customerEmail2:$('#email2').val()}
-				, success:function(model) {
-					code = model;
-					console.log(code);
-					
-					if(code == 'fail'){
-						alert('인증번호 전송에 실패하였습니다. 입력한 이메일을 확인해주세요.');
-						$('#email').attr('disabled',false); // 입력 재활성화
-						$('#emailCkBtn').attr('disabled',false); // 버튼 재활성화
-					} else {
-						alert('인증번호가 전송되었습니다. 전송된 인증번호를 입력해주세요.');
-						$('#codeCk').attr('disabled',false); // 인증번호 입력 활성화
-						$('#codeCkBtn').attr('disabled',false); // 인증확인 버튼 활성화
-						$('#email').attr('value', $('#email1').val()+'@'+$('#email2').val());
-					}
-				}			
-			});
-		}
-	});
-	
-	// 인증번호 비교
-	var ckResult = false; // 이메일 인증 성공 여부를 담을 변수 (false : 인증실패, true : 인증성공)
-	$('#codeCkBtn').click(function() {
-		if($('#codeCk').val() == code){ // 인증번호 일치 시
-			$('#email1').attr('readonly',true);
-			$('#email2').attr('readonly',true);
-			$('#emailCkBtn').attr('disabled',true); // 중복 전송 방지위한 비활성화
-			$('#codeCkBtn').attr('disabled',true); // 중복 인증 방지위한 버튼 비활성화
-			alert('이메일 인증에 성공하였습니다.');
-			ckResult = true;
-			console.log(ckResult);
-		} else { // 인증번호 실패 시
-			alert('이메일 인증에 실패하였습니다.\n인증번호를 확인해주세요.');
-		}
-	});
-	$('#addBtn').click(function() {
-		var agreeValue = $(':radio[name="infoAgree"]:checked').val();
-		console.log(agreeValue);
-		// 폼 유효성 검사
-		if($('#id').val() == ''){
-			alert('ID를 확인해주세요.');
-			return;
-		}
-		if($('#pw').val() == ''){
-			alert('비밀번호를 확인해주세요.');
-			return;
-		}
-		if($('#name').val() == ''){
-			alert('이름을 확인해주세요.');
-			return;
-		}
-		if($('#nick').val() == ''){
-			alert('닉네임을 확인해주세요.');
-			return;
-		}
-		if($('#addr1').val() == ''){
-			alert('주소를 확인해주세요.');
-			return;
-		}
-		if($('#phone').val() == ''){
-			alert('휴대폰번호를 확인해주세요.');
-			return;
-		}
-		if(ckResult == false){
-			alert('이메일 인증을 완료해주세요.');
-			return;
-		}
-		if($('#birth').val() == ''){
-			alert('생년월일을 확인해주세요.');
-			return;
-		}
-		if($(':radio[name="customerGender"]:checked').length < 1){
-			alert('성별을 선택해주세요.');
-			return;
-		}
-		if ($(':radio[name="emailMarketingAccept"]:checked').length < 1){ 
-			alert("마케팅 수신 약관을 확인해주세요.");
-			return;
-		}
-		if(agreeValue == '미동의'){
-			alert('개인정보 수집 약관에 동의해주셔야 가입이 가능합니다.');
-			return;
-		}
 		
-		// 폼 액션 전송
-		$('#addForm').submit();
-	});
+		// 이메일 인증
+		var code = ''; // 인증번호를 담을 변수
+		$('#emailCkBtn').click(function() {
+			if($('#email1').val() == ''){ // 이메일 유효성 확인
+				alert('이메일을 입력해주세요.');
+			} else {
+				$('#emailCkBtn').attr('disabled',true); // 중복 전송 방지위한 비활성화
+				
+				$.ajax({
+					url:'emailCk'
+					, type:'get'
+					, data:{customerEmail1:$('#email1').val(), customerEmail2:$('#email2').val()}
+					, success:function(model) {
+						code = model;
+						console.log(code);
+						
+						if(code == 'fail'){
+							alert('인증번호 전송에 실패하였습니다. 입력한 이메일을 확인해주세요.');
+							$('#email').attr('disabled',false); // 입력 재활성화
+							$('#emailCkBtn').attr('disabled',false); // 버튼 재활성화
+						} else {
+							alert('인증번호가 전송되었습니다. 전송된 인증번호를 입력해주세요.');
+							$('#codeCk').attr('disabled',false); // 인증번호 입력 활성화
+							$('#codeCkBtn').attr('disabled',false); // 인증확인 버튼 활성화
+							$('#email').attr('value', $('#email1').val()+'@'+$('#email2').val());
+						}
+					}			
+				});
+			}
+		});
+		
+		// 인증번호 비교
+		var ckResult = false; // 이메일 인증 성공 여부를 담을 변수 (false : 인증실패, true : 인증성공)
+		$('#codeCkBtn').click(function() {
+			if($('#codeCk').val() == code){ // 인증번호 일치 시
+				$('#email1').attr('readonly',true);
+				$('#email2').attr('readonly',true);
+				$('#emailCkBtn').attr('disabled',true); // 중복 전송 방지위한 비활성화
+				$('#codeCkBtn').attr('disabled',true); // 중복 인증 방지위한 버튼 비활성화
+				alert('이메일 인증에 성공하였습니다.');
+				ckResult = true;
+				console.log(ckResult);
+			} else { // 인증번호 실패 시
+				alert('이메일 인증에 실패하였습니다.\n인증번호를 확인해주세요.');
+			}
+		});
+		// 유효성 검사 후 폼 제출
+		var ck = false;
+		$('#addBtn').click(function(){
+			console.log('유효성, 정규식 검사 결과 :'+formCheck());
+			if(ck){
+				$('#addForm').submit();
+				alert('비밀번호가 변경되었으니 다시 로그인해주세요.');
+			}
+		});
+		
+		formCheck = function() {
+			// 비밀번호 정규식
+			var password = $('#pw').val();
+			console.log("비밀번호 :"+password);
+			var num = password.search(/[0-9]/g);
+			var eng = password.search(/[a-z]/ig);
+			var spe = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+			
+			// 동의 여부
+			var agreeValue = $(':radio[name="infoAgree"]:checked').val();
+			console.log(agreeValue);
+			
+			// 폼 유효성 검사
+			if($('#id').val() == ''){
+				alert('ID를 확인해주세요.');
+				return false;
+			} else if($('#pw').val() == ''){
+				alert('비밀번호를 확인해주세요.');
+				return false;
+			} else if($('#name').val() == ''){
+				alert('이름을 확인해주세요.');
+				return false;
+			} else if($('#nick').val() == ''){
+				alert('닉네임을 확인해주세요.');
+				return false;
+			} else if($('#addr1').val() == ''){
+				alert('주소를 확인해주세요.');
+				return false;
+			} else if($('#profile').val() == ''){
+				alert('프로필사진을 등록해주세요.');
+				return false;
+			} else if($('#phone').val() == ''){
+				alert('휴대폰번호를 확인해주세요.');
+				return false;
+			} else if(ckResult == false){
+				alert('이메일 인증을 완료해주세요.');
+				return false;
+			} else if($('#birth').val() == ''){
+				alert('생년월일을 확인해주세요.');
+				return false;
+			} else if($(':radio[name="customerGender"]:checked').length < 1){
+				alert('성별을 선택해주세요.');
+				return false;
+			} else if ($(':radio[name="emailMarketingAccept"]:checked').length < 1){ 
+				alert("마케팅 수신 약관을 확인해주세요.");
+				return false;
+			} else if(agreeValue == '미동의'){
+				alert('개인정보 수집 약관에 동의해주셔야 가입이 가능합니다.');
+				return false;
+			} else if(password.length < 8 || password.length > 20){
+				alert("비밀번호는 8자리 ~ 20자리 이내로 입력해주세요.");
+				return false;
+			} else if(password.search(/\s/) != -1){
+				alert("비밀번호는 공백 없이 입력해주세요.");
+				return false;
+			} else if(num < 0 || eng < 0 || spe < 0 ){
+				alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
+				return false;
+			} else {
+				console.log("통과"); 
+				ck = true;
+			}
+			return true;
+			}
+		});
 	</script>
 </body>
 </html>

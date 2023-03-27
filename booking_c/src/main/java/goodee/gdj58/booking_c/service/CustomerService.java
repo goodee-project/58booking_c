@@ -138,7 +138,8 @@ public class CustomerService {
 	// 고객 회원가입
 	public String insertCustomer(Customer customer, CustomerImg customerImg
 								, @RequestParam("file") MultipartFile file
-								, HttpServletRequest request ) {
+								, HttpServletRequest request
+								, String path) {
 		// 1. totalId
 		String customerId = customer.getCustomerId();
 		log.debug(FontColor.CYAN+"customerId : "+customerId);
@@ -180,9 +181,6 @@ public class CustomerService {
 		String[] uuids = uuid.toString().split("-");
 		String uniqueName = uuids[0];
 		log.debug(FontColor.CYAN+"생성된 고유문자열" + uniqueName);
-		
-		// 경로
-		String path = request.getServletContext().getRealPath("/upload/");
 		
 		// 파일 경로에 저장
 		File saveFile = new File(path+"\\"+uniqueName + fileExtension); 

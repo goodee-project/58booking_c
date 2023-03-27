@@ -155,7 +155,7 @@ public class CustomerController {
 		log.debug(FontColor.CYAN+"custoer"+customer.toString());
 		// 경로
 		String path = request.getServletContext().getRealPath("/upload/");
-		String rs = customerService.insertCustomer(customer, customerImg, file, request);
+		String rs = customerService.insertCustomer(customer, customerImg, file, request, path);
 		
 		if(rs.equals("실패")) {
 			log.debug(FontColor.CYAN+rs);
