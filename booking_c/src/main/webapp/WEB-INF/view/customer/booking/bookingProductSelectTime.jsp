@@ -124,16 +124,38 @@
 			<!-- /header -->
 			
 			<main>
-				<section class="hero_in restaurants_detail">
+				<div class="hero_in cart_section">
 					<div class="wrapper">
 						<div class="container">
-							<h1 class="fadeInUp"><span></span>날짜형 업체 상품 예약</h1>
-							<!-- 임시메뉴 -->
-							<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
+							<div class="bs-wizard clearfix">
+								<div class="bs-wizard-step active">
+									<div class="text-center bs-wizard-stepnum">예약 사항 선택</div>
+									<div class="progress">
+										<div class="progress-bar"></div>
+									</div>
+									<a href="#0" class="bs-wizard-dot"></a>
+								</div>
+		
+								<div class="bs-wizard-step disabled">
+									<div class="text-center bs-wizard-stepnum">결제</div>
+									<div class="progress">
+										<div class="progress-bar"></div>
+									</div>
+									<a href="#0" class="bs-wizard-dot"></a>
+								</div>
+		
+								<div class="bs-wizard-step disabled">
+									<div class="text-center bs-wizard-stepnum">결제완료</div>
+									<div class="progress">
+										<div class="progress-bar"></div>
+									</div>
+									<a href="#0" class="bs-wizard-dot"></a>
+								</div>
+							</div>
+							<!-- End bs-wizard -->
 						</div>
-						
 					</div>
-				</section>
+				</div>
 				<!--/hero_in-->
 		
 				<div class="bg_color_1">
@@ -149,8 +171,8 @@
 						<div class="row">
 							<div class="col-lg-8">
 								<section id="description">
-									<h2>업체 정보</h2>
-									<table>
+									<h2>상품 정보</h2>
+									<table class="table cart-list">
 										<tr>
 											<td>업체 사진 :  
 												<c:forEach var="bkc" items="${bookingProductSelectTime}">
@@ -419,17 +441,38 @@
 			<!-- /header -->
 			
 			<main>
-				<section class="hero_in restaurants_detail">
+				<div class="hero_in cart_section">
 					<div class="wrapper">
 						<div class="container">
-							<h1 class="fadeInUp"><span></span>시간형 업체 상품 예약</h1>
-							<!-- 임시메뉴 -->
-							<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
+							<div class="bs-wizard clearfix">
+								<div class="bs-wizard-step active">
+									<div class="text-center bs-wizard-stepnum">예약 사항 선택</div>
+									<div class="progress">
+										<div class="progress-bar"></div>
+									</div>
+									<a href="#0" class="bs-wizard-dot"></a>
+								</div>
+		
+								<div class="bs-wizard-step disabled">
+									<div class="text-center bs-wizard-stepnum">결제</div>
+									<div class="progress">
+										<div class="progress-bar"></div>
+									</div>
+									<a href="#0" class="bs-wizard-dot"></a>
+								</div>
+		
+								<div class="bs-wizard-step disabled">
+									<div class="text-center bs-wizard-stepnum">결제완료</div>
+									<div class="progress">
+										<div class="progress-bar"></div>
+									</div>
+									<a href="#0" class="bs-wizard-dot"></a>
+								</div>
+							</div>
+							<!-- End bs-wizard -->
 						</div>
-						
 					</div>
-				</section>
-				<!--/hero_in-->
+				</div>
 		
 				<div class="bg_color_1">
 					<nav class="secondary_nav sticky_horizontal">
@@ -443,8 +486,8 @@
 						<div class="row">
 							<div class="col-lg-8">
 								<section id="description">
-									<h2>업체 정보</h2>
-									<table>
+									<h2>상품 정보</h2>
+									<table class="table cart-list">
 										<tr>
 											<td>업체 사진 :  
 												<c:forEach var="bkc" items="${bookingProductSelectTime}">
