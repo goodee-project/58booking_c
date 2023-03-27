@@ -82,9 +82,31 @@
 					$('#productTime').val(productTimeInt);
 					console.log($('#productTime').val());
 					*/
+					
+					var havePay = parseInt($('#havePay').val());
+					var finalCount = parseInt($('#finalCount').val());
+					if(havePay < finalCount)
+					{
+						
+						alert('보유페이가 부족합니다. 충전 후 이용바랍니다.');
+						console.log($('#havePay').val()+"<--havePay");
+						console.log($('#finalCount').val()+"<--finalCount");
+						console.log(typeof havePay+"<--havePay123")
+						console.log(typeof finalCount+"<--finalCount123")
+						
+						return;
+					} 
 					$('#paymentForm').submit();
 					return;
 				}
+			 if($('#havePay').val()<$('#finalCount').val())
+				{
+					alert('보유페이가 부족합니다. 충전 후 이용바랍니다.');
+					console.log($('#havePay').val()+"<--havePay");
+					console.log($('#finalCount').val()+"<--finalCount");
+					
+					return;
+				} 
 			var no1 = optionTest.replace('[','');
 			var no2 = no1.replace(']','');
 			console.log($('#option').val()+"<--option");
@@ -329,7 +351,8 @@
 											<tr>
 												<td>페이 잔액</td>
 												<td>
-													${loginCustomer.customerPay}P
+													${loginCustomer.customerPay}Pay
+													<input type="hidden" name="havePay" value="${loginCustomer.customerPay}" id="havePay">
 													<button type="button" id="payBtn">충전하기</button>
 												</td>
 											</tr>							

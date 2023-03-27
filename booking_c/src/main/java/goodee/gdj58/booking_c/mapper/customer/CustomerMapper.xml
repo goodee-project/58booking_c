@@ -206,6 +206,7 @@
 		
 		UPDATE customer cus
 		SET cus.customer_point = #{point}
+			, cus.customer_pay = #{pay}
 			
 		WHERE cus.customer_id = #{cusId}
 	</update>

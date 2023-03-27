@@ -124,7 +124,7 @@
 																					<textarea class="form-control" id="message-text" name="cancelMemo" style="height: 200px;"></textarea>
 																				</div>
 																				<div class="form-group col-md-12 add_top_20" align="right">
-																					<button type="button" class="btn_1 outline">취소하기</button>
+																					<button type="submit" class="btn_1 outline">취소하기</button>
 																				</div>
 																			</div>
 																		</form>
@@ -169,7 +169,7 @@
 																					<textarea class="form-control" id="message-text" name="reportMemo" style="height: 200px;"></textarea>
 																				</div>
 																				<div class="form-group col-md-12 add_top_20" align="right">
-																					<button type="button" class="btn_1 outline">신고하기</button>
+																					<button type="submit" class="btn_1 outline">신고하기</button>
 																				</div>
 																			</div>
 																		</form>

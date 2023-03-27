@@ -47,7 +47,7 @@ public interface CustomerMapper {
 	
 	//예약 확정 페이지 상품 사진
 	ArrayList<Map<String,Object>> bookingAfterProductImg(Map<String,Object> paramMap);
-	//예약 확정시 포인트 업데이트
+	//예약 확정시 포인트+페이 업데이트
 	int updatePointAfterBooking(Map<String, Object> paramMap );
 	
 	//날짜형 예약시 기간 날짜 출력

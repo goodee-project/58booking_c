@@ -236,11 +236,12 @@ public class CustomerService {
 
 	
 	//결제 후 예약내역 등록
-	public int addBooking(Booking booking, String cusId, int point)
+	public int addBooking(Booking booking, String cusId, int point, int pay)
 	{
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("cusId", cusId);
 		paramMap.put("point", point);
+		paramMap.put("pay", pay);
 		customerMapper.updatePointAfterBooking(paramMap);
 		
 		return customerMapper.addBooking(booking);

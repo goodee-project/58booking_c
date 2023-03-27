@@ -197,6 +197,7 @@ public class CustomerController {
 			, @RequestParam (value = "dayList") ArrayList<String> dayList
 			, @RequestParam (value = "productTime") String productTime
 			, @RequestParam (value = "havePoint") int havePoint
+			, @RequestParam (value = "havePay") int havePay
 			, @RequestParam (value = "bkpName") String bkpName
 			, @RequestParam (value = "bkpoName") String bkpoName
 			)
@@ -207,6 +208,7 @@ public class CustomerController {
 		log.debug(FontColor.RED + bkpoName+ "<---bkpoName");
 		
 		int remainPoint = havePoint - point;
+		int remainPay = havePay - finalCount;
 		
 		booking.setCustomerId(customerId);
 		booking.setCompanyId(bkcId);
@@ -228,7 +230,7 @@ public class CustomerController {
 				log.debug(FontColor.RED + "<---bkpoNo null if문 진입");
 				booking.setOptionNo(0);
 				bkpoName = "옵션없음";
-				customerService.addBooking(booking, customerId,remainPoint);
+				customerService.addBooking(booking, customerId,remainPoint,remainPay);
 				Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
 				loginCustomer.setCustomerPoint(remainPoint);
 				session.setAttribute("loginCustomer", loginCustomer);
@@ -244,7 +246,7 @@ public class CustomerController {
 					log.debug(FontColor.RED + bkpoNo+ "<---bkpoNo");
 					int optionNo = (int)(bkpoNo.get(i));
 					booking.setOptionNo(optionNo);
-					customerService.addBooking(booking, customerId,remainPoint);
+					customerService.addBooking(booking, customerId,remainPoint,remainPay);
 					Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
 					loginCustomer.setCustomerPoint(remainPoint);
 					session.setAttribute("loginCustomer", loginCustomer);
