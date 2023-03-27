@@ -29,8 +29,6 @@
 	<title>비밀번호 찾기</title>
 </head>
 <body>
-	<!-- 임시메뉴 -->
-    <jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 	<nav id="menu" class="fake_menu"></nav>
 	
 	<div id="preloader">
@@ -120,7 +118,7 @@
 						, data:{customerEmail1:$('#email1').val(), customerEmail2:$('#email2').val(), customerId:$('#id').val()}
 						, success:function(model) {
 							code = model;
-							console.log(code);
+							console.log("코드값 :"+code);
 							
 							if(code == 'fail'){
 								$('#emailMsg').text('인증번호 전송에 실패하였습니다. 입력한 이메일을 확인해주세요.');	
@@ -135,7 +133,7 @@
 								$('#codeCkBtn').attr('disabled',false); // 인증확인 버튼 활성화
 								$('#emailCkBtn').attr('disabled',true); // 중복 전송 방지위한 비활성화
 								
-								// 인증번호 전송 시점에 이메일, 이름 정보 변수에 저장
+								// 인증번호 전송 시점에 이메일, 아이디 정보 변수에 저장
 								email1 = $('#email1').val();
 								email2 = $('#email2').val();
 								id = $('#id').val();

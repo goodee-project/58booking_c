@@ -37,8 +37,6 @@
 	</style>
 </head>
 <body>
-	<!-- 임시메뉴 -->
-    <jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 	<nav id="menu" class="fake_menu"></nav>
 	
 	<div id="preloader">
@@ -80,7 +78,6 @@
 				</div>
 				<div id="a"></div>
 				<div id="pass-info" class="clearfix"></div>
-				<button type="button" class="btn_1 rounded full-width add_top_30" id="addBtn">아이디찾기</button>
 				<div class="text-center add_top_10">
 					<strong><a href="${pageContext.request.contextPath}/log/loginCustomer">로그인</a></strong> /
 					<strong><a href="${pageContext.request.contextPath}/log/findPw">비밀번호찾기</a></strong>
@@ -98,46 +95,6 @@
 	<!-- SPECIFIC SCRIPTS -->
 	<script src="${pageContext.request.contextPath}/resources/js/pw_strenght.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    
-	<h2>아이디 찾기</h2>
-	<table border="1">
-		<tr>
-			<th>이름</th>
-			<td>
-				<input type="text" name="customderName" id="name" placeholder="이름을 입력해주세요.">
-				<div id="nameMsg"></div>
-			</td>
-		</tr>
-		<tr>
-			<th>이메일주소</th>
-			<td>
-				<input type="text" id="email1" name="customerEmail1">
-				<span>@</span>
-				<select id="email2" name="customerEmail2">
-					<option value="gmail.com">gmail.com</option>
-					<option value="naver.com">naver.com</option>
-					<option value="daum.net">daum.net</option>
-					<option value="hanmail.net">hanmail.net</option>
-					<option value="nate.com">nate.com</option>
-					<option value="test.com">test.com</option>
-				</select>
-				<button type="button" id="emailCkBtn">인증번호 발송</button>
-				<div id="emailMsg"></div>
-				<div id="emailSendMsg"></div>
-			</td>
-		</tr>
-		<tr>
-			<th>인증번호</th>
-			<td>
-				<input type="text" id="codeCk" placeholder="인증번호를 입력해주세요." disabled>
-				<button type="button" id="codeCkBtn" disabled>인증번호 확인</button>
-				<div id="emailResultMsg"></div>
-			</td>
-		</tr>
-	</table>
-	
-	<div id="a"></div>
-	
 	<script>
 		$(document).ready(function(){
 			var code = ''; // 인증번호를 담을 변수
@@ -165,10 +122,10 @@
 					$.ajax({
 						url:'emailCk'
 						, type:'get'
-						, data:{customerEmail1:$('#email1').val(), customerEmail2:$('#email2').val(), customnerName:$('#name').val()}
+						, data:{customerEmail1:$('#email1').val(), customerEmail2:$('#email2').val(), customerName:$('#name').val()}
 						, success:function(model) {
 							code = model;
-							console.log(code);
+							console.log("코드값 :"+code);
 							
 							if(code == 'fail'){
 								$('#emailMsg').text('인증번호 전송에 실패하였습니다. 입력한 이메일을 확인해주세요.');
