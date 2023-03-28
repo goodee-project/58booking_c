@@ -51,26 +51,42 @@
 							<div class="col-lg-12">
 								<section id="reviews">
 									<h2>Reviews</h2>
-									<div class="reviews-container">
-										<div class="review-box clearfix">
-											<figure class="rev-thumb">
-												<img src="${pageContext.request.contextPath}/upload/${bkc.ctiOrigin}">
-											</figure>
-											<div class="rev-content">
-												<div class="rating">
-													<i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
-												</div>
-												<div class="rev-info">
-													Admin – April 03, 2016:
-												</div>
-												<div class="rev-text">
-													<p>
-														Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
-													</p>
+									<c:if test="${bookingCompanyDetailReview.size() == 0 }">
+										리뷰없음
+									</c:if>
+									<c:forEach var="bkc" items="${bookingCompanyDetailReview}">
+										<div class="reviews-container">
+											<div class="review-box clearfix">
+												<figure class="rev-thumb">
+													<img src="${pageContext.request.contextPath}/upload/${bkc.ctiOrigin}">
+												</figure>
+												<div class="rev-content">
+													<div class="rating">
+														<c:forEach var="no" begin="1" end="5" step="1">
+															<c:if test="${bkc.rvStar == no}">
+																<c:forEach var="no" begin="1" end="${bkc.rvStar}" step="1">
+																	<i class="icon_star voted"></i>
+																</c:forEach>
+																<c:forEach var="no" begin="1" end="${5-bkc.rvStar}" step="1">
+																	<i class="icon_star"></i>
+																</c:forEach>
+															</c:if>
+														</c:forEach>
+													</div>
+													<div class="rev-info">
+														상품명 : ${bkc.bkpName}<br>
+														예약일 : ${bkc.bkDate}<br>
+														리뷰작성일 : ${bkc.rvCreatedate}
+													</div>
+													<div class="rev-text">
+														<p>
+															리뷰사진 : ${bkc.rviOrigin } &nbsp;&nbsp;&nbsp;${bkc.rvMemo}
+														</p>
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
+									</c:forEach>
 								</section>
 							</div>
 						</div>

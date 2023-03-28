@@ -89,7 +89,7 @@
 											Close Time : ${bkc.bkcClose}<br>
 											Category : ${bkc.bkcdType }<br>
 											Additional Service : ${bkc.bkcdAddService }<br>
-											<span class="price">Star Rating : <strong> ${bkc.rvRating }</strong> /5</span><br>
+											<span class="price">Recent Star Rating : <strong> ${bkc.rvRating }</strong> /5</span><br>
 										</p>
 										<table style="text-align:center">
 											<tr>
