@@ -33,6 +33,17 @@
 				<div class="bg_color_1">
 					<!-- 업체정보 공통 -->
    					<jsp:include page="/WEB-INF/view/customer/booking/bookingCompanyDetailCommon.jsp"></jsp:include>
+   					<nav class="secondary_nav sticky_horizontal">
+						<div class="container">
+							<ul class="clearfix">
+								<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailHome?bkcId=${bkcId}&bkciLevel=${bkciLevel}">홈</a></li>
+								<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailBooking?bkcId=${bkcId}&bkciLevel=${bkciLevel}" >예약</a></li>
+								<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailReview?bkcId=${bkcId}&bkciLevel=${bkciLevel}" class="active">리뷰</a></li>
+								<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailMap?bkcId=${bkcId}&bkciLevel=${bkciLevel}">지도</a></li>
+								<li></li>
+							</ul>
+						</div>
+					</nav>
 				</div>
 				<div class="bg_color_1">
 					<div class="container margin_60_35">

@@ -14,23 +14,20 @@
 						<h2 style="font-weight: bold;">${bookingCompanyDetailCommon.bkcName}</h2>
 						<h6>${bookingCompanyDetailCommon.bkcType}</h6>
 						<div class="rating">
-							<h6><i class="icon_star voted"></i>${bookingCompanyDetailCommon.sumStar / bookingCompanyDetailCommon.countReview}/5</h6>
+							<h6><i class="icon_star voted"></i>
+								<c:if test="${bookingCompanyDetailCommon.sumStar == null}">
+									별점없음 / 5
+								</c:if>
+								<c:if test="${bookingCompanyDetailCommon.sumStar != null}">
+									${bookingCompanyDetailCommon.sumStar / bookingCompanyDetailCommon.countReview}/5
+								</c:if>
+							</h6>
 						</div>
 						<span>리뷰  ${bookingCompanyDetailCommon.countReview}개</span>
 					</div>
 				</div>
 			</div>
-			<nav class="secondary_nav sticky_horizontal">
-				<div class="container">
-					<ul class="clearfix">
-						<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailHome?bkcId=${bkcId}&bkciLevel=${bkciLevel}" class="active">홈</a></li>
-						<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailBooking?bkcId=${bkcId}&bkciLevel=${bkciLevel}">예약</a></li>
-						<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailReview?bkcId=${bkcId}&bkciLevel=${bkciLevel}">리뷰</a></li>
-						<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailMap?bkcId=${bkcId}&bkciLevel=${bkciLevel}">지도</a></li>
-						<li></li>
-					</ul>
-				</div>
-			</nav>
+			
 		</div>
 	</body>
 </html>

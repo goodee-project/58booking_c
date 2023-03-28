@@ -202,7 +202,12 @@ public class CustomerController {
 			, @RequestParam (value = "bkpoName") String bkpoName
 			)
 	{
-
+		Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
+		if(loginCustomer == null) {
+			log.debug(FontColor.RED+"로그인 후 이용 가능");
+			return "customer/loginCustomer";
+		}
+		
 		log.debug(FontColor.RED + productTime+ "<---productTime");
 		log.debug(FontColor.RED + dayList+ "<---bookingDayList addBooking");
 		log.debug(FontColor.RED + bkpoName+ "<---bkpoName");
@@ -231,7 +236,6 @@ public class CustomerController {
 				booking.setOptionNo(0);
 				bkpoName = "옵션없음";
 				customerService.addBooking(booking, customerId,remainPoint,remainPay);
-				Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
 				loginCustomer.setCustomerPoint(remainPoint);
 				session.setAttribute("loginCustomer", loginCustomer);
 
@@ -247,7 +251,6 @@ public class CustomerController {
 					int optionNo = (int)(bkpoNo.get(i));
 					booking.setOptionNo(optionNo);
 					customerService.addBooking(booking, customerId,remainPoint,remainPay);
-					Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
 					loginCustomer.setCustomerPoint(remainPoint);
 					session.setAttribute("loginCustomer", loginCustomer);
 
@@ -290,7 +293,11 @@ public class CustomerController {
 			)
 	{
 		
-		
+		Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
+		if(loginCustomer == null) {
+			log.debug(FontColor.RED+"로그인 후 이용 가능");
+			return "customer/loginCustomer";
+		}
 		log.debug(FontColor.RED +bkpoName + "<---bkpoName");
 ;
 		//날짜형 예약시 날짜 일 수 계산
@@ -328,7 +335,6 @@ public class CustomerController {
 		}
 		
 		//고객 세션정보
-		Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
 		log.debug(FontColor.RED+loginCustomer.getCustomerRank()+"<---고객 랭크");
 		
 		String rank = loginCustomer.getCustomerRank();
@@ -392,15 +398,11 @@ public class CustomerController {
 			, @RequestParam(value = "msg", defaultValue = "") String msg
 			)
 	{
-		//로그인 세션
-		/*
-		if((Customer)session.getAttribute("loginCustomer") == null)
-		{
-			return "redirect:/log/loginCustomer";
-		}
 		Customer loginCustomer = (Customer)session.getAttribute("loginCustomer");
-		log.debug(FontColor.RED + loginCustomer.getCustomerId()  + "고객 ID");
-		 */
+		if(loginCustomer == null) {
+			log.debug(FontColor.RED+"로그인 후 이용 가능");
+			return "customer/loginCustomer";
+		}
 		
 		log.debug(FontColor.RED +msg + "msg값");
 		

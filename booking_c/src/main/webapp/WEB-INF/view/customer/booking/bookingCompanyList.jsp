@@ -12,6 +12,7 @@
 </head>
 <body>
 	<div id="page">
+		<!-- 상단 메뉴 -->
 		<jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 		<main>
 			<section class="hero_in restaurants">

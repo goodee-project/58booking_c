@@ -22,6 +22,7 @@
    </head>
 	<body class="datepicker_mobile_full">
 		<div id="page" class="theia-exception">
+		
 			<main>
 				<section class="hero_in restaurants_detail">
 					<div class="wrapper">
@@ -33,18 +34,35 @@
 				<div class="bg_color_1">
 					<!-- 업체정보 공통 -->
    					<jsp:include page="/WEB-INF/view/customer/booking/bookingCompanyDetailCommon.jsp"></jsp:include>
+   					<nav class="secondary_nav sticky_horizontal">
+				<div class="container">
+					<ul class="clearfix">
+						<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailHome?bkcId=${bkcId}&bkciLevel=${bkciLevel}" class="active">홈</a></li>
+						<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailBooking?bkcId=${bkcId}&bkciLevel=${bkciLevel}">예약</a></li>
+						<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailReview?bkcId=${bkcId}&bkciLevel=${bkciLevel}">리뷰</a></li>
+						<li><a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailMap?bkcId=${bkcId}&bkciLevel=${bkciLevel}">지도</a></li>
+						<li></li>
+					</ul>
+				</div>
+			</nav>
 				</div>
 				<div class="bg_color_1">
 					<div class="container margin_60_35">
 						<div class="row">
 							<div class="col-lg-12">
 								<div align="center">
-									<c:forEach var="bkc" items="${bookingCompanyDetailHome}">
-										<h6><i class="icon-location"></i>${bkc.bkcAddress}</h6>
-										<h6><i class="icon-block"></i>${bkc.offday}</h6>
-										<h6><i class="icon-clock-5"></i>${bkc.bkcdOpen} ~ ${bkc.bkcdClose}</h6>
-										<h6><i class="icon-phone"></i>${bkc.bkcPhone }</h6>
-									</c:forEach>
+									<c:if test="${bookingCompanyDetailHome.size() >= 1}">
+										<c:forEach var="bkc" items="${bookingCompanyDetailHome}" end="0" >
+											<h6><i class="icon-location"></i>${bkc.bkcAddress}</h6>
+											<h6><i class="icon-clock-5"></i>${bkc.bkcdOpen} ~ ${bkc.bkcdClose}</h6>
+											<h6><i class="icon-phone"></i>${bkc.bkcPhone }</h6>
+										</c:forEach>
+									</c:if>
+										<h6><i class="icon-block"></i>
+											<c:forEach var="bkc" items="${bookingCompanyDetailHome}">
+												[${bkc.offday}]
+											</c:forEach>
+										</h6>
 								</div>
 							</div>
 						</div>
