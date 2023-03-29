@@ -121,7 +121,7 @@
 										<tr>
 											<td>업체 사진 :  
 												<c:forEach var="bkc" items="${bookingProductSelectTime}">
-														${bkc.bkciOrigin }
+														${bkc.bkciSave}
 												</c:forEach>
 											</td>
 										</tr>
@@ -435,7 +435,7 @@
 										<tr>
 											<td>업체 사진 :  
 												<c:forEach var="bkc" items="${bookingProductSelectTime}">
-														${bkc.bkciOrigin }
+														${bkc.bkciSave}
 												</c:forEach>
 											</td>
 										</tr>

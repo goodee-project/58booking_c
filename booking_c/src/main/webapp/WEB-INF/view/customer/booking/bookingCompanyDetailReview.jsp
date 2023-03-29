@@ -58,7 +58,7 @@
 										<div class="reviews-container">
 											<div class="review-box clearfix">
 												<figure class="rev-thumb">
-													<img src="${pageContext.request.contextPath}/upload/${bkc.ctiOrigin}">
+													<img src="${pageContext.request.contextPath}/upload/${bkc.ctiSave}">
 												</figure>
 												<div class="rev-content">
 													<div class="rating">
@@ -80,7 +80,7 @@
 													</div>
 													<div class="rev-text">
 														<p>
-															리뷰사진 : ${bkc.rviOrigin } &nbsp;&nbsp;&nbsp;${bkc.rvMemo}
+															리뷰사진 : ${bkc.rviSave} &nbsp;&nbsp;&nbsp;${bkc.rvMemo}
 														</p>
 													</div>
 												</div>

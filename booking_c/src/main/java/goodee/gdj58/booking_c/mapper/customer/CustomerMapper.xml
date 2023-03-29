@@ -363,7 +363,7 @@
 	<select id="getBookingProductSelectTime" resultType="java.util.Map" parameterType="String">
 		SELECT bkc.booking_company_id bkcId
 				, bkc.booking_company_name bkcName
-				, if(bkci.booking_company_img_origin_name IS NULL, '기업사진없음',bkci.booking_company_img_origin_name ) bkciOrigin
+				, if(bkci.booking_company_img_save_name IS NULL, '기업사진없음',bkci.booking_company_img_save_name ) bkciSave
 				, bkct.booking_company_type_content bkcdType
 				, bkct.group_no 
 				, bkcp.booking_product_no bkcProductNo
@@ -375,7 +375,7 @@
 				LEFT OUTER JOIN booking_company_img bkci ON bkc.booking_company_id = bkci.booking_company_id
 		WHERE bkc.booking_company_id = #{bkcId}
 		
-		GROUP BY bkciOrigin
+		GROUP BY bkciSave
 	
 	</select>
 	
@@ -393,11 +393,11 @@
 		SELECT bk.booking_date bkDate
 				, bk.customer_id bkCustomerId
 				, ct.customer_nickname ctNick
-				, if(cti.customer_img_origin_name IS NULL, '고객사진없음', cti.customer_img_origin_name) ctiOrigin
+				, if(cti.customer_img_save_name IS NULL, '고객사진없음', cti.customer_img_save_name) ctiSave
 				, rv.review_memo rvMemo
 				, rv.star_rating rvStar
 				, rv.createdate rvCreatedate
-				, if(rvi.review_img_origin_name IS NULL, '리뷰사진없음', rvi.review_img_origin_name) rviOrigin
+				, if(rvi.review_img_save_name IS NULL, '리뷰사진없음', rvi.review_img_save_name) rviSave
 				, bkp.booking_product_name bkpName
 		FROM booking bk
 			INNER JOIN booking_product bkp ON bk.product_no = bkp.booking_product_no 
@@ -413,7 +413,7 @@
 				, bkc.booking_company_name bkcName
 				, bkp.booking_product_name bkpName
 				, bkp.booking_product_price bkpPrice
-				, if(bkpi.booking_product_img_origin_name IS NULL,'상품사진없음',bkpi.booking_product_img_origin_name) bkpiOrigin
+				, if(bkpi.booking_product_img_save_name IS NULL,'상품사진없음',bkpi.booking_product_img_save_name) bkpiSave
 				, bkct.group_no bkctNo
 		FROM booking_company bkc
 			INNER JOIN booking_company_detail bkcd ON bkc.booking_company_id = bkcd.booking_company_id
@@ -454,15 +454,15 @@
 			, rv.star_rating rvStar
 			, COUNT(bk.booking_company_id) countReview
 			, SUM( rv.star_rating) sumStar
-			,if((SELECT bkci.booking_company_img_origin_name bkciOrigin
+			,if((SELECT bkci.booking_company_img_save_name bkciSave
 				FROM booking_company bkc
 					INNER JOIN booking_company_img bkci ON bkc.booking_company_id = bkci.booking_company_id
 				WHERE bkc.booking_company_id = #{bkcId} AND bkci.booking_company_img_level = #{bkciLevel}) IS NULL, '기업사진없음', 
-				(SELECT bkci.booking_company_img_origin_name bkciOrigin
+				(SELECT bkci.booking_company_img_save_name bkciSave
 				FROM booking_company bkc
 					INNER JOIN booking_company_img bkci ON bkc.booking_company_id = bkci.booking_company_id
 				WHERE bkc.booking_company_id = #{bkcId} AND bkci.booking_company_img_level = #{bkciLevel})
-				 ) bkciOrigin
+				 ) bkciSave
 			,(SELECT bkct.booking_company_type_content bkcType
 				FROM booking_company_detail bkcd
 					INNER JOIN booking_company_type bkct ON bkcd.booking_company_type_no = bkct.booking_company_type_no
@@ -480,11 +480,11 @@
 		FROM ( 	SELECT  bkc.booking_company_id bkcId
 				       , bkc.booking_company_name bkcName
 				       , bkct.booking_company_type_content bkcdType
-				       , if(bkci.booking_company_img_origin_name IS NULL,'업체사진없음',bkci.booking_company_img_origin_name) bkciOrigin
+				       , if(bkci.booking_company_img_save_name IS NULL,'업체사진없음',bkci.booking_company_img_save_name) bkciSave
 				       , bkcd.booking_company_addition_service bkcdAddService
 				       , if(rv.review_memo IS NULL, '리뷰없음', rv.review_memo) rvMemo 
 				       , if(rv.star_rating IS NULL, '별점없음', rv.star_rating) rvRating
-				       , if(rvi.review_img_origin_name IS NULL, '리뷰사진없음', rvi.review_img_origin_name) rviOrigin
+				       , if(rvi.review_img_save_name IS NULL, '리뷰사진없음', rvi.review_img_save_name) rviSave
 				       , if(bkcd.booking_company_opentime &#60;= NOW() AND bkcd.booking_company_closetime >=NOW(), '영업중','영업종료') bkcRunning
 				       , bkci.booking_company_img_level bkciLevel
 				       , bkcd.booking_company_opentime bkcOpen
@@ -510,11 +510,11 @@
 		SELECT  bkc.booking_company_id bkcId
 		       , bkc.booking_company_name bkcName
 		       , bkct.booking_company_type_content bkcdType
-		       , if(bkci.booking_company_img_origin_name IS NULL,'업체사진없음',bkci.booking_company_img_origin_name) bkciOrigin
+		       , if(bkci.booking_company_img_save_name IS NULL,'업체사진없음',bkci.booking_company_img_save_name) bkciSave
 		       , bkcd.booking_company_addition_service bkcdAddService
 		       , if(rv.review_memo IS NULL, '리뷰없음', rv.review_memo) rvMemo 
 		       , if(rv.star_rating IS NULL, '별점없음', rv.star_rating) rvRating
-		       , if(rvi.review_img_origin_name IS NULL, '리뷰사진없음', rvi.review_img_origin_name) rviOrigin
+		       , if(rvi.review_img_save_name IS NULL, '리뷰사진없음', rvi.review_img_save_name) rviSave
 		       , if(bkcd.booking_company_opentime &#60;= NOW() AND bkcd.booking_company_closetime >=NOW(), '영업중','영업종료') bkcRunning
 		       , bkci.booking_company_img_level bkciLevel
 		       , bkcd.booking_company_opentime bkcOpen
