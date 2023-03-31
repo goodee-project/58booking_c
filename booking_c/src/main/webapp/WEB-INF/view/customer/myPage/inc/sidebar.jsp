@@ -45,7 +45,7 @@
 						<h6></h6>
 						<ul>
 							<li>
-							    <label><a class="ing">톡톡</a></label>
+							    <label><a href="${pageContext.request.contextPath}/customer/myPage/chat">톡톡</a></label>
 							</li>
 							<li>
 							    <label><a class="ing">이벤트 참여하기</a></label>
