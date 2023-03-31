@@ -169,7 +169,6 @@ public class MyPageController {
 	public String insertPay(HttpSession session
 						, RedirectAttributes redirectAttr
 						, PaySaveHistory paySaveHistory
-						, @RequestParam(value = "state") String state
 						, HttpServletRequest request) {
 		Customer customer = (Customer)(session.getAttribute("loginCustomer"));
 		

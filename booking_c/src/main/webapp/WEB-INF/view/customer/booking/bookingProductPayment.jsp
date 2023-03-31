@@ -170,7 +170,7 @@
 								<div class="form_title">
 									<h3> ${bkpName } 결제 상세페이지 </h3>
 								</div>
-								
+								<!-- <img src="http://54.180.220.114/upload/testImg.jpg"> -->
 								<div class="step">
 									<form action="${pageContext.request.contextPath}/customer/booking/addBooking" method="post" id=paymentForm>
 										<input type="hidden" name="customerId" value="${loginCustomer.customerId }">

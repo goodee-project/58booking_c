@@ -23,6 +23,10 @@ public class BookingCompanyOffdayService {
 		String result = "no";
 		
 		List<Map<String,Object>> bkcOffdayList = bookingCompanyOffdayMapper.bookingCompanyOffday(bkcId);
+		if(bkcOffdayList.size() == 0)
+		{
+			return result;
+		}
 		log.debug(FontColor.RED+bkcOffdayList.get(0).get("bkcOff").getClass().getName()+"<-----bkcOffday.get(0).get(bkcOff)");
 		log.debug(FontColor.RED+bkcOffdayList.size()+"<-----bkcOffdayList.size()");
 		
