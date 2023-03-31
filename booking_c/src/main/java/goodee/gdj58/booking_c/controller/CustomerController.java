@@ -39,6 +39,7 @@ public class CustomerController {
 		log.debug(FontColor.CYAN+"Controller에서 받은 date :"+date);
 		return "";
 	}
+	
 	// 예약내역 상세보기
 	@GetMapping("/bookingOne")
 	public String getBookingOne(Model model, Company company
@@ -49,6 +50,8 @@ public class CustomerController {
 								, @RequestParam(value="bookingProductNo") int bookingProductNo) {
 		
 		List<Map<String, Object>> list = customerService.getBookingOne(customerId, companyName, requestDate, bookingProductNo);
+		List<Map<String, Object>> opList = customerService.getBookingOp(customerId, companyName, requestDate, bookingProductNo);
+		List<Map<String, Object>> dateList = customerService.getBookingDate(customerId, companyName, requestDate, bookingProductNo);
 		List<Map<String, Object>> companyMap = customerService.getBookingCompanyDetailMap(bkcId);
 		
 		log.debug(FontColor.CYAN+"bklist :"+list);
@@ -61,6 +64,8 @@ public class CustomerController {
 		model.addAttribute("companyName", companyName);
 		model.addAttribute("bookingProductNo", bookingProductNo);
 		model.addAttribute("list", list);
+		model.addAttribute("opList", opList);
+		model.addAttribute("dateList", dateList);
 		return "customer/bookingOne";
 	}
 	// 리뷰 입력
@@ -69,7 +74,7 @@ public class CustomerController {
 							, @RequestParam(value="bookingNo") int bookigNo
 							, @RequestParam("file") MultipartFile file) {
 		
-		String path = request.getServletContext().getRealPath("/upload/");
+		String path = "http://52.78.217.205/var/lib/tomcat9/webapps/upload";
 		String rs = customerService.addReview(review, reviewImg, bookigNo, file, path);
 		
 		if(rs.equals("실패")) {

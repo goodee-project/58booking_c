@@ -28,6 +28,10 @@ public interface CustomerMapper {
 	public int insertReviewImg(ReviewImg reviewImg);
 	// 리뷰 입력
 	public int insertReview(Review review);
+	// 예약 날짜 가져오기
+	ArrayList<Map<String, Object>> getBookingDate(String customerId, String bookingCompanyName, String bookingRequestDate, int bookingProductNo);
+	// 예약 옵션 가져오기
+	ArrayList<Map<String, Object>> getBookingOp(String customerId, String bookingCompanyName, String bookingRequestDate, int bookingProductNo);
 	// 예약 내역 상세보기
 	ArrayList<Map<String, Object>> getBookingOne(String customerId, String bookingCompanyName, String bookingRequestDate, int bookingProductNo);
 	// 고객 비밀번호 찾기

@@ -58,6 +58,42 @@
 				, #{starRating}
 			);
 	</insert>
+	<!-- 예약 내역 날짜 가져오기 -->
+	<select id="getBookingDate" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT
+			b.booking_no bookingNo
+			, b.customer_id customerId
+			, b.booking_date bkDate
+		FROM booking b
+		LEFT OUTER JOIN booking_product bp
+		ON b.booking_company_id = bp.booking_company_id
+		LEFT OUTER JOIN booking_product_option bpo
+		ON bp.booking_product_no = bpo.booking_product_no
+		LEFT OUTER JOIN booking_company bkc
+		ON bp.booking_company_id = bkc.booking_company_id
+		LEFT OUTER JOIN customer c
+		ON b.customer_id = c.customer_id
+		WHERE b.customer_id = #{customerId} AND bkc.booking_company_name = #{bookingCompanyName} AND b.booking_request_date = #{bookingRequestDate} AND bpo.booking_product_no = #{bookingProductNo}	
+		GROUP BY b.booking_date
+	</select>
+	<!-- 예약 내역 옵션 가져오기 -->
+	<select id="getBookingOp" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT
+			b.booking_no bookingNo
+			, b.customer_id customerId
+			, bpo.booking_product_option_name bkProductOptionName
+		FROM booking b
+		LEFT OUTER JOIN booking_product bp
+		ON b.booking_company_id = bp.booking_company_id
+		LEFT OUTER JOIN booking_product_option bpo
+		ON bp.booking_product_no = bpo.booking_product_no
+		LEFT OUTER JOIN booking_company bkc
+		ON bp.booking_company_id = bkc.booking_company_id
+		LEFT OUTER JOIN customer c
+		ON b.customer_id = c.customer_id
+		WHERE b.customer_id = 'cus1' AND bkc.booking_company_name = 'Nudake' AND b.booking_request_date = '2023-03-31 12:25:37' AND bpo.booking_product_no = '131'
+		GROUP BY bpo.booking_product_option_name
+	</select>
 	
 	<!-- 예약내역 상세보기 -->
 	<select id="getBookingOne" resultType="java.util.Map" parameterType="java.util.Map">
@@ -101,7 +137,7 @@
 			ON bp.booking_company_id = bkc.booking_company_id
 			LEFT OUTER JOIN customer c
 			ON b.customer_id = c.customer_id
-			WHERE b.customer_id = #{customerId} AND bkc.booking_company_name = #{bookingCompanyName} AND b.booking_request_date = #{bookingRequestDate} AND bpo.booking_product_no = #{bookingProductNo};	
+			WHERE b.customer_id = #{customerId} AND bkc.booking_company_name = #{bookingCompanyName} AND b.booking_request_date = #{bookingRequestDate} AND bpo.booking_product_no = #{bookingProductNo}	
 	</select>
 	
 	<!-- 패스워드 찾기(수정) -->

@@ -134,6 +134,16 @@ public class CustomerService {
 		return "성공";
 	}
 	
+	// 예약 옵션 가져오기
+	public List<Map<String, Object>> getBookingDate(String customerId, String companyName, String requestDate, int bookingProductNo) {
+		return customerMapper.getBookingDate(customerId, companyName, requestDate, bookingProductNo);
+	}
+	
+	// 예약 옵션 가져오기
+	public List<Map<String, Object>> getBookingOp(String customerId, String companyName, String requestDate, int bookingProductNo) {
+		return customerMapper.getBookingOp(customerId, companyName, requestDate, bookingProductNo);
+	}
+	
 	// 예약내역 상세보기
 	public List<Map<String, Object>> getBookingOne(String customerId, String companyName, String requestDate, int bookingProductNo) {
 		return customerMapper.getBookingOne(customerId, companyName, requestDate, bookingProductNo);
@@ -220,6 +230,7 @@ public class CustomerService {
 		
 		// 파일 경로에 저장
 		File saveFile = new File(path+"\\"+uniqueName + fileRealName); 
+		log.debug(FontColor.CYAN+"서비스 업로드 경로 : "+path);
 		try {
 			file.transferTo(saveFile); // 실제 파일 저장메서드(filewriter 작업을 손쉽게 한방에 처리해준다.)
 		} catch (IllegalStateException e) {

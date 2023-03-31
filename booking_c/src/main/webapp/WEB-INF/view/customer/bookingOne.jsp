@@ -73,13 +73,13 @@
 		<div id="page">
 			<div class="bg_color_1">
 				<div class="container margin_80_55">
-					<c:forEach items="${list}" var="bk">
 						<div class="row justify-content-between">
 							<div class="col-lg-12">
 								<div>
 									<h3>예약 정보</h3>
 									<p>예약하신 내역을 확인해보세요.</p>
 									<div id="message-contact"></div>
+									<c:forEach items="${list}" var="bk" end="0">
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
@@ -89,25 +89,13 @@
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
-												<label>방문 날짜</label>
-												<input class="form-control" value="${bk.bkDate}" readonly="readonly">
+												<label>상품명</label>
+												<input class="form-control" value="${bk.bkProductName}" readonly="readonly">
 											</div>
 										</div>
 									</div>
 									<!-- /row -->
 									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group">
-												<label>상품명</label>
-												<input class="form-control" value="${bk.bkProductName}" readonly="readonly">
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label>옵션</label>
-												<input class="form-control" value="${bk.bkProductOptionName}" readonly="readonly">
-											</div>
-										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>인원</label>
@@ -126,11 +114,29 @@
 										<label style="font-weight:bold;">결제금액 :</label>
 										<span style="font-weight:bold;">${bk.bkTotalPrice}원</span>
 									</div>
+									</c:forEach>
+										<div class="col-md-12">
+											<div class="form-group">
+												<label>옵션</label><br>
+												<c:forEach items="${opList}" var="bk">
+													[${bk.bkProductOptionName}]
+												</c:forEach>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>방문 날짜</label><br>
+													<c:forEach items="${dateList}" var="bk">
+													[${bk.bkDate}]
+												</c:forEach>
+												</div>
+											</div>
+										</div>
 								</div>
 							</div>
 							<!-- 구분선 -->
 							<div class="jb-division-line"></div>
 							<div class="row justify-content-between" style="padding-top:30px">
+								<c:forEach items="${list}" var="bk" end="0">
 								<div class="col-lg-6 margin_50_30">
 									<h4>판매자 정보</h4>
 									<div id="message-contact"></div>
@@ -185,9 +191,10 @@
 											</div>
 										</div>
 									</div>
+									</c:forEach>
 								</div>						
 							</div>
-						</c:forEach>
+						
 						<div class="col-lg-6" style="padding-top:80px">
 							<h4>오시는길</h4>
 							<div id="message-contact"></div>
@@ -236,7 +243,7 @@
 						</div>
 						
 						<div style="padding-top:30px;">
-							<c:forEach items="${list}" var="bk">						
+							<c:forEach items="${list}" var="bk" end="0">						
 								<!-- 다시예약하기 클릭시 해당 업체 예약페이지로 이동 -->
 								<button type="button"  onclick="location.href='${pageContext.request.contextPath}/customer/booking/bookingCompanyDetailBooking?bkcId=${bk.bkcId}'">다시 예약하기</button>
 								<!-- 예약상태 방문완료인 경우만 리뷰작성 가능 -->

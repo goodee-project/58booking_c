@@ -156,6 +156,7 @@
 			, bp.booking_product_name productName
 			, b.booking_date bookingDate
 			, b.booking_total_price totalPrice
+			, ri.review_img_save_name reviewSaveName
 			, ri.review_img_origin_name reviewImgOriginName
 			, r.review_memo reviewMemo
 			, rc.review_comment_memo commnetMemo

@@ -322,7 +322,7 @@ public class MyPageController {
 				
 		// 리뷰 리스트
 		List<Map<String, Object>> reviewList = myPageService.reviewList(customer.getCustomerId(), currentPage, rowPerPage);
-		
+		log.debug(FontColor.YELLOW + "reviewList : " + reviewList);
 		// 데이터 개수
 		int reviewCnt = myPageService.reviewCnt(customer.getCustomerId());
 		
