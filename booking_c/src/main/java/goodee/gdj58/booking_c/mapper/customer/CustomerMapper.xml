@@ -31,7 +31,7 @@
 	
 	<!-- 리뷰 작성(사진등록) -->
 	<insert id="insertReviewImg" parameterType="goodee.gdj58.booking_c.vo.ReviewImg">
-		INSERT INTO reviewImg(
+		INSERT INTO review_img(
 			booking_no
 			, review_img_save_name
 			, review_img_origin_name

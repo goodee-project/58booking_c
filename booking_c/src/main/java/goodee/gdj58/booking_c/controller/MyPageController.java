@@ -454,7 +454,7 @@ public class MyPageController {
 		log.debug(FontColor.YELLOW + "customerId : " + customer.getCustomerId());
 		
 		Map<String, Object> customerOne = myPageService.customerOne(customer.getCustomerId());
-		
+		log.debug(FontColor.YELLOW + "customerOne : " + customerOne);
 		// 데이터 담아서 view에서 출력
 		model.addAttribute("customerOne", customerOne);
 		

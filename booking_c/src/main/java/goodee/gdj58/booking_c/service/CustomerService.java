@@ -95,8 +95,6 @@ public class CustomerService {
 		log.debug(FontColor.CYAN+fileKind+"<--fileKind값");
 		log.debug(FontColor.CYAN+size+"<--size값");
 		
-		// 확장자
-		String fileExtension = fileRealName.substring(fileRealName.lastIndexOf("."),fileRealName.length());
 		
 		// 랜덤문자열 생성
 		UUID uuid = UUID.randomUUID();
@@ -107,7 +105,7 @@ public class CustomerService {
 		log.debug(FontColor.CYAN+"생성된 고유문자열" + uniqueName);
 		
 		// 파일 경로에 저장
-		File saveFile = new File(path+"\\"+uniqueName + fileExtension); 
+		File saveFile = new File(path+"\\"+uniqueName + fileRealName); 
 		try {
 			file.transferTo(saveFile); // 실제 파일 저장메서드(filewriter 작업을 손쉽게 한방에 처리해준다.)
 		} catch (IllegalStateException e) {
@@ -182,11 +180,13 @@ public class CustomerService {
 		// 1. totalId
 		String customerId = customer.getCustomerId();
 		log.debug(FontColor.CYAN+"customerId : "+customerId);
+		
 		// 데이터 가공
 		TotalId paramTotalId = new TotalId();
 		paramTotalId.setId(customerId);
 		paramTotalId.setTotalIdKind("고객");
 		paramTotalId.setTotalIdActive("활성화");
+		
 		int totalRow = customerMapper.insertTotalId(paramTotalId);
 		if(totalRow == 0) {
 			log.debug(FontColor.CYAN+"시스템 에러로 totalId 등록 실패");
@@ -210,9 +210,6 @@ public class CustomerService {
 		log.debug(FontColor.CYAN+fileKind+"<--fileKind값");
 		log.debug(FontColor.CYAN+size+"<--size값");
 		
-		// 확장자
-		String fileExtension = fileRealName.substring(fileRealName.lastIndexOf("."),fileRealName.length());
-		
 		// 랜덤문자열 생성
 		UUID uuid = UUID.randomUUID();
 		log.debug(uuid.toString());
@@ -222,7 +219,7 @@ public class CustomerService {
 		log.debug(FontColor.CYAN+"생성된 고유문자열" + uniqueName);
 		
 		// 파일 경로에 저장
-		File saveFile = new File(path+"\\"+uniqueName + fileExtension); 
+		File saveFile = new File(path+"\\"+uniqueName + fileRealName); 
 		try {
 			file.transferTo(saveFile); // 실제 파일 저장메서드(filewriter 작업을 손쉽게 한방에 처리해준다.)
 		} catch (IllegalStateException e) {
