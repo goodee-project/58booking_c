@@ -74,7 +74,7 @@ public class CustomerController {
 							, @RequestParam(value="bookingNo") int bookigNo
 							, @RequestParam("file") MultipartFile file) {
 		
-		String path = "http://52.78.217.205/var/lib/tomcat9/webapps/upload";
+		String path = request.getServletContext().getRealPath("/upload/");
 		String rs = customerService.addReview(review, reviewImg, bookigNo, file, path);
 		
 		if(rs.equals("실패")) {

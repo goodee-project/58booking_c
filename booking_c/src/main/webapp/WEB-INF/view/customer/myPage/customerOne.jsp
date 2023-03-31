@@ -56,7 +56,7 @@
 									<tr>
 										<td rowspan="13" style="width: 240px;">
 											<div class="box">
-												<img id="preview" class="profile" src="${pageContext.request.contextPath}/upload/${customerOne.customerImgSaveName}" width="150" height="150">
+												<img id="preview" class="profile" src="http://52.78.217.205/booking_c/upload/${customerOne.customerImgSaveName}" width="150" height="150">
 											</div>
 											<input type="hidden" name="fileName" value="${customerOne.customerImgSaveName}">
 											<input type="file" name="file" id="file" style="width: 220px;" class="form-control">

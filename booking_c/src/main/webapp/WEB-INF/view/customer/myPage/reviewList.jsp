@@ -31,7 +31,7 @@
 							<div class="room_type gray">
 								<div class="row">
 									<div class="col-md-4">
-										<img src="${pageContext.request.contextPath}/upload/${r.reviewSaveName}" class="img-fluid" alt="">
+										<img src="http://52.78.217.205/booking_c/upload/${r.reviewSaveName}" class="img-fluid" alt="">
 									</div>
 									<div class="col-md-8">
 										<h4>${r.companyName}</h4>

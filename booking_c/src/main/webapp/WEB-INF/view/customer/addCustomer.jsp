@@ -240,22 +240,22 @@
 			
 			// ID 중복검사
 			$('#ckBtn').click(function(){
-					$.ajax({
-						url:'idck'
-						, type:'get'
-						, data : {checkId:$('#checkId').val()}
-						, success:function(model){ // model : 'yes' / 'no'
-							console.log('model값:'+model);
-							if(model=='yes') {
-								// 사용가능한 아이디
-								$('#id').val($('#checkId').val());
-							} else {
-								// 사용중인 아이디
-								alert($('#checkId').val()+'는 사용중인 아이디입니다');
-							}
+				$.ajax({
+					url:'idck'
+					, type:'get'
+					, data : {checkId:$('#checkId').val()}
+					, success:function(model){ // model : 'yes' / 'no'
+						console.log('model값:'+model);
+						if(model=='yes') {
+							// 사용가능한 아이디
+							$('#id').val($('#checkId').val());
+						} else {
+							// 사용중인 아이디
+							alert($('#checkId').val()+'는 사용중인 아이디입니다');
 						}
-					});
+					}
 				});
+			});
 			
 			// 이메일 인증
 			var code = ''; // 인증번호를 담을 변수

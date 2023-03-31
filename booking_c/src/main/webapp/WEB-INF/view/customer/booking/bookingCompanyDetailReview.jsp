@@ -58,7 +58,7 @@
 										<div class="reviews-container">
 											<div class="review-box clearfix">
 												<figure class="rev-thumb">
-													<img src="${pageContext.request.contextPath}/upload/${bkc.ctiSave}">
+													<img src="http://52.78.217.205/booking_b/upload/${bkc.ctiSave}">
 												</figure>
 												<div class="rev-content">
 													<div class="rating">

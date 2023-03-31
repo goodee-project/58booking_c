@@ -76,7 +76,7 @@
 								<div class="col-lg-5">
 									<figure style="height:100%">
 										<a href="${pageContext.request.contextPath }/customer/booking/bookingCompanyDetailHome?bkcId=${bkc.bkcId}&bkciLevel=${bkc.bkciLevel}">
-											<img src="${pageContext.request.contextPath}/resources/img/testPic.jpg" class="img-fluid" alt="" width="800" height="10000"><div class="read_more"><span>업체 세부정보</span></div></a>
+											<img src="http://52.78.217.205/booking_b/upload/${bkc.bkciSave}" class="img-fluid" alt="" width="800" height="10000"><div class="read_more"><span>업체 세부정보</span></div></a>
 									</figure>
 								</div>
 								<div class="col-lg-7">
@@ -97,7 +97,7 @@
 												<th style="width:500px">Review Comment</th>
 											</tr>
 											<tr>
-												<td><img src="${pageContext.request.contextPath}/resources/img/testPic.png" class="img-fluid"  width="100" height="100"></td>
+												<td><img src="http://52.78.217.205/upload/${bkc.rviSave}" class="img-fluid"  width="100" height="100"></td>
 												<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${bkc.rvMemo }</td>
 											</tr>
 										</table>

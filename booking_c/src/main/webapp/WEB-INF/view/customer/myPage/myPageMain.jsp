@@ -52,7 +52,7 @@
 										<tr>
 											<td rowspan="2" style="width: 300px;">
 												<div class="box">
-													<img class="profile" src="${pageContext.request.contextPath}/upload/${customerOne.customerImgSaveName}" width="200" height="200">
+													<img class="profile" src="http://52.78.217.205/booking_c/upload/${customerOne.customerImgSaveName}" width="200" height="200">
 												</div>
 											</td>
 											<td>

@@ -53,7 +53,7 @@
 						<div class="col-lg-8" style="margin: auto;">
 							<div class="row">
 								<div class="col-md-4">
-									<img src="${pageContext.request.contextPath}/upload/${bkc.bkpiSave}" width="200" height="200">
+									<img src="http://52.78.217.205/booking_b/upload/${bkc.bkpiSave}" width="200" height="200">
 								</div>
 								<div class="col-md-8">
 									<h4>${bkc.bkpName}</h4>
