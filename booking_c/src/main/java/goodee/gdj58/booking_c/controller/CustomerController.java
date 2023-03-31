@@ -347,6 +347,12 @@ public class CustomerController {
 		String rank = loginCustomer.getCustomerRank();
 		int rankDiscount = 0; 
 		
+		if(rank.equals("일반"))
+		{
+			log.debug(FontColor.RED+"<--- 일반 if문 들어옴");
+			rankDiscount = (int)(Integer.parseInt(bkpPrice));
+			log.debug(FontColor.RED+rankDiscount+"<--- if함수 안 랭크 할인 가격");
+		}
 		if(rank.equals("브론즈"))
 		{
 			log.debug(FontColor.RED+"<--- 브론즈 if문 들어옴");
