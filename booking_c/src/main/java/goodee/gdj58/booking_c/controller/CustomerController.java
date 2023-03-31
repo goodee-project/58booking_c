@@ -3,6 +3,7 @@ package goodee.gdj58.booking_c.controller;
 
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -25,25 +26,31 @@ import goodee.gdj58.booking_c.vo.Customer;
 import goodee.gdj58.booking_c.vo.CustomerImg;
 import goodee.gdj58.booking_c.vo.Review;
 import goodee.gdj58.booking_c.vo.ReviewImg;
+import goodee.gdj58.booking_c.vo.TotalId;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
 public class CustomerController {
 	@Autowired CustomerService customerService;
-
+	// 휴면계정 전환
+	@GetMapping("/updateActive")
+	public String customerActiveUpdate(Customer customer, int date) {
+		log.debug(FontColor.CYAN+"Controller에서 받은 date :"+date);
+		return "";
+	}
 	// 예약내역 상세보기
 	@GetMapping("/bookingOne")
 	public String getBookingOne(Model model, Company company
 								, @RequestParam(value="customerId") String customerId
 								, @RequestParam(value="companyName") String companyName
 								, @RequestParam(value="requestDate") String requestDate
-								, @RequestParam(value="bkcId") String bkcId) {
+								, @RequestParam(value="bkcId") String bkcId
+								, @RequestParam(value="bookingProductNo") int bookingProductNo) {
 		
-		List<Map<String, Object>> list = customerService.getBookingOne(customerId, companyName, requestDate);
+		List<Map<String, Object>> list = customerService.getBookingOne(customerId, companyName, requestDate, bookingProductNo);
 		List<Map<String, Object>> companyMap = customerService.getBookingCompanyDetailMap(bkcId);
 		
-		log.debug(FontColor.CYAN+"customerControllerId :"+customerId);
 		log.debug(FontColor.CYAN+"bklist :"+list);
 		log.debug(FontColor.CYAN+"customerControllercompanyName :"+companyName);
 		log.debug(FontColor.CYAN+"customerControllerrequestDate :"+requestDate);
@@ -52,6 +59,7 @@ public class CustomerController {
 		model.addAttribute("companyMap", companyMap);
 		model.addAttribute("requestDate", requestDate);
 		model.addAttribute("companyName", companyName);
+		model.addAttribute("bookingProductNo", bookingProductNo);
 		model.addAttribute("list", list);
 		return "customer/bookingOne";
 	}
@@ -129,6 +137,8 @@ public class CustomerController {
 		if(loginCustomer == null) {
 			log.debug(FontColor.CYAN+"로그인실패");
 			return "customer/loginCustomer";
+		} else { // 로그인값이 존재하면 로그인 일자 업데이트
+			customerService.updateLastLogin(loginCustomerId);
 		}
 		log.debug(FontColor.CYAN+"로그인 성공 ID : "+loginCustomerId);
 		
@@ -204,7 +214,7 @@ public class CustomerController {
 			log.debug(FontColor.RED+"로그인 후 이용 가능");
 			return "customer/loginCustomer";
 		}
-		
+		log.debug(FontColor.RED+"로그인 후 이용 가능"+loginCustomer.getCustomerPay());
 		log.debug(FontColor.RED + productTime+ "<---productTime");
 		log.debug(FontColor.RED + dayList+ "<---bookingDayList addBooking");
 		log.debug(FontColor.RED + bkpoName+ "<---bkpoName");

@@ -39,7 +39,7 @@
 		<!-- End Preload -->
 		
 		<div>
-			<aside style="width:30%;">
+			<aside style="width:30%; margin :30px; padding:10px;">
 				<figure>
 					<h2>비밀번호 변경</h2>
 				</figure>
@@ -64,7 +64,7 @@
 						<strong><a href="${pageContext.request.contextPath}/log/findId">아이디찾기</a></strong>
 					</div>
 				</form>
-				<div class="copy">Booking</div>
+				<div class="copy" style="text-align:center; margin:20px;">Booking</div>
 			</aside>
 		</div>
 		<!-- /login -->

@@ -2,6 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="goodee.gdj58.booking_c.mapper.customer.CustomerMapper">
+	<!-- 휴면계정 아이디 조회 -->
+	<select id="customerLastLogin" resultType="int">
+	SELECT DATEDIFF(CURDATE(), customer_last_login_date) 
+	FROM customer 
+	WHERE customer_id = #{customerId}
+	</select>
+	
+	<!-- 휴면계정 설정 -->
+	<update id="updateCustomerActive" parameterType="goodee.gdj58.booking_c.vo.TotalId">
+	UPDATE total_id
+	SET total_id_active = #{totalIdActive} AND total_id_deactive_memo = #{totalIdDeactiveMemo} AND total_id_deactive_date = NOW()
+	WHERE id = #{id}
+	</update>
+	
+	<!-- 마지막 로그인 일자 -->
+	<select id="selectLastLogin" resultType="java.util.Map">
+	SELECT customer_id cusId, customer_last_login_date lastLoginDate
+	FROM customer
+	</select>
+	
+	<!-- 로그인 일자 업데이트 -->
+	<update id="updateCustomerLastLogin" parameterType="java.lang.String">
+	UPDATE customer
+	SET customer_last_login_date = NOW()
+	WHERE customer_id = #{customerId}
+	</update>
+	
 	<!-- 리뷰 작성(사진등록) -->
 	<insert id="insertReviewImg" parameterType="goodee.gdj58.booking_c.vo.ReviewImg">
 		INSERT INTO reviewImg(
@@ -74,7 +101,7 @@
 			ON bp.booking_company_id = bkc.booking_company_id
 			LEFT OUTER JOIN customer c
 			ON b.customer_id = c.customer_id
-			WHERE b.customer_id = #{customerId} AND bkc.booking_company_name = #{bookingCompanyName} AND b.booking_request_date = #{bookingRequestDate};	
+			WHERE b.customer_id = #{customerId} AND bkc.booking_company_name = #{bookingCompanyName} AND b.booking_request_date = #{bookingRequestDate} AND bpo.booking_product_no = #{bookingProductNo};	
 	</select>
 	
 	<!-- 패스워드 찾기(수정) -->

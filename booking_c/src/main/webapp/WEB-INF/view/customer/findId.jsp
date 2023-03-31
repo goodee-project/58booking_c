@@ -33,6 +33,7 @@
 			width:280px;
 			height:30px;
 			font-size:14px;
+			text-align: center;
 		}
 		</style>
 	</head>
@@ -45,7 +46,7 @@
 		</div>
 		<!-- End Preload -->
 		
-		<div id="login" class="con">
+		<div id="login">
 			<aside style="width:30%;">
 				<figure>
 					<a href="index.html"><h2>아이디 찾기</h2></a>
@@ -79,6 +80,7 @@
 					</div>
 					<div id="a"></div>
 					<div id="pass-info" class="clearfix"></div>
+					<div class="text-center add_top_10">이메일 인증에 성공시 아이디가 출력됩니다.</div>
 					<div class="text-center add_top_10">
 						<strong><a href="${pageContext.request.contextPath}/log/loginCustomer">로그인</a></strong> /
 						<strong><a href="${pageContext.request.contextPath}/log/findPw">비밀번호찾기</a></strong>

@@ -209,6 +209,7 @@
 			, b.booking_company_id bkcId
 			, bc.booking_company_name companyName
 			, bp.booking_product_name productName
+			, bp.booking_product_no bookingProductNo
 			, b.booking_date bookingDate
 			, b.booking_use_point usePoint
 			, b.booking_total_price totalPrice

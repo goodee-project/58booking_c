@@ -1,7 +1,7 @@
 package goodee.gdj58.booking_c.mapper.customer;
 
 import java.util.ArrayList;
-
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -16,12 +16,20 @@ import goodee.gdj58.booking_c.vo.TotalId;
 
 @Mapper
 public interface CustomerMapper {
+	// 1년전 날짜 가져오기
+	public int customerLastLogin(String id);
+	// 마지막 로그인 일자 가져오기
+	List<Map<String, Object>> selectLastLogin();
+	// 휴면계정 전환
+	public int updateCustomerActive(TotalId totalId);
+	// 마지막 로그인일자 업데이트
+	public int updateCustomerLastLogin(String customerId);
 	// 리뷰 입력(사진)
 	public int insertReviewImg(ReviewImg reviewImg);
 	// 리뷰 입력
 	public int insertReview(Review review);
 	// 예약 내역 상세보기
-	ArrayList<Map<String, Object>> getBookingOne(String customerId, String bookingCompanyName, String bookingRequestDate);
+	ArrayList<Map<String, Object>> getBookingOne(String customerId, String bookingCompanyName, String bookingRequestDate, int bookingProductNo);
 	// 고객 비밀번호 찾기
 	int updateCustomerPw(Customer customer);
 	// 고객 아이디 찾기

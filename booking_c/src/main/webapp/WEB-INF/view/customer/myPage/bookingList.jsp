@@ -82,7 +82,7 @@
 										</tr>
 										<c:forEach var="b" items="${bookingList}">
 											<tr style="height: 70px;">
-												<td><a href="${pageContext.request.contextPath}/bookingOne?customerId=${customerId}&companyName=${b.companyName}&bkcId=${b.bkcId}&requestDate=${b.requestDate}">${b.companyName}</a></td>
+												<td><a href="${pageContext.request.contextPath}/bookingOne?customerId=${customerId}&companyName=${b.companyName}&bkcId=${b.bkcId}&requestDate=${b.requestDate}&bookingProductNo=${b.bookingProductNo}">${b.companyName}</a></td>
 												<td>${b.productName}</td>
 												<td>
 													<c:set var="bookingDate" value="${b.bookingDate}"/>

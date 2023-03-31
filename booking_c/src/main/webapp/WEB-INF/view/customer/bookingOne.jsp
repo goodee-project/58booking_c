@@ -69,7 +69,6 @@
 	</head>
 
 	<body>
-		<!-- 임시메뉴 -->
 	    <jsp:include page="/WEB-INF/view/customer/booking/tempMenu.jsp"></jsp:include>
 		<div id="page">
 			<div class="bg_color_1">

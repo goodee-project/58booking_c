@@ -394,7 +394,7 @@ public class MyPageController {
 		int bookingCnt = myPageService.bookingCnt(customer.getCustomerId(), bookingState);
 		
 		log.debug(FontColor.YELLOW + "bookingCnt : " + bookingCnt);
-		
+		log.debug(FontColor.YELLOW + "bookingList : " + bookingList);
 		// 페이징
 		int lastPage = bookingCnt / rowPerPage;
 		if(bookingCnt % rowPerPage != 0) {

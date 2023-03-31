@@ -106,7 +106,7 @@
 		<div id="login">
 			<aside>
 				<figure>
-					<a href="index.html"><img src="${pageContext.request.contextPath}/resources/img/logo_sticky.svg" width="155" height="36" alt="" class="logo_sticky"></a>
+					<a href="${pageContext.request.contextPath}/log/loginCustomer"><img src="${pageContext.request.contextPath}/resources/img/logo_sticky.svg" width="155" height="36" alt="" class="logo_sticky"></a>
 				</figure>
 				<form action="${pageContext.request.contextPath}/log/loginCustomer" method="post" id="loginForm">
 					<div>

@@ -3,7 +3,11 @@ package goodee.gdj58.booking_c.service;
 import java.io.File;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +16,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +37,40 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class CustomerService {
 	@Autowired private CustomerMapper customerMapper;
+	// 휴면 전환을 위한 날짜 계산
+	/* 스케쥴러 적용해야함 미완성..
+	public void updateCustomerActive() {
+		log.debug(FontColor.CYAN+"-------------스케쥴러실행------------");
+		List<Map<String, Object>> list = customerMapper.selectLastLogin();
+		Date now = new Date();
+
+		Calendar cal = Calendar.getInstance(); 
+		cal.setTime(now); 
+		cal.add(Calendar.YEAR, -1);
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		
+		for(int i=0; i < list.size(); i++ ) {
+			String lastLoginDate = list.get(i).get("lastLoginDate").toString();
+			String customerId = list.get(i).get("cusId").toString();
+			log.debug(FontColor.CYAN+"lastLoginDate"+lastLoginDate);
+			log.debug(FontColor.CYAN+"customerId"+customerId);
+			
+			LocalDate lastLoginDate1 = LocalDate.parse(lastLoginDate);
+			LocalDate minusYear = LocalDate.parse(format.format(cal.getTime()));
+			log.debug(FontColor.CYAN+"lastLoginDate1"+lastLoginDate1);
+			log.debug(FontColor.CYAN+"minusYear"+minusYear);
+			
+		}
+		log.debug(FontColor.CYAN+"now"+format.format(now));
+		log.debug(FontColor.CYAN+"1년뺀시간 : "+cal.getTime());
+	}
+	*/
+
+	// 마지막 로그인일자 업데이트
+	public int updateLastLogin(String customerId) {
+		return customerMapper.updateCustomerLastLogin(customerId);
+	}
 	// 리뷰 작성
 	public String addReview(Review review, ReviewImg reviewImg, int bookingNo
 							, @RequestParam("file") MultipartFile file
@@ -98,8 +137,8 @@ public class CustomerService {
 	}
 	
 	// 예약내역 상세보기
-	public List<Map<String, Object>> getBookingOne(String customerId, String companyName, String requestDate) {
-		return customerMapper.getBookingOne(customerId, companyName, requestDate);
+	public List<Map<String, Object>> getBookingOne(String customerId, String companyName, String requestDate, int bookingProductNo) {
+		return customerMapper.getBookingOne(customerId, companyName, requestDate, bookingProductNo);
 	}
 	
 	// 고객 비밀번호 찾기(수정)

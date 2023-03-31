@@ -24,6 +24,9 @@
 						<h6></h6>
 						<ul>
 							<li>
+							    <label><a href="${pageContext.request.contextPath}/customer/booking/bookingCompanyList">예약하러가기</a></label>
+							</li>
+							<li>
 							    <label><a href="${pageContext.request.contextPath}/customer/myPage/customerOne">내 정보</a></label>
 							</li>
 							<li>

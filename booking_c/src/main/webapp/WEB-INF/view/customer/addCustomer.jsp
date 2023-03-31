@@ -94,9 +94,7 @@
 			.con {
 				position: absolute;
 				top: 50%;
-				left: 35%;
-				background: #f00;
-				margin: -50px 0 0 -50px;
+				left: 30%;
 			}
 			div {
 				margin : 10px;
@@ -118,7 +116,7 @@
 		<div id="login" class="con">
 			<aside style="width:700px;">
 				<figure>
-					<a href="index.html"><img src="${pageContext.request.contextPath}/resources/img/logo_sticky.svg" width="155" height="36" alt="" class="logo_sticky"></a>
+					<a href="${pageContext.request.contextPath}/log/loginCustomer"><img src="${pageContext.request.contextPath}/resources/img/logo_sticky.svg" width="155" height="36" alt="" class="logo_sticky"></a>
 				</figure>
 				<form method="post" action="${pageContext.request.contextPath}/log/addCustomer" enctype="multipart/form-data" id="addForm">
 					<input type="hidden" id="email" name="customerEmail">	
