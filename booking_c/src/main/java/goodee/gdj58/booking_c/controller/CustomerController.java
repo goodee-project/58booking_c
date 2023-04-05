@@ -33,11 +33,18 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CustomerController {
 	@Autowired CustomerService customerService;
+	/*
 	// 휴면계정 전환
 	@GetMapping("/updateActive")
 	public String customerActiveUpdate(Customer customer, int date) {
 		log.debug(FontColor.CYAN+"Controller에서 받은 date :"+date);
 		return "";
+	}
+	*/
+	// Home
+	@GetMapping("/home")
+	public String home() {
+		return "customer/home";
 	}
 	
 	// 예약내역 상세보기
